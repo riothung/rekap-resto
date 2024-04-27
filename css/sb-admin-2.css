@@ -12,7 +12,7 @@
  */
 :root {
   --blue: #4e73df;
-  --indigo: #6610f2;
+  --indigo: #6610f2 !important;
   --purple: #6f42c1;
   --pink: #e83e8c;
   --red: #e74a3b;

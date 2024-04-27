@@ -39,6 +39,9 @@
 
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
 
+    <!-- Bootstrap CSS -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3s4Wz6iJgD/+ub2oU" crossorigin="anonymous"> -->
+
   </head>
 
   <body id="page-top">
@@ -48,9 +51,9 @@
       <ul class="navbar-nav bg-gradient-danger sidebar sidebar-dark accordion" id="accordionSidebar">
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-          <!-- <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
-          </div> -->
+          <div class="sidebar-brand-icon ">
+            <i class="fas fa-store"></i>
+          </div>
           <div class="sidebar-brand-text mx-3">Resto</div>
         </a>
 
@@ -60,7 +63,7 @@
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
           <a class="nav-link" href="index.php">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <i class="fas fa-fw fa-chart-line"></i>
             <span>Statistik</span></a>
         </li>
 
@@ -73,14 +76,14 @@
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item active">
           <a class="nav-link" href="menu.php">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+            <i class="fas fa-fw fa-store-alt"></i>
             <span>Menu</span></a>
         </li>
 
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-            <i class="fas fa-fw fa-wrench"></i>
+            <i class="fas fa-fw fa-boxes"></i>
             <span>Stock</span>
           </a>
         </li>
@@ -94,7 +97,7 @@
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-            <i class="fas fa-fw fa-folder"></i>
+            <i class="fas fa-fw fa-money-check"></i>
             <span>Penjualan</span>
           </a>
           <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
@@ -192,8 +195,8 @@
               <!-- Nav Item - User Information -->
               <li class="nav-item dropdown no-arrow">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $user['name']; ?></span>
-                  <img class="img-profile rounded-circle" src="img/undraw_profile.svg" />
+                  <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?=$user['name']?></span>
+                  <img class="img-profile rounded-circle" src="img/undraw_profile.svg"/>
                 </a>
                 <!-- Dropdown - User Information -->
                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
