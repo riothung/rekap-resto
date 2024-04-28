@@ -45,7 +45,8 @@ $conn->close();
                         <td><?= $row['nama_bahan'] ?></td>
                         <td><?= $row['harga'] ?></td>
                         <td><?= $row['stok'] ?></td>
-                        <td><button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#modalEdit<?= $key ?>">Edit</button></td>
+                        <td><button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#modalEdit<?= $key ?>">Edit</button>
+                        <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#modalHapus<?= $key ?>">Hapus</button></td>
                       </tr>
                       <?php endforeach; ?>
                     </tbody>
