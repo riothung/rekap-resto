@@ -54,23 +54,23 @@ $conn->close();
                         <div class="modal-dialog">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h1 class="modal-title fs-5" id="editMenuLabel">Edit Menu</h1>
+                              <h1 class="modal-title fs-5" id="editMenuLabel">Edit Bahan</h1>
                               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
                             </div>
                             <div class="modal-body">
-                            <form action="controllers/minumanController.php?action=edit&id='.$row['id'].'" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
+                            <form action="controllers/stockController.php?action=edit&id='.$row['id'].'" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
                               
                               <div>
-                                <label for="minuman" class="form-label">Nama Minuman</label>
-                                <input value="'.$row['minuman'].'" type="text" placeholder="Minuman" autofocus name="minuman" class="form-control" autocomplete="off">
+                                <label for="nama_bahan" class="form-label">Nama Bahan</label>
+                                <input value="<?=$row['nama_bahan'];?>" type="text" placeholder="nama_bahan" autofocus name="nama_bahan" class="form-control" autocomplete="off">
                               </div>
                               <div>
                                 <label for="harga" class="form-label">Harga</label>
-                                <input value="'.$row['harga'].'" type="text" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
+                                <input value="<?=$row['harga'];?>" type="text" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
                               </div>
                               <div>
-                                <label for="gambar" class="form-label">Nama Menu</label>
-                                <input value="'.$row['gambar'].'" type="file" placeholder="Gambar" autofocus name="gambar" class="form-control">
+                                <label for="stok" class="form-label">Stok</label>
+                                <input value="<?=$row['stok'];?>" type="number" placeholder="stok" autofocus name="stok" class="form-control">
                               </div>
                               <div class="modal-footer">
                               <button type="submit" name="submit" class="btn btn-warning">Submit</button>
