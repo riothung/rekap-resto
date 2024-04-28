@@ -42,15 +42,15 @@ $conn->close();
                     <tbody>
                         <?php foreach($data as $key => $row): ?>
                       <tr>
-                        <td><?= $row['nama_bahan'] ?></td>
-                        <td><?= $row['harga'] ?></td>
-                        <td><?= $row['stok'] ?></td>
-                        <td><button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#modalEdit<?= $key ?>">Edit</button>
-                        <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#modalHapus<?= $key ?>">Hapus</button></td>
+                        <td><?= $row['nama_bahan']; ?></td>
+                        <td>Rp. <?= $row['harga']; ?></td>
+                        <td><?= $row['stok']; ?></td>
+                        <td><button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#modalEdit<?= $key; ?>">Edit</button>
+                        <button type="button" class="btn btn-danger mb-2" data-toggle="modal" data-target="#modalHapus<?= $key; ?>">Hapus</button></td>
                       </tr>
                           
                       <!-- Modal Edit -->
-                      <div class="modal fade" id="modalEdit<?= $key ?>" tabindex="-1" aria-hidden="true">
+                      <div class="modal fade" id="modalEdit<?= $key; ?>" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog">
                           <div class="modal-content">
                             <div class="modal-header">
@@ -58,7 +58,7 @@ $conn->close();
                               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
                             </div>
                             <div class="modal-body">
-                            <form action="controllers/stockController.php?action=edit&id='.$row['id'].'" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
+                            <form action="controllers/stockController.php?action=edit&id=<?=$row['id'];?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
                               
                               <div>
                                 <label for="nama_bahan" class="form-label">Nama Bahan</label>
@@ -94,7 +94,7 @@ $conn->close();
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <a class="btn btn-danger" href="controllers/minumanController.php?action=delete&id='.$row['id'].'">Hapus</a>
+                            <a class="btn btn-danger" href="controllers/stockController.php?action=delete&id=<?=$row['id'];?>">Hapus</a>
                           </div>
                         </div>
                       </div>
