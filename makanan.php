@@ -104,9 +104,6 @@ $conn->close();
                               </div>
                             </div>
                           </div>
-
-
-                        
                     </div>
                 </div>
             </div>'; ?>
@@ -154,7 +151,7 @@ $conn->close();
 </div>
 <!-- end modal Menu -->
 
-    <script>
+  <script>
     function toggleDescription(menu) {
     var description = document.getElementById(menu);
     var shortDescription = description.previousElementSibling;

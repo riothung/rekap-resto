@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2024 at 04:35 PM
+-- Generation Time: Apr 28, 2024 at 02:34 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `bahan` (
   `id` int(11) NOT NULL,
   `nama_bahan` varchar(50) NOT NULL,
+  `harga` bigint(20) NOT NULL,
   `stok` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -37,11 +38,11 @@ CREATE TABLE `bahan` (
 -- Dumping data for table `bahan`
 --
 
-INSERT INTO `bahan` (`id`, `nama_bahan`, `stok`) VALUES
-(1, 'ayam', 5),
-(2, 'bihun', 7),
-(3, 'beras', 10),
-(4, 'telur', 25);
+INSERT INTO `bahan` (`id`, `nama_bahan`, `harga`, `stok`) VALUES
+(1, 'ayam', 0, 5),
+(2, 'bihun', 0, 7),
+(3, 'beras', 0, 10),
+(4, 'telur', 0, 25);
 
 -- --------------------------------------------------------
 
@@ -84,11 +85,34 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`id`, `nama_menu`, `harga`, `gambar`) VALUES
-(11, 'Soto Ayam', 25000, ''),
+(11, 'Soto Ayam', 25000, 'assets/img/662e3f8783a3b.png'),
 (13, 'Nasi Soto Bale Gule', 60000, ''),
 (14, 'Nasi Cumi Pak Kris', 50000, ''),
 (15, 'Nasi Goreng', 50000, ''),
-(16, 'Bakso', 50000, '');
+(16, 'Bakso', 50000, ''),
+(17, 'csdfsdsada', 23123, 'protocolCovid2.jpg'),
+(18, 'sdas', 23423, 'Array'),
+(19, 'nn', 12, '../assets/img/662e39c23cc16.png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `minuman`
+--
+
+CREATE TABLE `minuman` (
+  `id` int(10) NOT NULL,
+  `minuman` varchar(50) NOT NULL,
+  `harga` bigint(20) NOT NULL,
+  `gambar` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `minuman`
+--
+
+INSERT INTO `minuman` (`id`, `minuman`, `harga`, `gambar`) VALUES
+(2, 'Josua', 5000, 'WzjNhP0K2c.');
 
 -- --------------------------------------------------------
 
@@ -155,6 +179,12 @@ ALTER TABLE `menu`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `minuman`
+--
+ALTER TABLE `minuman`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `penjualan`
 --
 ALTER TABLE `penjualan`
@@ -186,7 +216,13 @@ ALTER TABLE `detail_menu`
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT for table `minuman`
+--
+ALTER TABLE `minuman`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `penjualan`
