@@ -48,6 +48,59 @@ $conn->close();
                         <td><button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#modalEdit<?= $key ?>">Edit</button>
                         <button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#modalHapus<?= $key ?>">Hapus</button></td>
                       </tr>
+                          
+                      <!-- Modal Edit -->
+                      <div class="modal fade" id="modalEdit<?= $key ?>" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="modal-title fs-5" id="editMenuLabel">Edit Menu</h1>
+                              <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
+                            </div>
+                            <div class="modal-body">
+                            <form action="controllers/minumanController.php?action=edit&id='.$row['id'].'" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
+                              
+                              <div>
+                                <label for="minuman" class="form-label">Nama Minuman</label>
+                                <input value="'.$row['minuman'].'" type="text" placeholder="Minuman" autofocus name="minuman" class="form-control" autocomplete="off">
+                              </div>
+                              <div>
+                                <label for="harga" class="form-label">Harga</label>
+                                <input value="'.$row['harga'].'" type="text" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
+                              </div>
+                              <div>
+                                <label for="gambar" class="form-label">Nama Menu</label>
+                                <input value="'.$row['gambar'].'" type="file" placeholder="Gambar" autofocus name="gambar" class="form-control">
+                              </div>
+                              <div class="modal-footer">
+                              <button type="submit" name="submit" class="btn btn-warning">Submit</button>
+                              </div>
+                            </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <!-- Modal Hapus -->
+                      <div class="modal fade" id="modalHapus<?= $key ?>" tabindex="-1" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
+                          </div>
+                          <div class="modal-body">
+                            <p>Anda yakin ingin menghapus ?</p>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <a class="btn btn-danger" href="controllers/minumanController.php?action=delete&id='.$row['id'].'">Hapus</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
                       <?php endforeach; ?>
                     </tbody>
                   </table>
@@ -93,5 +146,8 @@ $conn->close();
   </div>
 </div>
 <!-- end modal Stock -->
+
+
+
 
 <?php require 'partials/footer.php'; ?>

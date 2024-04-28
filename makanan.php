@@ -98,7 +98,7 @@ $conn->close();
                                   <p>Anda yakin ingin menghapus ?</p>
                                 </div>
                                 <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                   <a class="btn btn-danger" href="controllers/makananController.php?action=delete&id='.$row['id'].'">Hapus</a>
                                 </div>
                               </div>
