@@ -32,8 +32,8 @@
           </div>
           <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
           <div class="modal-footer">
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            <a class="btn btn-primary" href="controllers/logout.php">Logout</a>
+            <button class="btn btn-danger" type="button" data-dismiss="modal">Cancel</button>
+            <a class="btn btn-success" href="controllers/logout.php">Logout</a>
           </div>
         </div>
       </div>
@@ -42,7 +42,7 @@
 
     <!-- Modal Tambah Menu-->
     
-<div class="modal fade" id="modalMenu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="modalMenu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -50,7 +50,6 @@
         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">x</button>
       </div>
       <div class="modal-body">
-        <!-- Add your content here -->
         <form action="controllers/menuController.php?action=add" method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="nama" class="form-label">Nama Menu</label>
@@ -74,7 +73,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 <!-- end modal Menu -->
 
 

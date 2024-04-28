@@ -20,7 +20,7 @@ function generateRandomString($length = 10) {
 switch ($action) {
     case 'add':
         if(isset($_POST['submit'])){
-            $nama_menu = $_POST['nama_menu'];
+            $minuman = $_POST['minuman'];
             $harga = $_POST['harga'];
 
             /* tambah foto */
@@ -32,40 +32,40 @@ switch ($action) {
             $random_name = generateRandomString(10);
             $new_gambar = $random_name . "." . $gambarFileType;
 
-            // $sql = "INSERT INTO menu (nama_menu, harga, gambar) VALUES ('$nama_menu', '$harga', '$new_gambar')";
+            $sql = "INSERT INTO minuman (minuman, harga, gambar) VALUES ('$minuman', '$harga', '$new_gambar')";
 
-            // echo json_encode($_POST);
-            echo $target_dir. "<br>";
-            echo $new_gambar. "<br>";
-            echo $target_file. "<br>";
-            echo $gambarFileType. "<br>";
-            echo $size_gambar. "<br>";
+            // echo json_encode($_FILES);
+            // echo $target_dir. "<br>";
+            // echo $new_gambar. "<br>";
+            // echo $target_file. "<br>";
+            // echo $gambarFileType. "<br>";
+            // echo $size_gambar. "<br>";
 
-            // try {
-            //     if($gambar == null){
-            //         if($size_gambar > 5000000){
-            //             echo '<div class="alert alert-warning mt-2 text-center" role="alert">
-            //                 Ukuran gambar terlalu besar dari 5mb
-            //             </div>';
-            //         }else{
-            //             if($gambarFileType != "jpg" && $gambarFileType != "png" && $gambarFileType != "jpeg" && $gambarFileType != "gif"){
-            //                 echo '<div class="alert alert-warning mt-2 text-center" role="alert">
-            //                 file tidak disupport!!
-            //             </div>';
-            //         }else{
-            //             move_uploaded_file($_FILES['gambar']['tmp_name'], $target_dir . $new_gambar);
-            //         }
-            //     }
-            // }
-            //     $result = $conn->query($sql);
-            //     $_SESSION['success-alert'] = 'Berhasil menambah menu';
-            //     header("Location: " . $_SERVER['HTTP_REFERER']);
-            //     exit();
-            // }catch(PDOException $e){
-            // $_SESSION['failed-alert'] = 'Gagal menambah menu';
-            // header("Location: " . $_SERVER['HTTP_REFERER']);
-            // exit();
-            // }
+            try {
+                if($gambar == null){
+                    if($size_gambar > 5000000){
+                        echo '<div class="alert alert-warning mt-2 text-center" role="alert">
+                            Ukuran gambar terlalu besar dari 5mb
+                        </div>';
+                    }else{
+                        if($gambarFileType != "jpg" && $gambarFileType != "png" && $gambarFileType != "jpeg" && $gambarFileType != "gif"){
+                            echo '<div class="alert alert-warning mt-2 text-center" role="alert">
+                            file tidak disupport!!
+                        </div>';
+                    }else{
+                        move_uploaded_file($_FILES['gambar']['tmp_name'], $target_dir . $new_gambar);
+                    }
+                }
+            }
+                $result = $conn->query($sql);
+                $_SESSION['success-alert'] = 'Berhasil menambah minuman';
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit();
+            }catch(PDOException $e){
+            $_SESSION['failed-alert'] = 'Gagal menambah minuman';
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit();
+            }
         }
             $conn->close();
             break;
@@ -75,7 +75,7 @@ switch ($action) {
 
             $id = $_REQUEST['id'];
 
-            $nama_menu = $_POST['nama_menu'];
+            $minuman = $_POST['minuman'];
             $harga = $_POST['harga'];
 
             /* edit foto */
@@ -87,7 +87,7 @@ switch ($action) {
             $random_name = generateRandomString(10);
             $new_gambar = $random_name . "." . $gambarFileType;
 
-            $sql = "UPDATE menu SET nama_menu = '$nama_menu', harga = '$harga', gambar = '$gambar' WHERE id = '$id'";
+            $sql = "UPDATE minuman SET minuman = '$minuman', harga = '$harga', gambar = '$gambar' WHERE id = '$id'";
 
             // echo json_encode($_POST);
 
@@ -108,12 +108,12 @@ switch ($action) {
                 }
             }
                 $result = $conn->query($sql);
-                $_SESSION['success-alert'] = 'Berhasil merubah menu';
+                $_SESSION['success-alert'] = 'Berhasil merubah minuman';
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit();
 
             }catch(PDOException $e){
-            $_SESSION['failed-alert'] = 'Gagal merubah menu';
+            $_SESSION['failed-alert'] = 'Gagal merubah minuman';
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
             }
@@ -126,17 +126,17 @@ switch ($action) {
             case 'delete':
 
                 $id = $_GET['id'];
-                $sql = "DELETE FROM menu WHERE id = '$id'";
+                $sql = "DELETE FROM minuman WHERE id = '$id'";
 
                 try{
 
                 $result = $conn->query($sql);
-                $_SESSION['success-alert'] = 'Berhasil menghapus menu';
+                $_SESSION['success-alert'] = 'Berhasil menghapus minuman';
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit();
 
                 }catch(PDOException $e){
-                $_SESSION['failed-alert'] = 'Gagal menghapus menu';
+                $_SESSION['failed-alert'] = 'Gagal menghapus minuman';
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit();
 

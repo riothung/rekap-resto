@@ -74,15 +74,28 @@
         <div class="sidebar-heading">....</div>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item active">
+        <!-- <li class="nav-item active">
           <a class="nav-link" href="menu.php">
             <i class="fas fa-fw fa-store-alt"></i>
             <span>Menu</span></a>
+        </li> -->
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#menuPages" aria-expanded="true" aria-controls="collapsePages">
+            <i class="fas fa-fw fa-store-alt"></i>
+            <span>Menu</span>
+          </a>
+          <div id="menuPages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <a class="collapse-item" href="makanan.php">Makanan</a>
+              <a class="collapse-item" href="minuman.php">Minuman</a>
+            </div>
+          </div>
         </li>
 
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+          <a class="nav-link collapsed" href="stock.php" >
             <i class="fas fa-fw fa-boxes"></i>
             <span>Stock</span>
           </a>
@@ -115,20 +128,20 @@
         </li>
 
         <!-- Nav Item - Charts -->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="charts.html">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Charts</span></a
           >
-        </li>
+        </li> -->
 
         <!-- Nav Item - Tables -->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="tables.html">
             <i class="fas fa-fw fa-table"></i>
             <span>Tables</span></a
           >
-        </li>
+        </li> -->
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block" />
