@@ -16,6 +16,24 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
           <?php endif;?> -->
+          
+
+         
+          <!-- cart start -->
+
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Area Chart</h6>
+            </div>
+            <div class="card-body">
+                <div class="chart-area">
+                    <canvas id="myAreaChart"></canvas>
+                </div>
+                <hr>
+                Styling for the area chart can be found in the
+                <code>/js/demo/chart-area-demo.js</code> file.
+            </div>
+        </div>
 
 
 <?php require 'partials/footer.php'; ?>
