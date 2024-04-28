@@ -11,7 +11,7 @@ while ($row = $result->fetch_assoc()) {
 $conn->close();
 
 ?>
- 
+
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalMenu">
   + Makanan
