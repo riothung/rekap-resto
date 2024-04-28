@@ -38,9 +38,6 @@ $conn->close();
         <div class="row row-cols-sm-2 row-cols-md-4 g-4 ">
             <?php foreach($data as $key => $row): ?>
                 
-                <!-- <div class="menu-card" onclick="toggleDescription(menu)"></div>
-                <p class="card-text" class="description-full" id="menu">Deskripsi lengkap dari menu yang cukup panjang. Deskripsi ini akan muncul ketika tombol "Selengkapnya" ditekan.</p>
-                <button class="btn-more">Selengkapnya</button> -->
                 <?= '<div class="col">
                     <div class="card mt-3 border-danger">
                     <img src="assets/img/'.$row['gambar'].'" class="card-img-top" alt="...">
@@ -153,24 +150,6 @@ $conn->close();
   </div>
 </div>
 <!-- end modal Menu -->
-
-    <script>
-    function toggleDescription(menu) {
-    var description = document.getElementById(menu);
-    var shortDescription = description.previousElementSibling;
-    var btnMore = shortDescription.nextElementSibling;
-
-    if (description.style.display === "none") { 
-        description.style.display = "block";
-        btnMore.textContent = "Sembunyikan";
-    } else {
-        description.style.display = "none";
-        btnMore.textContent = "Selengkapnya";
-    }
-}
-
-    </script>
-
 
 <!-- /.container-fluid -->
 <?php require 'partials/footer.php'; ?>

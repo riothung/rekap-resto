@@ -58,7 +58,7 @@ $conn->close();
         <!-- End of Main Content -->
 
         <!-- Modal Tambah Stock-->
-    
+
 <div class="modal fade" id="modalBahan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
