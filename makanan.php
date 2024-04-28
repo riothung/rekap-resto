@@ -133,7 +133,7 @@ $conn->close();
 
             </div>
             <div class="mb-3">
-                <label for="gambar" class="form-label">Gambar Menu</label>
+                <label for="gambar" class="form-label">Gambar Menu</label> 
                 <input type="file" class="form-control" id="gambar" name="gambar">
             </div>
             
