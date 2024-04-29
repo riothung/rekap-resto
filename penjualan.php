@@ -2,7 +2,10 @@
 
 require './partials/header.php'; 
 
-$sql = "SELECT * FROM penjualan";
+$id_penjualan = isset($_REQUEST['id_penjualan']);
+
+$sql = "SELECT * FROM penjualan JOIN menu ON penjualan.id_menu = menu.id WHERE id_penjualan = '$id_penjualan'";
+// $sql = "SELECT penjualan.*, menu.* FROM penjualan JOIN menu ON penjualan.id_menu = menu.id WHERE penjualan.id_penjualan = '$id_penjualan'";
 $result = $conn->query($sql);
 $data = array(); // initialize an empty array to store the rows
 while ($row = $result->fetch_assoc()) {
@@ -26,8 +29,8 @@ $conn->close();
                       <tr>
                         <th>Tanggal</th>
                         <th>Menu</th>
-                        <th>Banyaknya</th>
                         <th>Shift</th>
+                        <th>Banyaknya</th>
                         <th>Total Harga</th>
                         <th>Action</th>
                       </tr>
@@ -36,8 +39,8 @@ $conn->close();
                       <tr>
                         <th>Tanggal</th>
                         <th>Menu</th>
-                        <th>Banyaknya</th>
                         <th>Shift</th>
+                        <th>Banyaknya</th>
                         <th>Total Harga</th>
                         <th>Action</th>
                       </tr>
@@ -45,10 +48,10 @@ $conn->close();
                     <tbody>
                         <?php foreach($data as $key => $row): ?>
                       <tr>
-                        <td><?= $row['nama_bahan']; ?></td>
-                        <td>Rp. <?= $row['harga']; ?></td>
-                        <td><?= $row['stok']; ?></td>
+                        <td><?= $row['tanggal']; ?></td>
+                        <td>Rp. <?= $row['nama_menu']; ?></td>
                         <td><?= $row['shift']; ?></td>
+                        <td><?= $row['jumlah_penjualan']; ?></td>
                         <td>Rp. <?= $row['total_harga']; ?></td>
                         <td><button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#modalEdit<?= $key; ?>">Edit</button>
                         <button type="button" class="btn btn-danger mb-2" data-toggle="modal" data-target="#modalHapus<?= $key; ?>">Hapus</button></td>
@@ -63,30 +66,38 @@ $conn->close();
                               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
                             </div>
                             <div class="modal-body">
-                            <form action="controllers/stockController.php?action=edit&id=<?=$row['id'];?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
+                            <form action="controllers/penjualanController.php?action=edit&id=<?=$row['id'];?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
                             <div>
-                                <label for="harga" class="form-label">Tanggal</label>
-                                <input value="<?=$row['harga'];?>" type="date" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
+                                <label for="tanggal" class="form-label">Tanggal</label>
+                                <input value="<?=$row['tanggal'];?>" type="date" placeholder="Tanggal" autofocus name="tanggal" class="form-control" autocomplete="off">
                               </div>
+
                               <div>
-                                <label for="harga" class="form-label">Menu</label>
-                                <input value="<?=$row['harga'];?>" type="text" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
+                                <label for="nama_menu" class="form-label">Menu</label>
+                                <select name="id" class="form-control" id="nama_menu">
+                            <?php foreach($data as $key => $row): 
+                                echo '<option value="' . $row['id'] . '">' . $row['menu'] . '</option>';
+                            endforeach; ?>
+                            </select>
+                                
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="options" class="form-label">Shift</label>
+                                <select class="form-control" id="options" name="shift">
+                                    <option value="" disabled selected>Pilih Shift</option>
+                                    <option value="pagi">Pagi</option>
+                                    <option value="siang">Siang</option>
+                                    <option value="malam">Malam</option>
+                                </select>
                             </div>
                             <div>
-                                <label for="harga" class="form-label">Banyaknya</label>
-                                <input value="<?=$row['harga'];?>" type="number" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
+                                <label for="jumlah_penjualan" class="form-label">Banyaknya</label>
+                                <input value="<?=$row['jumlah_penjualan'];?>" type="number" placeholder="jumlah_penjualan" autofocus name="jumlah_penjualan" class="form-control" autocomplete="off">
                             </div>
-                                <div class="form-group">
-                                    <label for="options" class="form-label">Shift</label>
-                                    <select class="form-control" id="options" name="options">
-                                        <option value="pagi">Pagi</option>
-                                        <option value="siang">Siang</option>
-                                        <option value="malam">Malam</option>
-                                    </select>
-                                </div>
                               <div>
-                                <label for="harga" class="form-label">Total Harga</label>
-                                <input value="<?=$row['harga'];?>" type="text" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
+                                <label for="total_harga" class="form-label">Total Harga</label>
+                                <input value="<?=$row['total_harga'];?>" type="text" placeholder="total_harga" autofocus name="total_harga" class="form-control" autocomplete="off">
                               </div>
                               <div class="modal-footer">
                               <button type="submit" name="submit" class="btn btn-warning">Submit</button>
@@ -96,7 +107,6 @@ $conn->close();
                           </div>
                         </div>
                       </div>
-
 
                       <!-- Modal Hapus -->
                       <div class="modal fade" id="modalHapus<?= $key ?>" tabindex="-1" aria-hidden="true">
@@ -110,12 +120,11 @@ $conn->close();
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <a class="btn btn-danger" href="controllers/stockController.php?action=delete&id=<?=$row['id'];?>">Hapus</a>
+                            <a class="btn btn-danger" href="controllers/penjualanController.php?action=delete&id=<?=$row['id'];?>">Hapus</a>
                           </div>
                         </div>
                       </div>
                     </div>
-
 
                       <?php endforeach; ?>
                     </tbody>
@@ -137,30 +146,41 @@ $conn->close();
       </div>
       <div class="modal-body">
         <!-- Add your content here -->
-        <form action="controllers/stockController.php?action=edit&id=<?=$row['id'];?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">             
+        <form action="controllers/penjualanController.php?action=edit&id=<?=$row['id'];?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">             
         <div>
-            <label for="harga" class="form-label">Tanggal</label>
-            <input value="<?=$row['harga'];?>" type="date" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
+            <label for="tanggal" class="form-label">Tanggal</label>
+            <input value="<?=$row['tanggal'];?>" type="date" placeholder="tanggal" autofocus name="tanggal" class="form-control" autocomplete="off">
         </div>
+        
         <div>
-            <label for="harga" class="form-label">Menu</label>
-            <input value="<?=$row['harga'];?>" type="text" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
+            <label for="nama_menu" class="form-label">Menu</label>
+            <select name="id" class="form-control" id="nama_menu">
+        <?php foreach($data as $key => $row): 
+            echo '<option value="' . $row['id'] . '">' . $row['menu'] . '</option>';
+        endforeach; ?>
+        </select>
+            
         </div>
-        <div>
-            <label for="harga" class="form-label">Banyaknya</label>
-            <input value="<?=$row['harga'];?>" type="number" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
-        </div>
+
         <div class="form-group">
             <label for="options" class="form-label">Shift</label>
-            <select class="form-control" id="options" name="options">
+            <select class="form-control" id="options" name="shift">
+                <option value="" disabled selected>Pilih Shift</option>
                 <option value="pagi">Pagi</option>
                 <option value="siang">Siang</option>
                 <option value="malam">Malam</option>
             </select>
         </div>
         <div>
-            <label for="harga" class="form-label">Total Harga</label>
-            <input value="<?=$row['harga'];?>" type="text" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
+            <label for="jumlah_penjualan" class="form-label">Banyaknya</label>
+            <input value="<?=$row['jumlah_penjualan'];?>" type="number" placeholder="" autofocus name="jumlah_penjualan" class="form-control" autocomplete="off">
+        </div>
+        <div>
+            <!-- <?php
+            $sqlTotal = "SELECT jumlah_penjualan * $row[harga] as total_harga FROM penjualan WHERE id_penjualan = $row[id_penjualan]";
+            ?> -->
+            <label for="total_harga" class="form-label">Total Harga</label>
+            <input value="<?=$row['total_harga'];?>" type="text" placeholder="total_harga" autofocus name="total_harga" class="form-control" autocomplete="off">
             </div>
             <div class="modal-footer">
             <button type="submit" name="submit" class="btn btn-warning">Submit</button>
@@ -173,7 +193,7 @@ $conn->close();
     </div>
   </div>
 </div>
-<!-- end modal Stock -->
+<!-- end modal penjualanStock -->
 
 
 <?php require 'partials/footer.php'; ?>
