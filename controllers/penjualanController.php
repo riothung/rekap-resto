@@ -12,11 +12,11 @@ $conn = OpenCon();
 switch ($action) {
     case 'add':
         if(isset($_POST['submit'])){
-            $tanggal = $_POST['nama_bahan'];
-            $harga = $_POST['harga'];
-            $stok = $_POST['stok'];
+            $tanggal = $_POST['tanggal'];
+            $shift = $_POST['shift'];
+            $jumlah_penjualan = $_POST['jumlah_penjualan'];
 
-            $sql = "INSERT INTO bahan (nama_bahan, harga, stok) VALUES ('$tanggal', '$harga', '$stok')";
+            $sql = "INSERT INTO bahan (tanggal, shift, jumlah_penjualan) VALUES ('$tanggal', '$shift', '$jumlah_penjualan')";
 
             try {
                 $result = $conn->query($sql);
@@ -35,13 +35,12 @@ switch ($action) {
         case 'edit':
             if(isset($_POST['submit'])){
 
-            $id = $_REQUEST['id'];                
-            
-            $tanggal = $_POST['nama_bahan'];
-            $harga = $_POST['harga'];
-            $stok = $_POST['stok'];
+            $id_penjualan = $_REQUEST['id_penjualan'];                
+            $shift = $_POST['shift'];
+            $tanggal = $_POST['tanggal'];
+            $jumlah_penjualan = $_POST['jumlah_penjualan'];
 
-            $sql = "UPDATE bahan SET nama_bahan = '$tanggal', harga = '$harga', stok = '$stok' WHERE id = '$id'";
+            $sql = "UPDATE bahan SET tanggal   = '$tanggal', shift = '$shift', jumlah_penjualan = '$jumlah_penjualan' WHERE id_penjualan = '$id_penjualan'";
 
             // echo json_encode($_POST);
 
@@ -61,13 +60,12 @@ switch ($action) {
 
             case 'delete':
 
-                $id = $_REQUEST['id'];
+                $id_penjualan = $_REQUEST['id_penjualan'];
+                $shift = $_POST['shift'];
+                $tanggal = $_POST['tanggal'];
+                $jumlah_penjualan = $_POST['jumlah_penjualan'];
                 
-                $tanggal = $_POST['nama_bahan'];
-                $harga = $_POST['harga'];
-                $stok = $_POST['stok'];
-                
-                $sql = "DELETE FROM bahan WHERE id = '$id'";
+                $sql = "DELETE FROM bahan WHERE id_penjualan = '$id_penjualan'";
 
                 try{
                     $result = $conn->query($sql);
