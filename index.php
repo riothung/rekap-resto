@@ -17,8 +17,6 @@
           </div>
           <?php endif;?> -->
           
-
-         
           <!-- cart start -->
 
           <div class="card shadow mb-4">

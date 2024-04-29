@@ -121,8 +121,6 @@ switch ($action) {
             $conn->close();
             break;
 
-
-
             case 'delete':
 
                 $id = $_GET['id'];
