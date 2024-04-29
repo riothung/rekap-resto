@@ -56,8 +56,6 @@ switch ($action) {
             $conn->close();
             break;
 
-
-
             case 'delete':
                 
                 $nama_bahan = $_POST['nama_bahan'];
