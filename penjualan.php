@@ -68,6 +68,14 @@ $conn->close();
                                 <label for="harga" class="form-label">Tanggal</label>
                                 <input value="<?=$row['harga'];?>" type="date" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
                               </div>
+                              <div>
+                                <label for="harga" class="form-label">Menu</label>
+                                <input value="<?=$row['harga'];?>" type="text" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
+                            </div>
+                            <div>
+                                <label for="harga" class="form-label">Banyaknya</label>
+                                <input value="<?=$row['harga'];?>" type="number" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
+                            </div>
                                 <div class="form-group">
                                     <label for="options" class="form-label">Shift</label>
                                     <select class="form-control" id="options" name="options">
@@ -133,6 +141,14 @@ $conn->close();
         <div>
             <label for="harga" class="form-label">Tanggal</label>
             <input value="<?=$row['harga'];?>" type="date" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
+        </div>
+        <div>
+            <label for="harga" class="form-label">Menu</label>
+            <input value="<?=$row['harga'];?>" type="text" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
+        </div>
+        <div>
+            <label for="harga" class="form-label">Banyaknya</label>
+            <input value="<?=$row['harga'];?>" type="number" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
         </div>
         <div class="form-group">
             <label for="options" class="form-label">Shift</label>
