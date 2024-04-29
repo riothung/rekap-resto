@@ -22,7 +22,7 @@
 
 </head>
 
-<body class="bg-gradient-danger">
+<body class="bg-gradient-warning">
 
     <div class="container">
 
