@@ -109,7 +109,7 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-          <a class="nav-link collapsed" href="#" >
+          <a class="nav-link collapsed" href="penjualan.php" >
             <i class="fas fa-fw fa-dollar-sign"></i>
             <span>Penjualan</span>
           </a>
