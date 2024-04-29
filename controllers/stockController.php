@@ -34,6 +34,9 @@ switch ($action) {
 
         case 'edit':
             if(isset($_POST['submit'])){
+
+            $id = $_REQUEST['id'];                
+            
             $nama_bahan = $_POST['nama_bahan'];
             $harga = $_POST['harga'];
             $stok = $_POST['stok'];
@@ -57,6 +60,8 @@ switch ($action) {
             break;
 
             case 'delete':
+
+                $id = $_REQUEST['id'];
                 
                 $nama_bahan = $_POST['nama_bahan'];
                 $harga = $_POST['harga'];
