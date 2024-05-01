@@ -131,7 +131,7 @@ if ($result_menu->num_rows > 0) {
                               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
                             </div>
                             <div class="modal-body">
-                            <form action="controllers/penjualanController.php?action=edit&id=<?=$row['id'];?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
+                            <form action="controllers/penjualanController.php?action=edit&id=<?=$row['id_penjualan'];?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
                             <div>
                                 <label for="tanggal" class="form-label">Tanggal</label>
                                 <input value="<?=$row['tanggal'];?>" type="date" placeholder="Tanggal" autofocus name="tanggal" class="form-control" autocomplete="off">
@@ -185,7 +185,7 @@ if ($result_menu->num_rows > 0) {
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <a class="btn btn-danger" href="controllers/minumanController.php?action=delete&id='.$row['id'].'">Hapus</a>
+                            <a class="btn btn-danger" href="controllers/penjualanController.php?action=delete&id=<?=$row['id_penjualan'];?>">Hapus</a>
                           </div>
                         </div>
                       </div>
