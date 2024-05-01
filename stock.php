@@ -133,7 +133,7 @@ $conn->close();
             </div>
             <div class="mb-3">
                 <label for="stok" class="form-label">Sisa Stok</label>
-                <input type="number" class="form-control" id="stok" name="stok">
+                <input type="number" class="form-control" id="stok" name="stok" required>
             </div>
             
             <button type="submit" name="submit" class="btn btn-primary">Submit</button>
