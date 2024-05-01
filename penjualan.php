@@ -131,7 +131,7 @@ if ($result_menu->num_rows > 0) {
                               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
                             </div>
                             <div class="modal-body">
-                            <form action="controllers/penjualanController.php?action=edit&id=<?=$row['id_penjualan'];?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
+                            <form action="controllers/penjualanController.php?action=edit&id_penjualan=<?=$row['id_penjualan'];?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
                             <div>
                                 <label for="tanggal" class="form-label">Tanggal</label>
                                 <input value="<?=$row['tanggal'];?>" type="date" placeholder="Tanggal" autofocus name="tanggal" class="form-control" autocomplete="off">
@@ -149,7 +149,7 @@ if ($result_menu->num_rows > 0) {
                             <div class="form-group">
                               <label for="options" class="form-label">Shift</label>
                               <select class="form-control" id="options" name="shift">
-                                  <option value="" <?= ($row['shift'] == '') ? 'selected' : ''; ?>>Pilih Shift</option>
+                                  <option value="" disabled selected>Pilih Shift</option>
                                   <option value="pagi" <?= ($row['shift'] == 'pagi') ? 'selected' : ''; ?>>Pagi</option>
                                   <option value="siang" <?= ($row['shift'] == 'siang') ? 'selected' : ''; ?>>Siang</option>
                                   <option value="malam" <?= ($row['shift'] == 'malam') ? 'selected' : ''; ?>>Malam</option>
@@ -185,7 +185,7 @@ if ($result_menu->num_rows > 0) {
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <a class="btn btn-danger" href="controllers/penjualanController.php?action=delete&id=<?=$row['id_penjualan'];?>">Hapus</a>
+                            <a class="btn btn-danger" href="controllers/penjualanController.php?action=delete&id_penjualan=<?=$row['id_penjualan'];?>">Hapus</a>
                           </div>
                         </div>
                       </div>
@@ -260,7 +260,7 @@ if ($result_menu->num_rows > 0) {
 
 <?php require 'partials/footer.php'; ?>
 
-<script>
+<!-- <script>
     $(document).ready(function() {
         $('.btn-delete').click(function() {
             var idPenjualan = $(this).data('id');
@@ -315,4 +315,4 @@ if ($result_menu->num_rows > 0) {
     });
 });
 
-</script>
+</script> -->
