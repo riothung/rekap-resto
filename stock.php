@@ -16,6 +16,24 @@ $conn->close();
 <button type="button" class="btn btn-danger mb-4" data-toggle="modal" data-target="#modalBahan">
   + Bahan
 </button>
+
+<!-- Alert -->
+<?php if(isset($_SESSION['success-alert'])):?> 
+          <div class="alert alert-success alert-dismissible fade show mt-2 w-50" role="alert">
+            <i class="fa fa-check-circle me-1"></i>
+            <?= $_SESSION['success-alert']; unset($_SESSION['success-alert'])?>
+            <button type="button" class="btn btn-seconday" data-dismiss="alert" aria-label="Close" style="border-radius: 6px;">X</button>
+          </div>
+          <?php endif;?>
+          <?php if(isset($_SESSION['failed-alert'])):?>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fa fa-exclamation-octagon me-1"></i>
+            <?= $_SESSION['failed-alert']; unset($_SESSION['failed-alert'])?>
+            <button type="button" class="btn btn-seconday" data-dismiss="alert" aria-label="Close" style="border-radius: 6px;">X</button>
+          </div>
+          <?php endif;?>
+<!-- End Alert -->
+
             <div class="card shadow mb-4">
               <div class="card-header py-3">
                 <h4 class="m-0 font-weight-bold text-danger">Sisa Bahan</h4>
