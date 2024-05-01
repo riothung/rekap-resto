@@ -165,7 +165,7 @@ if ($result_menu->num_rows > 0) {
                               </div>
                               <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-warning btn-confirm-edit">Submit</button>
+                              <button type="submit" name="submit" class="btn btn-warning btn-confirm-edit">Submit</button>
                               </div>
                             </form>
                             </div>
@@ -184,8 +184,8 @@ if ($result_menu->num_rows > 0) {
                             <p>Anda yakin ingin menghapus ?</p>
                           </div>
                           <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-danger btn-confirm-delete">Hapus</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <a class="btn btn-danger" href="controllers/minumanController.php?action=delete&id='.$row['id'].'">Hapus</a>
                           </div>
                         </div>
                       </div>
