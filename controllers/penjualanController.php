@@ -13,8 +13,6 @@ switch ($action) {
     case 'add':
         if(isset($_POST['submit'])){
 
-
-
             $tanggal = $_POST['tanggal'];
             $id_menu = $_POST['id_menu'];
             $shift = $_POST['shift'];
@@ -41,16 +39,16 @@ switch ($action) {
             if(isset($_POST['submit'])){
             
             $id_penjualan = isset($_POST['id_penjualan']) ? $_POST['id_penjualan'] : null;
-            $id_penjualan = $_REQUEST['id_penjualan'];                
+            $id_penjualan = $_REQUEST['id_penjualan'];             
             $tanggal = $_POST['tanggal'];
             $id_menu = $_POST['id_menu'];
             $shift = $_POST['shift'];
             $jumlah_penjualan = $_POST['jumlah_penjualan'];
             $total_harga = $_POST['total_harga'];
 
-            $sql = "UPDATE penjualan SET tanggal   = '$tanggal', id_menu = '$id_menu', shift = '$shift', jumlah_penjualan = '$jumlah_penjualan', total_harga = '$total_harga' WHERE id_penjualan = '$id_penjualan'";
-
             // echo json_encode($_POST);
+
+            $sql = "UPDATE penjualan SET tanggal = '$tanggal', id_menu = '$id_menu', shift = '$shift', jumlah_penjualan = '$jumlah_penjualan', total_harga = '$total_harga' WHERE id_penjualan = '$id_penjualan'";
 
             try{
                 $result = $conn->query($sql);
