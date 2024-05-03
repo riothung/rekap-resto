@@ -146,7 +146,6 @@ if ($result_menu->num_rows > 0) {
                                         <option value="<?= $menu['id']; ?>"><?= $menu['nama_menu']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
-                                <!-- <input type="hidden" name="id_penjualan" value=""> -->
                             </div>
                             <div class="form-group">
                               <label for="options" class="form-label">Shift</label>
