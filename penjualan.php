@@ -66,6 +66,7 @@ if ($result_menu->num_rows > 0) {
 <button type="button" class="btn btn-danger mb-4" data-toggle="modal" data-target="#modalBahan">
   + Penjualan
 </button>
+
 <!-- Alert -->
 <?php if(isset($_SESSION['success-alert'])):?> 
           <div class="alert alert-success alert-dismissible fade show mt-2 w-50" role="alert">
@@ -82,6 +83,7 @@ if ($result_menu->num_rows > 0) {
           </div>
           <?php endif;?>
 <!-- End Alert -->
+
             <div class="card shadow mb-4">
               <div class="card-header py-3">
                 <h4 class="m-0 font-weight-bold text-danger">Penjualan</h4>
@@ -144,7 +146,6 @@ if ($result_menu->num_rows > 0) {
                                         <option value="<?= $menu['id']; ?>"><?= $menu['nama_menu']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
-                                <input type="hidden" name="id_penjualan" value="">
                             </div>
                             <div class="form-group">
                               <label for="options" class="form-label">Shift</label>
@@ -157,11 +158,11 @@ if ($result_menu->num_rows > 0) {
                           </div>
                             <div>
                                 <label for="jumlah_penjualan" class="form-label">Banyaknya</label>
-                                <input value="<?=$row['jumlah_penjualan'];?>" type="number" placeholder="jumlah_penjualan" autofocus name="jumlah_penjualan" class="form-control" autocomplete="off">
+                                <input value="<?=$row['jumlah_penjualan'];?>" type="number" placeholder="Banyaknya" autofocus name="jumlah_penjualan" class="form-control" autocomplete="off">
                             </div>
                               <div>
                                 <label for="total_harga" class="form-label">Total Harga</label>
-                                <input value="<?=$row['total_harga'];?>" type="number" placeholder="total_harga" autofocus name="total_harga" class="form-control" autocomplete="off">
+                                <input value="<?=$row['total_harga'];?>" type="number" placeholder="Total Harga" autofocus name="total_harga" class="form-control" autocomplete="off">
                               </div>
                               <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
