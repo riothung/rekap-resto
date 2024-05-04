@@ -14,7 +14,27 @@ foreach ($dataBahan as $bahan) {
     $totalBahan += $bahan['stok'];
 }
 
+$sqlMakanan = "SELECT * FROM menu";
+$resultMakanan = $conn->query($sqlMakanan);
+$dataMakanan = array();
+while($row = $resultMakanan->fetch_assoc()){
+    $dataMakanan[] = $row;
+}
 
+$sqlMinuman = "SELECT * FROM minuman";
+$resultMinuman = $conn->query($sqlMinuman);
+$dataMinuman = array();
+while($row = $resultMinuman->fetch_assoc()){
+    $dataMinuman[] = $row;
+}
+
+// $totalMakanan = 0; 
+// foreach($dataMakanan as $makanan){
+    //     $totalMakanan = $makanan['nama_menu'];
+    // }
+    
+    $id = isset($_GET['id']) ? $_GET['id'] : $dataMakanan[0]['id'];
+    $id = isset($_GET['id']) ? $_GET['id'] : $dataMinuman[0]['id'];
 // $row['stok'] = $stok;
 
 // $id = isset($_GET['id']) ? $_GET['id'] : $totalBahan[0]['id'];
@@ -63,8 +83,8 @@ foreach ($dataBahan as $bahan) {
               <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                      Total ...</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                      Total Makanan</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($dataMakanan) ?></div>
                   </div>
                   <div class="col-auto">
                       <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -80,8 +100,8 @@ foreach ($dataBahan as $bahan) {
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                    Total ...</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                    Total Minuman</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($dataMinuman) ?></div>
                 </div>
                 <div class="col-auto">
                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
