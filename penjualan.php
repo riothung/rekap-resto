@@ -57,6 +57,8 @@ if ($result_menu->num_rows > 0) {
 //     echo '<option value="">Data menu tidak tersedia.</option>';
 // }
 
+// $sqlTotalHarga = "SELECT SUM(CASE WHEN ) AS total_harga FROM penjualan";
+
 ?>
 
 <!-- <?php print_r($menu_data); ?> -->
