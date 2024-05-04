@@ -1,4 +1,16 @@
-<?php require 'partials/header.php'; ?>
+<?php require 'partials/header.php'; 
+
+$sqlBahan = "SELECT * FROM bahan";
+$resultBahan = $conn->query($sqlBahan);
+$dataBahan = array();
+while($row = $resultBahan->fetch_assoc()){
+    $dataBahan = $row;
+}
+
+$id = isset($_GET['id']) ? $_GET['id'] : $dataBahan[0]['id'];
+
+
+?>
 
         <!-- <div class="col-lg-12">
           <div class="row">
