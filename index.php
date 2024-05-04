@@ -4,11 +4,20 @@ $sqlBahan = "SELECT * FROM bahan";
 $resultBahan = $conn->query($sqlBahan);
 $dataBahan = array();
 while($row = $resultBahan->fetch_assoc()){
-    $dataBahan = $row;
+    // Simpan setiap baris ke dalam array $dataBahan
+    $dataBahan[] = $row;
+} 
+
+$totalBahan = 0; // Inisialisasi total stok
+foreach ($dataBahan as $bahan) {
+    // Tambahkan nilai stok dari setiap baris ke total$totalBahan
+    $totalBahan += $bahan['stok'];
 }
 
-// $id = isset($_GET['id']) ? $_GET['id'] : $dataBahan[0]['id'];
 
+// $row['stok'] = $stok;
+
+// $id = isset($_GET['id']) ? $_GET['id'] : $totalBahan[0]['id'];
 
 ?>
 
@@ -37,12 +46,12 @@ while($row = $resultBahan->fetch_assoc()){
               <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                          Total ...</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                          Total Bahan</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $totalBahan ?></div>
                   </div>
-                  <div class="col-auto">
+                  <!-- <div class="col-auto">
                     <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                </div>
+                </div> -->
               </div>
           </div>
       </div>
