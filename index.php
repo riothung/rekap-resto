@@ -7,7 +7,7 @@ while($row = $resultBahan->fetch_assoc()){
     $dataBahan = $row;
 }
 
-$id = isset($_GET['id']) ? $_GET['id'] : $dataBahan[0]['id'];
+// $id = isset($_GET['id']) ? $_GET['id'] : $dataBahan[0]['id'];
 
 
 ?>
