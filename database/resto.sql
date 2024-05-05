@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 28, 2024 at 02:34 PM
+-- Generation Time: May 05, 2024 at 04:07 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,10 +39,12 @@ CREATE TABLE `bahan` (
 --
 
 INSERT INTO `bahan` (`id`, `nama_bahan`, `harga`, `stok`) VALUES
-(1, 'ayam', 0, 5),
+(1, 'Ayam', 70000, 5),
 (2, 'bihun', 0, 7),
 (3, 'beras', 0, 10),
-(4, 'telur', 0, 25);
+(5, 'Masako', 5000, 5),
+(6, 'Garam', 5000, 2),
+(7, 'Bawang', 5000, 2);
 
 -- --------------------------------------------------------
 
@@ -66,6 +68,32 @@ INSERT INTO `detail_menu` (`id_menu`, `id_bahan`, `id`, `kebutuhan`) VALUES
 (2, 2, 2, 0),
 (2, 1, 3, 0),
 (2, 3, 4, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `detail_penjualan`
+--
+
+CREATE TABLE `detail_penjualan` (
+  `id` int(20) NOT NULL,
+  `id_penjualan` int(20) NOT NULL,
+  `id_menu` int(20) NOT NULL,
+  `amount` int(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `detail_penjualan`
+--
+
+INSERT INTO `detail_penjualan` (`id`, `id_penjualan`, `id_menu`, `amount`) VALUES
+(25, 0, 13, 1),
+(26, 0, 15, 1),
+(27, 0, 15, 1),
+(28, 22, 11, 1),
+(29, 23, 11, 1),
+(30, 23, 13, 1),
+(31, 23, 14, 1);
 
 -- --------------------------------------------------------
 
@@ -124,15 +152,21 @@ CREATE TABLE `penjualan` (
   `id_penjualan` int(11) NOT NULL,
   `tanggal` date NOT NULL,
   `id_menu` int(50) NOT NULL,
-  `jumlah_penjualan` int(20) NOT NULL
+  `shift` varchar(15) NOT NULL,
+  `jumlah_penjualan` int(20) NOT NULL,
+  `total_harga` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `penjualan`
 --
 
-INSERT INTO `penjualan` (`id_penjualan`, `tanggal`, `id_menu`, `jumlah_penjualan`) VALUES
-(1, '2024-04-02', 2, 3);
+INSERT INTO `penjualan` (`id_penjualan`, `tanggal`, `id_menu`, `shift`, `jumlah_penjualan`, `total_harga`) VALUES
+(19, '2019-11-29', 0, 'siang', 1, 5),
+(20, '2019-09-26', 0, 'siang', 1, 3),
+(21, '2019-09-26', 0, 'siang', 1, 3),
+(22, '2018-09-27', 0, 'siang', 1, 1),
+(23, '2021-09-28', 0, 'pagi', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -173,6 +207,12 @@ ALTER TABLE `detail_menu`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `detail_penjualan`
+--
+ALTER TABLE `detail_penjualan`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `menu`
 --
 ALTER TABLE `menu`
@@ -204,13 +244,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `bahan`
 --
 ALTER TABLE `bahan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `detail_menu`
 --
 ALTER TABLE `detail_menu`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `detail_penjualan`
+--
+ALTER TABLE `detail_penjualan`
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `menu`
@@ -228,7 +274,7 @@ ALTER TABLE `minuman`
 -- AUTO_INCREMENT for table `penjualan`
 --
 ALTER TABLE `penjualan`
-  MODIFY `id_penjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_penjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `user`
