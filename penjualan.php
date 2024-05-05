@@ -119,8 +119,10 @@ if ($result_menu->num_rows > 0) {
                         <td><?= $row['shift']; ?></td>
                         <td><?= $row['jumlah_penjualan']; ?></td>
                         <td>Rp. <?= $row['total_harga']; ?></td>
-                        <td><button type="button" class="btn btn-warning mb-2 btn-edit" data-toggle="modal" data-target="#modalEdit<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Edit</button>
+                        <td><a href="detailPenjualan.php" class="btn btn-success mb-2 ">Detail</a>
+                        <button type="button" class="btn btn-warning mb-2 btn-edit" data-toggle="modal" data-target="#modalEdit<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Edit</button>
                         <button type="button" class="btn btn-danger mb-2 btn-delete" data-toggle="modal" data-target="#modalHapus<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Hapus</button>
+                        
                       </tr>
                   </tbody>
                           
