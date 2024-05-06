@@ -2,10 +2,7 @@
 
 require './partials/header.php'; 
 
-// $id_penjualan = isset($_REQUEST['id_penjualan']);
 
-// $sql = "SELECT * FROM penjualan JOIN menu ON penjualan.id_menu = menu.id WHERE id_penjualan = '$id_penjualan'";
-// $sql = "SELECT penjualan.*, menu.* FROM penjualan JOIN menu ON penjualan.id_menu = menu.id WHERE penjualan.id_penjualan = '$id_penjualan'";
 
 $id_penjualan = isset($_REQUEST['id_penjualan']) ? $_REQUEST['id_penjualan'] : null;
 $id_penjualan_escaped = mysqli_real_escape_string($conn, $id_penjualan);
@@ -20,13 +17,6 @@ while ($row = $result->fetch_assoc()) {
     $data[] = $row; // append each row to the data array
 }
 
-// $sql = "SELECT * FROM penjualan";
-// $result = $conn->query($sql);
-// $data = array(); // initialize an empty array to store the rows
-// while ($row = $result->fetch_assoc()) {
-//     $data[] = $row; // append each row to the data array
-// }
-// $conn->close();
 
 // Buat query untuk mendapatkan data menu
 $sql_menu = "SELECT * FROM menu";
@@ -44,20 +34,51 @@ if ($result_menu->num_rows > 0) {
     echo "Tidak ada data menu yang tersedia.";
 }
 
-// Periksa apakah ada data menu yang ditemukan sebelum melanjutkan
-// if (!empty($menu_data)) {
-//     // loop untuk membuat opsi menu dalam elemen <select> di modal tambah penjualan
-//     foreach ($menu_data as $menu_row) {
-//         echo '<option value="' . $menu_row['id'] . '">' . $menu_row['menu'] . '</option>';
-//     }
-// } else {
-//     // tidak ada data menu yang tersedia, tampilkan pesan kesalahan
-//     echo '<option value="">Data menu tidak tersedia.</option>';
-// }
 
-// $sqlTotalHarga = "SELECT SUM(CASE WHEN ) AS total_harga FROM penjualan";
+
+
+// Query SQL untuk mengambil data detail penjualan dari database
+$sql_detail_penjualan = "SELECT * FROM detail_penjualan";
+$result_detail_penjualan = $conn->query($sql_detail_penjualan);
+
+// Inisialisasi array untuk menyimpan data detail penjualan
+$detail_penjualan = array();
+
+// Periksa apakah query berhasil dieksekusi
+if ($result_detail_penjualan) {
+    // Ambil setiap baris data detail penjualan dan simpan dalam array
+    while ($row_detail = $result_detail_penjualan->fetch_assoc()) {
+        $detail_penjualan[] = $row_detail;
+    }
+} else {
+    // Jika query gagal, tampilkan pesan kesalahan
+    echo "Error: " . $sql_detail_penjualan . "<br>" . $conn->error;
+}
+// Fungsi untuk menghitung total harga berdasarkan id_penjualan
+function calculateTotalPrice($id_penjualan, $menu_data, $detail_penjualan) {
+    $totalHarga = 0;
+    foreach ($detail_penjualan as $detail) {
+        // Jika id_penjualan pada detail_penjualan sesuai dengan id_penjualan yang sedang diproses
+        if ($detail['id_penjualan'] == $id_penjualan) {
+            // Cari menu yang sesuai dengan id_menu pada detail_penjualan
+            $menu = array_values(array_filter($menu_data, function ($menu) use ($detail) {
+                return $menu['id'] == $detail['id_menu'];
+            }));
+            // Jika menu ditemukan, tambahkan harga menu dikalikan dengan jumlah penjualan ke total harga
+            if (!empty($menu)) {
+                $totalHarga += $menu[0]['harga'] * $detail['amount'];
+            }
+        }
+    }
+    return $totalHarga;
+}
+
+
 
 ?>
+
+
+
 
 <!-- <?php print_r($menu_data); ?> -->
 
@@ -96,7 +117,6 @@ if ($result_menu->num_rows > 0) {
                         <th>Tanggal</th>
                         <th>Total Menu</th>
                         <th>Shift</th>
-                        <th>Banyaknya</th>
                         <th>Total Harga</th>
                         <th>Action</th>
                       </tr>
@@ -106,7 +126,6 @@ if ($result_menu->num_rows > 0) {
                         <th>Tanggal</th>
                         <th>Total Menu</th>
                         <th>Shift</th>
-                        <th>Banyaknya</th>
                         <th>Total Harga</th>
                         <th>Action</th>
                       </tr>
@@ -117,8 +136,12 @@ if ($result_menu->num_rows > 0) {
                         <td><?= $row['tanggal']; ?></td>
                         <td><?= $row['total_menu']; ?></td>
                         <td><?= $row['shift']; ?></td>
-                        <td><?= $row['jumlah_penjualan']; ?></td>
-                        <td>Rp. <?= $row['total_harga']; ?></td>
+                        <td>  <?php 
+                                  // Ambil total harga dari fungsi yang dijelaskan sebelumnya
+                                  $totalHarga = calculateTotalPrice($row['id_penjualan'], $menu_data, $detail_penjualan);
+                                  echo "Rp. " . $totalHarga;
+                              ?> 
+                        </td>
                         <td><a href="detailPenjualan.php" class="btn btn-success mb-2 ">Detail</a>
                         <button type="button" class="btn btn-warning mb-2 btn-edit" data-toggle="modal" data-target="#modalEdit<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Edit</button>
                         <button type="button" class="btn btn-danger mb-2 btn-delete" data-toggle="modal" data-target="#modalHapus<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Hapus</button>
@@ -158,10 +181,6 @@ if ($result_menu->num_rows > 0) {
                                   <option value="malam" <?= ($row['shift'] == 'malam') ? 'selected' : ''; ?>>Malam</option>
                               </select>
                           </div>
-                            <div>
-                                <label for="jumlah_penjualan" class="form-label">Banyaknya</label>
-                                <input value="<?=$row['jumlah_penjualan'];?>" type="number" placeholder="Banyaknya" autofocus name="jumlah_penjualan" class="form-control" autocomplete="off">
-                            </div>
                               <div>
                                 <label for="total_harga" class="form-label">Total Harga</label>
                                 <input value="<?=$row['total_harga'];?>" type="number" placeholder="Total Harga" autofocus name="total_harga" class="form-control" autocomplete="off">
@@ -251,7 +270,7 @@ if ($result_menu->num_rows > 0) {
           </div> -->
           <div>
             <label for="total_harga" class="form-label">Total Harga</label>
-            <input type="number"  autofocus name="total harga" class="form-control" autocomplete="off" required id="total_hargaAdd">
+            <input type="number"  autofocus name="total harga" class="form-control" autocomplete="off" readonly  id="total_hargaAdd">
           </div>
           <div class="modal-footer">
             <button type="submit" name="submit" class="btn btn-warning">Submit</button>
@@ -300,6 +319,20 @@ function addItemToList() {
     }
 }
 
+// Fungsi untuk membuka modal tambah penjualan
+function openModal() {
+  
+    itemListData = [];
+    // Panggil fungsi untuk mengosongkan item list
+    clearItemList();
+    // Buka modal
+    $('#modalBahan').modal('show');
+
+}
+
+// Tambahkan event listener untuk menangani pembukaan modal
+$('#modalBahan').on('show.bs.modal', openModal);
+
 function renderListItem(item) {
     // Create list item element
     var listItem = document.createElement("li");
@@ -318,13 +351,22 @@ function renderListItem(item) {
     // Create buttons to adjust amount
     var increaseButton = document.createElement("button");
     increaseButton.textContent = "+";
+    increaseButton.classList.add("btn","btn-sm","btn-success","btn-circle", "ml-1")
+    increaseButton.id = "increaseButton"
     increaseButton.onclick = function() {
         item.amount++;
         amountSpan.textContent = item.amount;
     };
+     // Tambahkan event listener untuk mencegah perilaku default dari event "click"
+     increaseButton.addEventListener("click", function(event) {
+        event.preventDefault();
+    });
+
     listItem.appendChild(increaseButton);
 
     var decreaseButton = document.createElement("button");
+    decreaseButton.classList.add("btn","btn-sm","btn-danger","btn-circle", "ml-1")
+    decreaseButton.id = "decreaseButton"
     decreaseButton.textContent = "-";
     decreaseButton.onclick = function() {
         if (item.amount > 1) {
@@ -332,6 +374,9 @@ function renderListItem(item) {
             amountSpan.textContent = item.amount;
         }
     };
+    decreaseButton.addEventListener("click", function(event) {
+        event.preventDefault();
+    });
     listItem.appendChild(decreaseButton);
 
     // Append the list item to the list
@@ -339,6 +384,22 @@ function renderListItem(item) {
 }
 
 console.log(itemListData);
+
+// Fungsi untuk mengosongkan item list
+function clearItemList() {
+    // Dapatkan referensi ke elemen ul item list
+    var itemList = document.getElementById("itemList");
+    // Kosongkan elemen ul item list
+    itemList.innerHTML = "";
+
+     // Mengosongkan input tanggal
+    document.getElementById("tanggalAddForm").value = "";
+    // Mengosongkan input shift
+    document.getElementById("shiftAdd").selectedIndex = 0;
+}
+
+
+
 
 const formAdd = document.getElementById("formAdd");
 formAdd.addEventListener("submit", unSubmit); 
