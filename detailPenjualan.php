@@ -1,6 +1,33 @@
 <?php require 'partials/header.php'; 
 
+$id_penjualan = isset($_REQUEST['id_penjualan']) ? $_REQUEST['id_penjualan'] : null;
+$id_penjualan_escaped = mysqli_real_escape_string($conn, $id_penjualan);
+
+$id_menu = isset($_REQUEST['id_menu']) ? $_REQUEST['id_menu'] : null;
+$id_menu_escaped = mysqli_real_escape_string($conn, $id_menu);
+
+$sql_menu = "SELECT detail_penjualan.*, menu.nama_menu, penjualan.total_harga 
+             FROM detail_penjualan 
+             JOIN menu ON detail_penjualan.id_menu = menu.id 
+             JOIN penjualan ON detail_penjualan.id_penjualan = penjualan.id_penjualan
+             WHERE detail_penjualan.id_penjualan = '$id_penjualan'";
+
+$result_menu = $conn->query($sql_menu);
+$data = array(); // inisialisasi array kosong untuk menyimpan baris data menu
+while ($row = $result_menu->fetch_assoc()) {
+    $data[] = $row; // tambahkan setiap baris menu ke dalam array data menu
+}
+
+// Periksa apakah ada data menu yang ditemukan
+if ($result_menu->num_rows > 0) {
+    // data menu ditemukan, lanjutkan dengan menampilkan opsi menu dalam elemen <select>
+} else {
+    // tidak ada data menu yang ditemukan
+    echo "Tidak ada data menu yang tersedia.";
+}
+
 ?>
+
 <a href="penjualan.php"><i class="fas fa-arrow-left fa-2x text-danger"></i></a>
 <div class="bg-gradient-danger d-flex justify-content-center align m-4" style="height: 50px;">
     <h4 class="text-white justify-content-center p-2">Detail Penjualan</h4>
@@ -31,11 +58,12 @@
                     <tbody>
                         <?php foreach($data as $key => $row): ?>
                       <tr>
-                        <td><?= $row['total_menu']; ?></td>
-                        <td><?= $row['jumlah_penjualan']; ?></td>
+                        <td><?= $row['nama_menu']; ?></td>
+                        <td><?= $row['amount']; ?></td>
                         <td>Rp. <?= $row['total_harga']; ?></td>
                         <td><button type="button" class="btn btn-warning mb-2 btn-edit" data-toggle="modal" data-target="#modalEdit<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Edit</button>
                         <button type="button" class="btn btn-danger mb-2 btn-delete" data-toggle="modal" data-target="#modalHapus<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Hapus</button>
+                        </td>
                       </tr>
                   </tbody>
                           

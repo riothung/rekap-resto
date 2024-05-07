@@ -28,10 +28,8 @@ switch ($action) {
 
             // Prepare an array to store the result
             $result = array();
-            $sqlPenjualan = "INSERT INTO penjualan (tanggal, shift, jumlah_penjualan, total_harga) VALUES ('$tanggal', '$shift', 1, '$total_harga')";
+            $sqlPenjualan = "INSERT INTO penjualan (tanggal, shift, total_harga) VALUES ('$tanggal', '$shift', '$total_harga')";
 
-            
-            
             if ($conn->query($sqlPenjualan) === TRUE) {
                 $last_insert_id = $conn->insert_id;
                 foreach ($item as $item_data) {
@@ -68,27 +66,8 @@ switch ($action) {
 
             // Loop through each item in the array and insert it into the database
             
-
             // Encode result array as JSON and echo it
             echo json_encode($result);
-        
-        // break;
-
-
-
-            // $sql = "INSERT INTO detail_penjualan (id_penjualan, id_menu) VALUES ('$id_penjualan', '$id_menu')";
-            
-            // $sql = "INSERT INTO penjualan (tanggal, id_menu, shift, jumlah_penjualan, total_harga) VALUES ('$tanggal', '$id_menu', '$shift', '$jumlah_penjualan', '$total_harga')";
-            // try {
-            //     $result = $conn->query($sql);
-            //     $_SESSION['success-alert'] = 'Berhasil menambah data';
-            //     header("Location: " . $_SERVER['HTTP_REFERER']);
-            //     exit();
-            // }catch(PDOException $e){
-            //     $_SESSION['failed-alert'] = 'Gagal menambah data';
-            //     header("Location: " . $_SERVER['HTTP_REFERER']);
-            //     exit();
-            // }
         
             $conn->close();
             break;
