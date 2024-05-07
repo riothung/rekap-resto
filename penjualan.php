@@ -18,6 +18,7 @@ while ($row = $result->fetch_assoc()) {
 }
 
 
+
 // Buat query untuk mendapatkan data menu
 $sql_menu = "SELECT * FROM menu";
 $result_menu = $conn->query($sql_menu);
@@ -69,9 +70,19 @@ function calculateTotalPrice($id_penjualan, $menu_data, $detail_penjualan) {
                 $totalHarga += $menu[0]['harga'] * $detail['amount'];
             }
         }
+        
     }
+    
+    // Query SQL untuk mengupdate total harga pada tabel penjualan
+    $update_total_harga_query = "UPDATE penjualan SET total_harga = " . $totalHarga . " WHERE id_penjualan = " . $id_penjualan;
+    // echo "<script>location.reload(true);</script>";
+    // Eksekusi query untuk mengupdate total harga
+    global $conn; // tambahkan global $conn karena $conn tidak dapat diakses di dalam fungsi ini
+    $conn->query($update_total_harga_query);
+    
     return $totalHarga;
 }
+
 
 
 
@@ -142,9 +153,10 @@ function calculateTotalPrice($id_penjualan, $menu_data, $detail_penjualan) {
                                   echo "Rp. " . $totalHarga;
                               ?> 
                         </td>
-                        <td><a href="detailPenjualan.php" class="btn btn-success mb-2 ">Detail</a>
+                        <td><a href="detailPenjualan.php?id_penjualan=<?= $row['id_penjualan']; ?>" class="btn btn-success mb-2 ">Detail</a>
                         <button type="button" class="btn btn-warning mb-2 btn-edit" data-toggle="modal" data-target="#modalEdit<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Edit</button>
                         <button type="button" class="btn btn-danger mb-2 btn-delete" data-toggle="modal" data-target="#modalHapus<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Hapus</button>
+                        </td>
                         
                       </tr>
                   </tbody>
@@ -264,10 +276,6 @@ function calculateTotalPrice($id_penjualan, $menu_data, $detail_penjualan) {
               <option value="malam">Malam</option>
             </select>
           </div>
-          <!-- <div>
-            <label for="jumlah_penjualan" class="form-label">Banyaknya</label>
-            <input type="number" placeholder="" autofocus name="jumlah_penjualan" class="form-control" autocomplete="off" required id="jumlah_penjualanAdd">
-          </div> -->
           <div>
             <label for="total_harga" class="form-label">Total Harga</label>
             <input type="number"  autofocus name="total harga" class="form-control" autocomplete="off" readonly  id="total_hargaAdd">
