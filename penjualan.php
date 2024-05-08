@@ -170,6 +170,7 @@ function calculateTotalPrice($id_penjualan, $menu_data, $detail_penjualan) {
                               <h1 class="modal-title fs-5" id="editMenuLabel">Edit Penjualan</h1>
                               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
                             </div>
+
                             <div class="modal-body">
                             <form action="controllers/penjualanController.php?action=edit&id_penjualan=<?=$row['id_penjualan'];?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
                             <div>
@@ -177,14 +178,6 @@ function calculateTotalPrice($id_penjualan, $menu_data, $detail_penjualan) {
                                 <input value="<?=$row['tanggal'];?>" type="date" placeholder="Tanggal" autofocus name="tanggal" class="form-control" autocomplete="off">
                               </div>
 
-                              <div>
-                                <label for="nama_menu" class="form-label">Menu</label>
-                                <select name="id_menu" class="form-control" id="id_menu_edit">
-                                    <?php foreach($menu_data as $menu): ?>
-                                        <option value="<?= $menu['id']; ?>"><?= $menu['nama_menu']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
                             <div class="form-group">
                               <label for="options" class="form-label">Shift</label>
                               <select class="form-control" id="options" name="shift">
@@ -194,10 +187,7 @@ function calculateTotalPrice($id_penjualan, $menu_data, $detail_penjualan) {
                                   <option value="malam" <?= ($row['shift'] == 'malam') ? 'selected' : ''; ?>>Malam</option>
                               </select>
                           </div>
-                              <div>
-                                <label for="total_harga" class="form-label">Total Harga</label>
-                                <input value="<?=$row['total_harga'];?>" type="number" placeholder="Total Harga" autofocus name="total_harga" class="form-control" autocomplete="off">
-                              </div>
+
                               <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                               <button type="submit" name="submit" class="btn btn-warning btn-confirm-edit">Submit</button>
@@ -374,7 +364,7 @@ function renderListItem(item) {
     listItem.appendChild(increaseButton);
 
     var decreaseButton = document.createElement("button");
-    decreaseButton.classList.add("btn","btn-sm","btn-danger","btn-circle", "ml-1")
+    decreaseButton.classList.add("btn","btn-sm","btn-warning","btn-circle", "ml-1")
     decreaseButton.id = "decreaseButton"
     decreaseButton.textContent = "-";
     decreaseButton.onclick = function() {
@@ -387,6 +377,23 @@ function renderListItem(item) {
         event.preventDefault();
     });
     listItem.appendChild(decreaseButton);
+
+    // Create a button to remove the item
+    var removeButton = document.createElement("button");
+    removeButton.innerHTML = '<i class="fas fa-trash"></i>';
+    removeButton.classList.add("btn","btn-sm","btn-danger","btn-circle", "ml-1")
+    removeButton.onclick = function() {
+        // Hapus item dari array itemListData
+        itemListData = itemListData.filter(function(listItem) {
+            return listItem.id !== item.id;
+        });
+        // Hapus elemen list item dari DOM
+        listItem.remove();
+    };
+    removeButton.addEventListener("click", function(event) {
+        event.preventDefault();
+    });
+    listItem.appendChild(removeButton);
 
     // Append the list item to the list
     document.getElementById("itemList").appendChild(listItem);
