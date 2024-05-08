@@ -150,7 +150,8 @@ function calculateTotalPrice($id_penjualan, $menu_data, $detail_penjualan) {
                         <td>  <?php 
                                   // Ambil total harga dari fungsi yang dijelaskan sebelumnya
                                   $totalHarga = calculateTotalPrice($row['id_penjualan'], $menu_data, $detail_penjualan);
-                                  echo "Rp. " . $totalHarga;
+                                  echo "Rp. " . number_format($totalHarga, 0, ',', '.');
+                                 
                               ?> 
                         </td>
                         <td><a href="detailPenjualan.php?id_penjualan=<?= $row['id_penjualan']; ?>" class="btn btn-success mb-2 ">Detail</a>

@@ -61,7 +61,7 @@ $conn->close();
                         <?php foreach($data as $key => $row): ?>
                       <tr>
                         <td><?= $row['nama_bahan']; ?></td>
-                        <td>Rp. <?= $row['harga']; ?></td>
+                        <td>Rp. <?= number_format($row['harga'], 0, ',', '.'); ?></td>
                         <td><?= $row['stok']; ?></td>
                         <td><button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#modalEdit<?= $key; ?>">Edit</button>
                         <button type="button" class="btn btn-danger mb-2" data-toggle="modal" data-target="#modalHapus<?= $key; ?>">Hapus</button></td>

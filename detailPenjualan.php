@@ -25,6 +25,21 @@ if ($result_menu->num_rows > 0) {
     // tidak ada data menu yang ditemukan
     echo "Tidak ada data menu yang tersedia.";
 }
+$sql_menu_total = "SELECT detail_penjualan.*, menu.nama_menu, menu.harga, penjualan.total_harga AS total_penjualan 
+             FROM detail_penjualan 
+             JOIN menu ON detail_penjualan.id_menu = menu.id 
+             JOIN penjualan ON detail_penjualan.id_penjualan = penjualan.id_penjualan
+             WHERE detail_penjualan.id_penjualan = '$id_penjualan'";
+
+$result_menu_total = $conn->query($sql_menu_total); // Menggunakan $sql_menu_total
+$total_data = array(); // Inisialisasi array kosong untuk menyimpan baris data menu
+while ($row = $result_menu_total->fetch_assoc()) {
+    // Menambahkan kolom total harga untuk setiap item
+    $row['total_harga_item'] = $row['harga'] * $row['amount']; // Menggunakan 'total_penjualan' dari query
+    $total_data[] = $row; // tambahkan setiap baris menu ke dalam array data menu
+}
+
+
 
 ?>
 
@@ -56,11 +71,11 @@ if ($result_menu->num_rows > 0) {
                       </tr>
                     </tfoot>
                     <tbody>
-                        <?php foreach($data as $key => $row): ?>
+                        <?php foreach($total_data as $key => $row): ?>
                       <tr>
                         <td><?= $row['nama_menu']; ?></td>
                         <td><?= $row['amount']; ?></td>
-                        <td>Rp. <?= $row['total_harga']; ?></td>
+                        <td>Rp. <?= number_format($row['total_harga_item'], 0, ',', '.'); ?></td>
                         <td><button type="button" class="btn btn-warning mb-2 btn-edit" data-toggle="modal" data-target="#modalEdit<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Edit</button>
                         <button type="button" class="btn btn-danger mb-2 btn-delete" data-toggle="modal" data-target="#modalHapus<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Hapus</button>
                         </td>
