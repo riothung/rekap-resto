@@ -13,7 +13,7 @@ switch ($action) {
     case 'add':
 
         // echo json_encode($_POST);
-            $json_data = file_get_contents('php://input');
+        $json_data = file_get_contents('php://input');
 
         // Decode JSON data into PHP array
         $formData = json_decode($json_data, true);
@@ -74,46 +74,50 @@ switch ($action) {
 
         case 'edit':
             if(isset($_POST['submit'])){
-            
-            $id_penjualan = isset($_POST['id_penjualan']) ? $_POST['id_penjualan'] : null;
-            $id_penjualan = $_REQUEST['id_penjualan'];             
-            $tanggal = $_POST['tanggal'];
-            $id_menu = $_POST['id_menu'];
-            $shift = $_POST['shift'];
-            $jumlah_penjualan = $_POST['jumlah_penjualan'];
-            $total_harga = $_POST['total_harga'];
 
-            // echo json_encode($_POST);
-
-            $sql = "UPDATE penjualan SET tanggal = '$tanggal', id_menu = '$id_menu', shift = '$shift', jumlah_penjualan = '$jumlah_penjualan', total_harga = '$total_harga' WHERE id_penjualan = '$id_penjualan'";
-
-            try{
-                $result = $conn->query($sql);
-                $_SESSION['success-alert'] = 'Berhasil merubah data';
-                header("Location: " . $_SERVER['HTTP_REFERER']);
-                exit();
-            }catch(PDOException $e){
-                $_SESSION['failed-alert'] = 'Gagal merubah data';
-                header("Location: " . $_SERVER['HTTP_REFERER']);
-                exit();
+                $id_penjualan = isset($_POST['id_penjualan']) ? $_POST['id_penjualan'] : null;
+                $id_penjualan = $_REQUEST['id_penjualan'];
+                // // echo json_encode($_POST);
+                // $json_data = file_get_contents('php://input');
+                
+                // // Decode JSON data into PHP array
+                // $formData = json_decode($json_data, true);
+                
+                $tanggal = $_POST['tanggal'];
+                $shift = $_POST['shift'];
+                
+                echo json_encode($_POST);
+                
+                $sql = "UPDATE penjualan SET tanggal = '$tanggal', shift = '$shift' WHERE id_penjualan = '$id_penjualan'";
+                
+                try{
+                    $result = $conn->query($sql);
+                    $_SESSION['success-alert'] = 'Berhasil merubah data';
+                    header("Location: " . $_SERVER['HTTP_REFERER']);
+                    exit();
+                }catch(PDOException $e){
+                    $_SESSION['failed-alert'] = 'Gagal merubah data';
+                    header("Location: " . $_SERVER['HTTP_REFERER']);
+                    exit();
+                }
             }
-        }
-            $conn->close();
-            break;
+                
+                $conn->close();
+                break;
+                
+                case 'delete':
 
-            case 'delete':
                 $id_penjualan = isset($_GET['id_penjualan']) ? $_GET['id_penjualan'] : null;
                 $id_penjualan = $_REQUEST['id_penjualan'];
                 $tanggal = $_POST['tanggal'];
-                $id_menu = $_POST['id_menu'];
                 $shift = $_POST['shift'];
-                $jumlah_penjualan = $_POST['jumlah_penjualan'];
-                $total_harga = $_POST['total_harga'];
                 
                 $sql = "DELETE FROM penjualan WHERE id_penjualan = '$id_penjualan'";
+                $sqlDetail_penjualan = "DELETE FROM detail_penjualan WHERE id_penjualan = '$id_penjualan'";
 
                 try{
                     $result = $conn->query($sql);
+                    $resultDetail_penjualan = $conn->query($sqlDetail_penjualan);
                     $_SESSION['success-alert'] = 'Berhasil menghapus data';
                     header("Location: " . $_SERVER['HTTP_REFERER']);
                     exit();
