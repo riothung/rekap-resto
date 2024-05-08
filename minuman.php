@@ -40,7 +40,7 @@ $conn->close();
                 
                 <?= '<div class="col">
                     <div class="card mt-3 border-danger">
-                    <img src="assets/img/'.$row['gambar'].'" class="card-img-top" alt="...">
+                    <img src="./'.$row['gambar'].'" class="card-img-top" alt="...">
                     <div class="card-body">
                     <h5 class="card-title text-danger" >'.$row['minuman'].'</h5>
                     <p class="card-text"> <b>Harga :</b> Rp. '.$row['harga'].'</p>

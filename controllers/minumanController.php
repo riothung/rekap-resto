@@ -24,22 +24,33 @@ switch ($action) {
             $harga = $_POST['harga'];
 
             /* tambah foto */
+            $gambar = $_FILES['gambar'];
+            echo json_encode($gambar);
             $target_dir = "../assets/img/";
-            $gambar = basename($_FILES['gambar']['name']);
-            $target_file = $target_dir . $gambar;
+            // $target_file = $target_dir . $gambar;
+            $random_string = uniqid();
+            $target_file = $target_dir . $random_string . '.' . pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION);
             $gambarFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
             $size_gambar = isset($_FILES['gambar']['size']);
-            $random_name = generateRandomString(10);
-            $new_gambar = $random_name . "." . $gambarFileType;
-
-            $sql = "INSERT INTO minuman (minuman, harga, gambar) VALUES ('$minuman', '$harga', '$new_gambar')";
-
+            // $random_name = generateRandomString(10);
+            // $new_gambar = $random_name . "." . $gambarFileType;
+            
+            // $target_dir = "../assets/img/";
+            if (!move_uploaded_file($gambar["tmp_name"], $target_file)) {
+                // handle the error
+                die('Error moving file.');
+            }
+            
+            $basename = basename($target_file);
+            $imagePath = 'assets/img/' . $basename;
+            
+            $sql = "INSERT INTO minuman (minuman, harga, gambar) VALUES ('$minuman', '$harga', '$imagePath')";
             // echo json_encode($_FILES);
             // echo $target_dir. "<br>";
             // echo $new_gambar. "<br>";
             // echo $target_file. "<br>";
             // echo $gambarFileType. "<br>";
-            // echo $size_gambar. "<br>";
+            // echo $gambar. "<br>";
 
             try {
                 if($gambar == null){
@@ -77,17 +88,47 @@ switch ($action) {
 
             $minuman = $_POST['minuman'];
             $harga = $_POST['harga'];
+            $gambar = $_FILES['gambar'];
 
             /* edit foto */
-            $target_dir = "../assets/img/";
-            $gambar = basename($_FILES['gambar']['name']);
-            $target_file = $target_dir . $gambar;
-            $gambarFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-            $size_gambar = isset($_FILES['gambar']['size']);
-            $random_name = generateRandomString(10);
-            $new_gambar = $random_name . "." . $gambarFileType;
+            
+            $result = $conn->query("SELECT minuman.gambar FROM minuman WHERE id='$id'");
+            $data = $result->fetch_assoc();
 
-            $sql = "UPDATE minuman SET minuman = '$minuman', harga = '$harga', gambar = '$gambar' WHERE id = '$id'";
+            $target_dir = "../assets/img/";
+            $random_string = uniqid();
+            $target_file = $target_dir . $random_string . '.' . pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION);
+
+            if ($gambar['error'] > 0) {
+                $sql = "UPDATE minuman SET minuman = '$minuman', harga = '$harga' WHERE id = '$id'";
+            }else{
+
+            if(empty($data['gambar'])){
+                if (!move_uploaded_file($gambar["tmp_name"], $target_file)) {
+                // handle the error
+                die('Error moving file.');
+                }
+                $basename = basename($target_file);
+                $imagePath = 'assets/img/' . $basename;
+                $sql = "UPDATE minuman SET minuman = '$minuman', harga = '$harga', gambar = '$imagePath' WHERE id = '$id'";
+
+            }else{
+                $filename = '../' . $data['gambar'];
+                if (file_exists($filename)) {
+                unlink($filename);
+                }
+                if (!move_uploaded_file($gambar["tmp_name"], $target_file)) {
+                // handle the error
+                die('Error moving file.');
+                }
+                $basename = basename($target_file);
+                $imagePath = 'assets/img/' . $basename;
+                $sql = "UPDATE minuman SET minuman = '$minuman', harga = '$harga', gambar = '$imagePath' WHERE id = '$id'";
+            }
+        }
+
+            
+
 
             // echo json_encode($_POST);
 
@@ -121,10 +162,22 @@ switch ($action) {
             $conn->close();
             break;
 
+
+
             case 'delete':
 
-                $id = $_GET['id'];
-                $sql = "DELETE FROM minuman WHERE id = '$id'";
+                $id = $_REQUEST['id'];
+                $sql1 = "SELECT gambar FROM minuman WHERE id = $id";
+                $result1 = $conn->query($sql1);
+                $row = $result1->fetch_assoc();
+                $filename = '../' . $row['gambar'];
+
+                // Delete the file from the server
+                if (file_exists($filename)) {
+                    unlink($filename);
+                }
+
+                $sql = "DELETE FROM minuman WHERE id='$id'";
 
                 try{
 
