@@ -8,7 +8,15 @@ $data = array(); // initialize an empty array to store the rows
 while ($row = $result->fetch_assoc()) {
     $data[] = $row; // append each row to the data array
 }
+$sqlBahan = "SELECT * FROM bahan";
+$resultBahan = $conn->query($sqlBahan);
+$dataBahan = array(); // initialize an empty array to store the rows
+while ($row = $resultBahan->fetch_assoc()) {
+    $dataBahan[] = $row; // append each row to the data array
+}
 $conn->close();
+
+
 
 ?>
 
@@ -122,20 +130,33 @@ $conn->close();
       </div>
       <div class="modal-body">
         <!-- Add your content here -->
-        <form action="controllers/makananController.php?action=add" method="POST" enctype="multipart/form-data" autocomplete="off">
+        <form action="controllers/makananController.php?action=add" method="POST" enctype="multipart/form-data" autocomplete="off" id="bahanAdd">
+          <ul id="itemList">
+    <!-- Rendered list items will appear here -->
+</ul>
             <div class="mb-3">
                 <label for="nama" class="form-label">Nama Makanan</label>
-                <input type="text" class="form-control" id="nama_menu" name="nama_menu" required>
+                <input type="text" class="form-control" id="nama_menuAdd" name="nama_menu" required>
             </div>
             <div class="mb-3">
                 <label for="harga" class="form-label">Harga</label>
-                <input type="number" class="form-control" id="harga" name="harga" min="0" step="0.01" required>
+                <input type="number" class="form-control" id="hargaAdd" name="harga" min="0" step="0.01" required>
 
             </div>
             <div class="mb-3">
                 <label for="gambar" class="form-label">Gambar Menu</label> 
-                <input type="file" class="form-control" id="gambar" name="gambar">
+                <input type="file" class="form-control" id="gambarAdd" name="gambar">
             </div>
+
+            <div>
+              <label for="id_bahan" class="form-label">Bahan</label>
+              <select name="id_bahan" class="form-control" id="id_bahanAdd" onchange="addItemToList()">
+                  <option value="">Pilih Bahan</option> <!-- Option baru -->
+                  <?php foreach($dataBahan as $bahan): ?>
+                      <option data-id="<?= $bahan['nama_bahan']; ?>" value="<?= $bahan['id']; ?>"><?= $bahan['nama_bahan']; ?></option>
+                  <?php endforeach; ?>
+              </select>
+          </div>
             
             <button type="submit" name="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -150,4 +171,172 @@ $conn->close();
 
 <!-- /.container-fluid -->
 <?php require 'partials/footer.php'; ?>
+
+<script>
+var itemListData = [];
+
+function addItemToList() {
+    var select = document.getElementById("id_bahanAdd");
+    var selectedOption = select.options[select.selectedIndex];
+    
+    if (selectedOption.value !== "") {
+        var id = selectedOption.value;
+        var name = selectedOption.dataset.id;
+
+        // Create list item object
+        var item = {
+            id: id,
+            name: name,
+            amount: 1
+        };
+
+        // Push item object to array
+        itemListData.push(item);
+
+        // Render list item
+        renderListItem(item);
+
+        // Reset the select to the default option
+        select.selectedIndex = 0;
+    }
+}
+
+// Fungsi untuk membuka modal tambah penjualan
+function openModal() {
+  
+    itemListData = [];
+    // Panggil fungsi untuk mengosongkan item list
+    clearItemList();
+    // Buka modal
+    $('#modalBahan').modal('show');
+
+}
+
+// Tambahkan event listener untuk menangani pembukaan modal
+$('#modalBahan').on('show.bs.modal', openModal);
+
+function renderListItem(item) {
+    // Create list item element
+    var listItem = document.createElement("li");
+    listItem.dataset.id = item.id;
+
+    // Create a span for the item name
+    var itemName = document.createElement("span");
+    itemName.textContent = item.name + " (ID: " + item.id + ") - Amount: ";
+    listItem.appendChild(itemName);
+
+    // Create a span for the amount
+    var amountSpan = document.createElement("span");
+    amountSpan.textContent = item.amount;
+    listItem.appendChild(amountSpan);
+
+    // Create buttons to adjust amount
+    var increaseButton = document.createElement("button");
+    increaseButton.textContent = "+";
+    increaseButton.classList.add("btn","btn-sm","btn-success","btn-circle", "ml-1")
+    increaseButton.id = "increaseButton"
+    increaseButton.onclick = function() {
+        item.amount++;
+        amountSpan.textContent = item.amount;
+    };
+     // Tambahkan event listener untuk mencegah perilaku default dari event "click"
+     increaseButton.addEventListener("click", function(event) {
+        event.preventDefault();
+    });
+
+    listItem.appendChild(increaseButton);
+
+    var decreaseButton = document.createElement("button");
+    decreaseButton.classList.add("btn","btn-sm","btn-warning","btn-circle", "ml-1")
+    decreaseButton.id = "decreaseButton"
+    decreaseButton.textContent = "-";
+    decreaseButton.onclick = function() {
+        if (item.amount > 1) {
+            item.amount--;
+            amountSpan.textContent = item.amount;
+        }
+    };
+    decreaseButton.addEventListener("click", function(event) {
+        event.preventDefault();
+    });
+    listItem.appendChild(decreaseButton);
+
+    // Create a button to remove the item
+    var removeButton = document.createElement("button");
+    removeButton.innerHTML = '<i class="fas fa-trash"></i>';
+    removeButton.classList.add("btn","btn-sm","btn-danger","btn-circle", "ml-1")
+    removeButton.onclick = function() {
+        // Hapus item dari array itemListData
+        itemListData = itemListData.filter(function(listItem) {
+            return listItem.id !== item.id;
+        });
+        // Hapus elemen list item dari DOM
+        listItem.remove();
+    };
+    removeButton.addEventListener("click", function(event) {
+        event.preventDefault();
+    });
+    listItem.appendChild(removeButton);
+
+    // Append the list item to the list
+    document.getElementById("itemList").appendChild(listItem);
+}
+
+console.log(itemListData);
+
+// Fungsi untuk mengosongkan item list
+function clearItemList() {
+    // Dapatkan referensi ke elemen ul item list
+    var itemList = document.getElementById("itemList");
+    // Kosongkan elemen ul item list
+    itemList.innerHTML = "";
+
+     // Mengosongkan input tanggal
+    document.getElementById("nama_menuAdd").value = "";
+    // Mengosongkan input harga
+    document.getElementById("hargaAdd").value = "";
+}
+
+
+
+
+const formAdd = document.getElementById("bahanAdd");
+formAdd.addEventListener("submit", unSubmit); 
+
+function unSubmit(e) {
+  e.preventDefault();
+  const menuAdd = document.getElementById("nama_menuAdd").value;
+  const hargaAdd = document.getElementById("hargaAdd").value;
+  const fileInput = document.getElementById('gambarAdd');
+
+  const file = fileInput.files[0];
+    const formData = new FormData(formAdd);
+
+    formData.append('gambar', file);
+
+
+    formData.append('nama_menu', menuAdd);
+    formData.append('harga', hargaAdd);
+    formData.append('item', JSON.stringify(itemListData));
+
+fetch('controllers/makananController.php?action=add', {
+          method: 'POST', 
+          body: formData
+        })
+        // .then(data=> data.json())
+        // .then(data=> console.log(JSON.stringify(data)))
+        .then(data=> location.reload(true))
+    
+    
+
+        console.log(formData);
+}
+
+
+
+   
+
+
+</script>
+
 

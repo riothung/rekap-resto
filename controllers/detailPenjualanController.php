@@ -22,6 +22,7 @@ switch ($action) {
             $tanggal = $formData['tanggal'];
             $shift = $formData['shift'];
             $total_harga = $formData['total_harga'];
+            
 
             $item = $formData['item'];
 
@@ -37,28 +38,9 @@ switch ($action) {
 
                 // Assuming $id_penjualan and $id_menu are sanitized properly to prevent SQL injection
                 $sql = "INSERT INTO detail_penjualan (id_penjualan, id_menu, amount) VALUES ('$last_insert_id', '$id_menu', '$amount')";
-                $sqlSelectBahan = "SELECT * FROM detail_menu WHERE id_menu = '$id_menu'";
-                
+
                 // Execute the query
                 if ($conn->query($sql)) {
-                    $bahan = $conn->query($sqlSelectBahan);
-                    while($row = $bahan->fetch_assoc()) {
-                        // $row = $bahan->fetch_assoc();
-                        $id = $row['id_bahan'];
-                        $kebutuhan = $row['kebutuhan'];
-                        
-                            // echo json_encode($row);
-                        $sqlUpdateBahan = "UPDATE bahan SET stok = stok - ($kebutuhan * $amount) WHERE id = '$id' AND stok > 0";
-                        $err = $conn->query($sqlUpdateBahan);
-                        if($err==FALSE){
-                            // $_SESSION['failed-alert'] = 'Stok';
-                            // header("Location: " . $_SERVER['HTTP_REFERER']);
-                            // exit();
-                            echo "error";
-                        }   
-                        
-                    }
-                    
                     // If successful, add success message to result array
                     $result[] = array(
                         "success" => $last_insert_id,
@@ -127,32 +109,11 @@ switch ($action) {
 
                 $id_penjualan = isset($_GET['id_penjualan']) ? $_GET['id_penjualan'] : null;
                 $id_penjualan = $_REQUEST['id_penjualan'];
+                $tanggal = $_POST['tanggal'];
+                $shift = $_POST['shift'];
                 
                 $sql = "DELETE FROM penjualan WHERE id_penjualan = '$id_penjualan'";
                 $sqlDetail_penjualan = "DELETE FROM detail_penjualan WHERE id_penjualan = '$id_penjualan'";
-                $sqlReturn = "SELECT * FROM detail_penjualan WHERE id_penjualan = '$id_penjualan'";
-
-                $resultReturn = $conn->query($sqlReturn);
-                $return = $resultReturn->fetch_assoc();
-
-                $id_menu = $return['id_menu'];
-                $amount = $return['amount'];
-
-                $selectDetailMenu = "SELECT * FROM detail_menu WHERE id_menu = '$id_menu'";
-
-                $bahan = $conn->query($selectDetailMenu);
-                if ($bahan) {
-                    while($row = $bahan->fetch_assoc()) {
-                        // $row = $bahan->fetch_assoc();
-                        $id = $row['id_bahan'];
-                        $kebutuhan = $row['kebutuhan'];
-                        
-                            // echo json_encode($row);
-                        $sqlUpdateBahan = "UPDATE bahan SET stok = stok + ($kebutuhan * $amount)  WHERE id = '$id'";
-    
-                        $conn->query($sqlUpdateBahan);   
-                        
-                    }
 
                 try{
                     $result = $conn->query($sql);
@@ -174,7 +135,7 @@ switch ($action) {
         
 
 
-}
+
 
 
 

@@ -292,11 +292,17 @@ function calculateTotalPrice($id_penjualan, $menu_data, $detail_penjualan) {
 <script>
 var itemListData = [];
 
-function addItemToList() {
+async function addItemToList() {
     var select = document.getElementById("id_menu");
     var selectedOption = select.options[select.selectedIndex];
-    
-    if (selectedOption.value !== "") {
+
+    const data = await fetch('controllers/cekStock.php?id=' + selectedOption.value)
+        const result = await data.json()
+        console.log(result.success)
+        // .then(data=> location.reload(true))
+
+      if(result.success == true){
+        if (selectedOption.value !== "") {
         var id = selectedOption.value;
         var name = selectedOption.dataset.id;
 
@@ -316,6 +322,12 @@ function addItemToList() {
         // Reset the select to the default option
         select.selectedIndex = 0;
     }
+          
+}else{
+  alert(`Stok ${result.nama_bahan} habis`)
+}
+    
+    
 }
 
 // Fungsi untuk membuka modal tambah penjualan

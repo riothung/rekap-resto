@@ -43,6 +43,21 @@ while ($row = $result_menu_total->fetch_assoc()) {
 
 ?>
 
+          <?php if(isset($_SESSION['success-alert'])):?>
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-1"></i>
+            <?= $_SESSION['success-alert']; unset($_SESSION['success-alert'])?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <?php endif;?>
+          <?php if(isset($_SESSION['failed-alert'])):?>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-octagon me-1"></i>
+            <?= $_SESSION['failed-alert']; unset($_SESSION['failed-alert'])?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <?php endif;?>
+
 <a href="penjualan.php"><i class="fas fa-arrow-left fa-2x text-danger"></i></a>
 <div class="bg-gradient-danger d-flex justify-content-center align m-4" style="height: 50px;">
     <h4 class="text-white justify-content-center p-2">Detail Penjualan</h4>
@@ -59,7 +74,7 @@ while ($row = $result_menu_total->fetch_assoc()) {
                         <th>Nama Menu</th>
                         <th>Banyaknya</th>
                         <th>Total Harga</th>
-                        <th>Action</th>
+                        <!-- <th>Action</th> -->
                       </tr>
                     </thead>
                     <tfoot>
@@ -67,7 +82,7 @@ while ($row = $result_menu_total->fetch_assoc()) {
                         <th>Total Menu</th>
                         <th>Banyaknya</th>
                         <th>Total Harga</th>
-                        <th>Action</th>
+                        <!-- <th>Action</th> -->
                       </tr>
                     </tfoot>
                     <tbody>
@@ -76,9 +91,9 @@ while ($row = $result_menu_total->fetch_assoc()) {
                         <td><?= $row['nama_menu']; ?></td>
                         <td><?= $row['amount']; ?></td>
                         <td>Rp. <?= number_format($row['total_harga_item'], 0, ',', '.'); ?></td>
-                        <td><button type="button" class="btn btn-warning mb-2 btn-edit" data-toggle="modal" data-target="#modalEdit<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Edit</button>
+                        <!-- <td><button type="button" class="btn btn-warning mb-2 btn-edit" data-toggle="modal" data-target="#modalEdit<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Edit</button>
                         <button type="button" class="btn btn-danger mb-2 btn-delete" data-toggle="modal" data-target="#modalHapus<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Hapus</button>
-                        </td>
+                        </td> -->
                       </tr>
                   </tbody>
                           
@@ -91,7 +106,7 @@ while ($row = $result_menu_total->fetch_assoc()) {
                               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
                             </div>
                             <div class="modal-body">
-                            <form action="controllers/penjualanController.php?action=edit&id_penjualan=<?=$row['id_penjualan'];?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
+                            <form action="controllers/detailPenjualanController.php?action=edit&id_penjualan=<?=$row['id_penjualan'];?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
                               <div>
                                 <label for="nama_menu" class="form-label">Menu</label>
                                 <select name="id_menu" class="form-control" id="id_menu_edit">
@@ -130,7 +145,7 @@ while ($row = $result_menu_total->fetch_assoc()) {
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <a class="btn btn-danger" href="controllers/penjualanController.php?action=delete&id_penjualan=<?=$row['id_penjualan'];?>">Hapus</a>
+                            <a class="btn btn-danger" href="controllers/detailPenjualanController.php?action=delete&id_penjualan=<?=$row['id_penjualan'];?>">Hapus</a>
                           </div>
                         </div>
                       </div>
