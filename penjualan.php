@@ -160,8 +160,6 @@ function calculateTotalPrice($id_penjualan, $menu_data, $detail_penjualan) {
                         </td>
                         
                       </tr>
-                  </tbody>
-                          
                       <!-- Modal Edit -->
                       <div class="modal fade" id="modalEdit<?= $key; ?>" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-xl">
@@ -170,14 +168,14 @@ function calculateTotalPrice($id_penjualan, $menu_data, $detail_penjualan) {
                               <h1 class="modal-title fs-5" id="editMenuLabel">Edit Penjualan</h1>
                               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
                             </div>
-
+    
                             <div class="modal-body">
                             <form action="controllers/penjualanController.php?action=edit&id_penjualan=<?=$row['id_penjualan'];?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
                             <div>
                                 <label for="tanggal" class="form-label">Tanggal</label>
                                 <input value="<?=$row['tanggal'];?>" type="date" placeholder="Tanggal" autofocus name="tanggal" class="form-control" autocomplete="off">
                               </div>
-
+    
                             <div class="form-group">
                               <label for="options" class="form-label">Shift</label>
                               <select class="form-control" id="options" name="shift">
@@ -187,7 +185,7 @@ function calculateTotalPrice($id_penjualan, $menu_data, $detail_penjualan) {
                                   <option value="malam" <?= ($row['shift'] == 'malam') ? 'selected' : ''; ?>>Malam</option>
                               </select>
                           </div>
-
+    
                               <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                               <button type="submit" name="submit" class="btn btn-warning btn-confirm-edit">Submit</button>
@@ -197,7 +195,7 @@ function calculateTotalPrice($id_penjualan, $menu_data, $detail_penjualan) {
                           </div>
                         </div>
                       </div>
-
+    
                       <!-- Modal Hapus -->
                       <div class="modal fade" id="modalHapus<?= $key ?>" tabindex="-1" aria-hidden="true">
                       <div class="modal-dialog">
@@ -215,8 +213,10 @@ function calculateTotalPrice($id_penjualan, $menu_data, $detail_penjualan) {
                         </div>
                       </div>
                     </div>
-
+    
                   <?php endforeach; ?>
+                  </tbody>
+                          
                   </table>
                 </div>
               </div>
