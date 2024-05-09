@@ -80,8 +80,6 @@ while ($row = $result_menu_total->fetch_assoc()) {
                         <button type="button" class="btn btn-danger mb-2 btn-delete" data-toggle="modal" data-target="#modalHapus<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Hapus</button>
                         </td>
                       </tr>
-                  </tbody>
-                          
                       <!-- Modal Edit -->
                       <div class="modal fade" id="modalEdit<?= $key; ?>" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-xl">
@@ -117,7 +115,7 @@ while ($row = $result_menu_total->fetch_assoc()) {
                           </div>
                         </div>
                       </div>
-
+    
                       <!-- Modal Hapus -->
                       <div class="modal fade" id="modalHapus<?= $key ?>" tabindex="-1" aria-hidden="true">
                       <div class="modal-dialog">
@@ -135,8 +133,10 @@ while ($row = $result_menu_total->fetch_assoc()) {
                         </div>
                       </div>
                     </div>
-
+    
                   <?php endforeach; ?>
+                  </tbody>
+                          
                   </table>
                 </div>
               </div>

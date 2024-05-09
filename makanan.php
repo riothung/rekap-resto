@@ -43,7 +43,7 @@ $conn->close();
                     <img src="./'.$row['gambar'].'" class="card-img-top" alt="...">
                     <div class="card-body">
                     <h5 class="card-title text-danger">'.$row['nama_menu'].'</h5>
-                    <p class="card-text text-gray-800"> <b>Harga :</b> Rp. '.$row['harga'].'</p>
+                    <p class="card-text text-gray-800"> <b>Harga :</b> Rp. '.number_format($row['harga'], 0, ',', '.').'</p>
                 
 
                         <button type="button" class="btn btn-warning btn-sm mb-2" data-toggle="modal" data-target="#editMenu'.$key.'">
