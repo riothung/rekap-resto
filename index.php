@@ -14,14 +14,14 @@ foreach ($dataBahan as $bahan) {
     $totalBahan += $bahan['stok'];
 }
 
-$sqlMakanan = "SELECT * FROM menu";
+$sqlMakanan = "SELECT * FROM menu WHERE tipe = 0";
 $resultMakanan = $conn->query($sqlMakanan);
 $dataMakanan = array();
 while($row = $resultMakanan->fetch_assoc()){
     $dataMakanan[] = $row;
 }
 
-$sqlMinuman = "SELECT * FROM minuman";
+$sqlMinuman = "SELECT * FROM menu WHERE tipe = 1";
 $resultMinuman = $conn->query($sqlMinuman);
 $dataMinuman = array();
 while($row = $resultMinuman->fetch_assoc()){
