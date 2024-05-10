@@ -2,7 +2,7 @@
 
 require './partials/header.php';
 
-$sql = "SELECT * FROM minuman";
+$sql = "SELECT * FROM menu WHERE tipe = 1";
 $result = $conn->query($sql);
 $data = array(); // initialize an empty array to store the rows
 while ($row = $result->fetch_assoc()) {
@@ -42,7 +42,7 @@ $conn->close();
                     <div class="card mt-3 border-danger">
                     <img src="./'.$row['gambar'].'" class="card-img-top" alt="...">
                     <div class="card-body">
-                    <h5 class="card-title text-danger" >'.$row['minuman'].'</h5>
+                    <h5 class="card-title text-danger" >'.$row['nama_menu'].'</h5>
                     <p class="card-text"> <b>Harga :</b> Rp. '.$row['harga'].'</p>
                 
 
@@ -65,8 +65,8 @@ $conn->close();
                                 <form action="controllers/minumanController.php?action=edit&id='.$row['id'].'" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
                                   
                                   <div>
-                                    <label for="minuman" class="form-label">Nama Minuman</label>
-                                    <input value="'.$row['minuman'].'" type="text" placeholder="Minuman" autofocus name="minuman" class="form-control" autocomplete="off">
+                                    <label for="nama_menu" class="form-label">Nama Minuman</label>
+                                    <input value="'.$row['nama_menu'].'" type="text" placeholder="nama_menu" autofocus name="nama_menu" class="form-control" autocomplete="off">
                                   </div>
                                   <div>
                                     <label for="harga" class="form-label">Harga</label>
@@ -127,8 +127,8 @@ $conn->close();
         <!-- Add your content here -->
         <form action="controllers/minumanController.php?action=add" method="POST" enctype="multipart/form-data" autocomplete="off">
             <div class="mb-3">
-                <label for="minuman" class="form-label">Nama Minuman</label>
-                <input type="text" class="form-control" id="minuman" name="minuman" required>
+                <label for="nama_menu" class="form-label">Nama Minuman</label>
+                <input type="text" class="form-control" id="nama_menu" name="nama_menu" required>
             </div>
             <div class="mb-3">
                 <label for="harga" class="form-label">Harga</label>
