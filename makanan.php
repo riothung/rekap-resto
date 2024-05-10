@@ -2,7 +2,7 @@
 
 require './partials/header.php'; 
 
-$sql = "SELECT * FROM menu";
+$sql = "SELECT * FROM menu WHERE tipe = 0";
 $result = $conn->query($sql);
 $data = array(); // initialize an empty array to store the rows
 while ($row = $result->fetch_assoc()) {
