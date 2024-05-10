@@ -156,16 +156,11 @@
       </button>
       
       <!-- Topbar Search -->
-      <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-        <div class="input-group">
-                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" />
-                <div class="input-group-append">
-                  <button class="btn btn-danger" type="button">
-                    <i class="fas fa-search fa-sm"></i>
-                  </button>
-                </div>
-              </div>
-            </form>
+
+      <div class="mt-4">
+      <i class="fa fa-university"></i>
+        <p class="text-danger font-weight-bold">Rekap Anda</p>
+      </div>
 
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
