@@ -20,12 +20,12 @@ function generateRandomString($length = 10) {
 switch ($action) {
     case 'add':
         if(isset($_POST['submit'])){
-            $minuman = $_POST['minuman'];
+            $nama_menu = $_POST['nama_menu'];
             $harga = $_POST['harga'];
 
             /* tambah foto */
             $gambar = $_FILES['gambar'];
-            echo json_encode($gambar);
+            // echo json_encode($gambar);
             $target_dir = "../assets/img/";
             // $target_file = $target_dir . $gambar;
             $random_string = uniqid();
@@ -43,8 +43,9 @@ switch ($action) {
             
             $basename = basename($target_file);
             $imagePath = 'assets/img/' . $basename;
+            // $tipe = $_POST['tipe'];
             
-            $sql = "INSERT INTO minuman (minuman, harga, gambar) VALUES ('$minuman', '$harga', '$imagePath')";
+            $sql = "INSERT INTO menu (nama_menu, harga, gambar, tipe) VALUES ('$nama_menu', '$harga', '$imagePath', 1)";
             // echo json_encode($_FILES);
             // echo $target_dir. "<br>";
             // echo $new_gambar. "<br>";
@@ -69,11 +70,11 @@ switch ($action) {
                 }
             }
                 $result = $conn->query($sql);
-                $_SESSION['success-alert'] = 'Berhasil menambah minuman';
+                $_SESSION['success-alert'] = 'Berhasil menambah data';
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit();
             }catch(PDOException $e){
-            $_SESSION['failed-alert'] = 'Gagal menambah minuman';
+            $_SESSION['failed-alert'] = 'Gagal menambah data';
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
             }
@@ -86,13 +87,13 @@ switch ($action) {
 
             $id = $_REQUEST['id'];
 
-            $minuman = $_POST['minuman'];
+            $nama_menu = $_POST['nama_menu'];
             $harga = $_POST['harga'];
             $gambar = $_FILES['gambar'];
 
             /* edit foto */
             
-            $result = $conn->query("SELECT minuman.gambar FROM minuman WHERE id='$id'");
+            $result = $conn->query("SELECT menu.gambar FROM menu WHERE id='$id'");
             $data = $result->fetch_assoc();
 
             $target_dir = "../assets/img/";
@@ -100,7 +101,7 @@ switch ($action) {
             $target_file = $target_dir . $random_string . '.' . pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION);
 
             if ($gambar['error'] > 0) {
-                $sql = "UPDATE minuman SET minuman = '$minuman', harga = '$harga' WHERE id = '$id'";
+                $sql = "UPDATE menu SET nama_menu = '$nama_menu', harga = '$harga' WHERE id = '$id'";
             }else{
 
             if(empty($data['gambar'])){
@@ -110,7 +111,7 @@ switch ($action) {
                 }
                 $basename = basename($target_file);
                 $imagePath = 'assets/img/' . $basename;
-                $sql = "UPDATE minuman SET minuman = '$minuman', harga = '$harga', gambar = '$imagePath' WHERE id = '$id'";
+                $sql = "UPDATE menu SET nama_menu = '$nama_menu', harga = '$harga', gambar = '$imagePath' WHERE id = '$id'";
 
             }else{
                 $filename = '../' . $data['gambar'];
@@ -123,7 +124,7 @@ switch ($action) {
                 }
                 $basename = basename($target_file);
                 $imagePath = 'assets/img/' . $basename;
-                $sql = "UPDATE minuman SET minuman = '$minuman', harga = '$harga', gambar = '$imagePath' WHERE id = '$id'";
+                $sql = "UPDATE menu SET nama_menu = '$nama_menu', harga = '$harga', gambar = '$imagePath' WHERE id = '$id'";
             }
         }
 
@@ -149,12 +150,12 @@ switch ($action) {
                 }
             }
                 $result = $conn->query($sql);
-                $_SESSION['success-alert'] = 'Berhasil merubah minuman';
+                $_SESSION['success-alert'] = 'Berhasil merubah data';
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit();
 
             }catch(PDOException $e){
-            $_SESSION['failed-alert'] = 'Gagal merubah minuman';
+            $_SESSION['failed-alert'] = 'Gagal merubah data';
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
             }
@@ -167,7 +168,7 @@ switch ($action) {
             case 'delete':
 
                 $id = $_REQUEST['id'];
-                $sql1 = "SELECT gambar FROM minuman WHERE id = $id";
+                $sql1 = "SELECT gambar FROM menu WHERE id = $id";
                 $result1 = $conn->query($sql1);
                 $row = $result1->fetch_assoc();
                 $filename = '../' . $row['gambar'];
@@ -177,17 +178,17 @@ switch ($action) {
                     unlink($filename);
                 }
 
-                $sql = "DELETE FROM minuman WHERE id='$id'";
+                $sql = "DELETE FROM menu WHERE id='$id'";
 
                 try{
 
                 $result = $conn->query($sql);
-                $_SESSION['success-alert'] = 'Berhasil menghapus minuman';
+                $_SESSION['success-alert'] = 'Berhasil menghapus data';
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit();
 
                 }catch(PDOException $e){
-                $_SESSION['failed-alert'] = 'Gagal menghapus minuman';
+                $_SESSION['failed-alert'] = 'Gagal menghapus data';
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit();
 
