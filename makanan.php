@@ -2,8 +2,8 @@
 
 require './partials/header.php'; 
 
-$sql = "SELECT menu.*, GROUP_CONCAT(bahan.nama_bahan SEPARATOR ', ') as bahan FROM menu JOIN detail_menu ON menu.id = detail_menu.id_menu
-JOIN bahan ON bahan.id = detail_menu.id_bahan WHERE tipe = 0 GROUP BY menu.id, menu.nama_menu";
+$sql = "SELECT menu.*, GROUP_CONCAT(bahan.nama_bahan SEPARATOR ', ') as bahan FROM menu LEFT JOIN detail_menu ON menu.id = detail_menu.id_menu
+LEFT JOIN bahan ON bahan.id = detail_menu.id_bahan WHERE tipe = 0 GROUP BY menu.id, menu.nama_menu";
 $result = $conn->query($sql);
 $data = array(); // initialize an empty array to store the rows
 while ($row = $result->fetch_assoc()) {
@@ -69,7 +69,7 @@ $conn->close();
                           </button>
 
                           
-                          <div class="modal fade" id="editMenu<=?$key?>" tabindex="-1" aria-labelledby="editMenuLabel" aria-hidden="true">
+                          <div class="modal fade" id="editMenu<?=$key?>" tabindex="-1" aria-labelledby="editMenuLabel" aria-hidden="true">
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">

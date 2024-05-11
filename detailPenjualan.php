@@ -23,7 +23,7 @@ if ($result_menu->num_rows > 0) {
     // data menu ditemukan, lanjutkan dengan menampilkan opsi menu dalam elemen <select>
 } else {
     // tidak ada data menu yang ditemukan
-    echo "Tidak ada data menu yang tersedia.";
+    echo "";
 }
 $sql_menu_total = "SELECT detail_penjualan.*, menu.nama_menu, menu.harga, penjualan.total_harga AS total_penjualan 
              FROM detail_penjualan 
@@ -74,7 +74,6 @@ while ($row = $result_menu_total->fetch_assoc()) {
                         <th>Nama Menu</th>
                         <th>Banyaknya</th>
                         <th>Total Harga</th>
-                        <!-- <th>Action</th> -->
                       </tr>
                     </thead>
                     <tfoot>
@@ -82,7 +81,6 @@ while ($row = $result_menu_total->fetch_assoc()) {
                         <th>Total Menu</th>
                         <th>Banyaknya</th>
                         <th>Total Harga</th>
-                        <!-- <th>Action</th> -->
                       </tr>
                     </tfoot>
                     <tbody>
@@ -91,9 +89,6 @@ while ($row = $result_menu_total->fetch_assoc()) {
                         <td><?= $row['nama_menu']; ?></td>
                         <td><?= $row['amount']; ?></td>
                         <td>Rp. <?= number_format($row['total_harga_item'], 0, ',', '.'); ?></td>
-                        <!-- <td><button type="button" class="btn btn-warning mb-2 btn-edit" data-toggle="modal" data-target="#modalEdit<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Edit</button>
-                        <button type="button" class="btn btn-danger mb-2 btn-delete" data-toggle="modal" data-target="#modalHapus<?= $key; ?>" data-id="<?= $row['id_penjualan']; ?>">Hapus</button>
-                        </td> -->
                       </tr>
                       <!-- Modal Edit -->
                       <div class="modal fade" id="modalEdit<?= $key; ?>" tabindex="-1" aria-hidden="true">

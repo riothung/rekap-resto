@@ -42,16 +42,6 @@ if ($result_total_penjualan) {
     echo "Error: " . $sql_total_penjualan . "<br>" . $conn->error;
 }
 
-// $totalMakanan = 0; 
-// foreach($dataMakanan as $makanan){
-    //     $totalMakanan = $makanan['nama_menu'];
-    // }
-    
-    $id = isset($_GET['id']) ? $_GET['id'] : $dataMakanan[0]['id'];
-    $id = isset($_GET['id']) ? $_GET['id'] : $dataMinuman[0]['id'];
-// $row['stok'] = $stok;
-
-// $id = isset($_GET['id']) ? $_GET['id'] : $totalBahan[0]['id'];
 
 // Ambil data penjualan dan total harga dari database
 $sql_penjualan_total = "SELECT MONTH(tanggal) as bulan, SUM(total_harga) as total_penjualan FROM penjualan GROUP BY bulan";
@@ -180,7 +170,7 @@ $labelsJSON = json_encode($labels);
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
                     Total Minuman</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($dataMinuman) ?></div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($dataMinuman) > 0 ? count($dataMinuman) : 0 ?></div>
                 </div>
                 <div class="col-auto">
                     <i class="fas fa-mug-hot fa-2x text-gray-300"></i>

@@ -32,7 +32,7 @@ if ($result_menu->num_rows > 0) {
     // data menu ditemukan, lanjutkan dengan menampilkan opsi menu dalam elemen <select>
 } else {
     // tidak ada data menu yang ditemukan
-    echo "Tidak ada data menu yang tersedia.";
+    echo "";
 }
 
 
