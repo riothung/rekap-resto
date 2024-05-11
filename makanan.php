@@ -2,12 +2,14 @@
 
 require './partials/header.php'; 
 
-$sql = "SELECT * FROM menu WHERE tipe = 0";
+$sql = "SELECT menu.*, GROUP_CONCAT(bahan.nama_bahan SEPARATOR ', ') as bahan FROM menu JOIN detail_menu ON menu.id = detail_menu.id_menu
+JOIN bahan ON bahan.id = detail_menu.id_bahan WHERE tipe = 0 GROUP BY menu.id, menu.nama_menu";
 $result = $conn->query($sql);
 $data = array(); // initialize an empty array to store the rows
 while ($row = $result->fetch_assoc()) {
     $data[] = $row; // append each row to the data array
 }
+echo json_encode($data);
 $sqlBahan = "SELECT * FROM bahan";
 $resultBahan = $conn->query($sqlBahan);
 $dataBahan = array(); // initialize an empty array to store the rows
@@ -46,28 +48,28 @@ $conn->close();
         <div class="row row-cols-sm-2 row-cols-md-4 g-4 ">
             <?php foreach($data as $key => $row): ?>
                 
-                <?= '<div class="col">
+                <div class="col">
                     <div class="card mt-3 border-danger">
-                    <img src="./'.$row['gambar'].'" class="card-img-top" alt="...">
+                    <img src="./<?=$row['gambar']?>" class="card-img-top" alt="...">
                     <div class="card-body">
-                    <h5 class="card-title text-danger">'.$row['nama_menu'].'</h5>
-                    <p class="card-text text-gray-800"> <b>Harga :</b> Rp. '.number_format($row['harga'], 0, ',', '.').'</p>
+                    <h5 class="card-title text-danger"><?=$row['nama_menu']?></h5>
+                    <p class="card-text text-gray-800"> <b>Harga :</b> Rp. <?=number_format($row['harga'], 0, ',', '.')?></p>
                 
 
-                        <button type="button" class="btn btn-warning btn-sm mb-2" data-toggle="modal" data-target="#editMenu'.$key.'">
+                        <button type="button" class="btn btn-warning btn-sm mb-2" data-toggle="modal" data-target="#editMenu<?=$key?>">
                             <i class="fas fa-fw fa-pencil-alt"></i><span> Edit</span>
                           </button>
-                          <button type="button" class="btn btn-danger btn-sm mb-2" data-toggle="modal" data-target="#hapusMenu'.$key.'">
+                          <button type="button" class="btn btn-danger btn-sm mb-2" data-toggle="modal" data-target="#hapusMenu<?=$key?>">
                             <i class="fas fa-fw fa-trash-alt"></i><span>Hapus</span>
                           </button>  
 
                           <!-- Button trigger modal SELENGKAPNYA -->
-                          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalSelengkapnya">
+                          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalSelengkapnya<?=$key?>">
                             Selengkapnya
                           </button>
 
                           
-                          <div class="modal fade" id="editMenu'.$key.'" tabindex="-1" aria-labelledby="editMenuLabel" aria-hidden="true">
+                          <div class="modal fade" id="editMenu<=?$key?>" tabindex="-1" aria-labelledby="editMenuLabel" aria-hidden="true">
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
@@ -75,19 +77,19 @@ $conn->close();
                                   <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
                                 </div>
                                 <div class="modal-body">
-                                <form action="controllers/makananController.php?action=edit&id='.$row['id'].'" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4 autocomplete="off">
+                                <form action="controllers/makananController.php?action=edit&id=<?=$row['id']?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4 autocomplete="off">
                                   
                                   <div>
                                     <label for="nama_menu" class="form-label">Nama Menu</label>
-                                    <input value="'.$row['nama_menu'].'" type="text" placeholder="Nama Menu" autofocus name="nama_menu" class="form-control" >
+                                    <input value="<?=$row['nama_menu']?>" type="text" placeholder="Nama Menu" autofocus name="nama_menu" class="form-control" >
                                   </div>
                                   <div>
                                     <label for="harga" class="form-label">Harga</label>
-                                    <input value="'.$row['harga'].'" type="text" placeholder="Harga" autofocus name="harga" class="form-control" >
+                                    <input value="<?=$row['harga']?>" type="text" placeholder="Harga" autofocus name="harga" class="form-control" >
                                   </div>
                                   <div>
                                     <label for="gambar" class="form-label">Nama Menu</label>
-                                    <input value="'.$row['gambar'].'" type="file" placeholder="Gambar" autofocus name="gambar" class="form-control">
+                                    <input value="<?=$row['gambar']?>" type="file" placeholder="Gambar" autofocus name="gambar" class="form-control">
                                   </div>
                                   <div class="modal-footer">
                                   <button type="submit" name="submit" class="btn btn-warning">Submit</button>
@@ -98,7 +100,7 @@ $conn->close();
                             </div>
                           </div>
     
-                          <div class="modal fade" id="hapusMenu'.$key.'" tabindex="-1" aria-labelledby="hapusMenuLabel" aria-hidden="true">
+                          <div class="modal fade" id="hapusMenu<?=$key?>" tabindex="-1" aria-labelledby="hapusMenuLabel" aria-hidden="true">
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
@@ -109,30 +111,36 @@ $conn->close();
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                  <a class="btn btn-danger" href="controllers/makananController.php?action=delete&id='.$row['id'].'">Hapus</a>
+                                  <a class="btn btn-danger" href="controllers/makananController.php?action=delete&id=<?=$row['id']?>">Hapus</a>
                                 </div>
                               </div>
                             </div>
                           </div>
 
                           <!-- Modal SELENGKAPNYA -->
-                        <div class="modal fade" id="exampleModalSelengkapnya" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="exampleModalSelengkapnya<?=$key?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                           <div class="modal-dialog">
                             <div class="modal-content">
                               <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                <h5 class="modal-title" id="exampleModalLabel">Bahan-bahan</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                   <span aria-hidden="true">&times;</span>
                                 </button>
                               </div>
                               <div class="modal-body">
-                                <ul>
-                                <li>Rio Kontol</li>
-                                </ul>
+                                <?php
+                                $bahan_array = explode(',', $row['bahan']); 
+                                echo "<ul>";
+                                foreach ($bahan_array as $bahan) {
+                                    $bahan = trim($bahan, '');
+                                    echo "<li>$bahan</li>";
+                                }
+
+                                echo "</ul>";
+                                ?>
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
                               </div>
                             </div>
                           </div>
@@ -140,7 +148,7 @@ $conn->close();
                         
                     </div>
                 </div>
-            </div>'; ?>
+            </div>
 
             <?php endforeach; ?>
             
