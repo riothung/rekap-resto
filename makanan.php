@@ -130,10 +130,10 @@ $conn->close();
       </div>
       <div class="modal-body">
         <!-- Add your content here -->
-        <form action="controllers/makananController.php?action=add" method="POST" enctype="multipart/form-data" autocomplete="off" id="bahanAdd">
+        <form action="controllers/makananController.php?action=add" method="POST" enctype="multipart/form-data" autocomplete="off" id="bahanAdd" required>
           <ul id="itemList">
     <!-- Rendered list items will appear here -->
-</ul>
+        </ul>
             <div class="mb-3">
                 <label for="nama" class="form-label">Nama Makanan</label>
                 <input type="text" class="form-control" id="nama_menuAdd" name="nama_menu" required>
@@ -145,7 +145,7 @@ $conn->close();
             </div>
             <div class="mb-3">
                 <label for="gambar" class="form-label">Gambar Menu</label> 
-                <input type="file" class="form-control" id="gambarAdd" name="gambar">
+                <input type="file" class="form-control" id="gambarAdd" name="gambar" required>
             </div>
 
             <div>
@@ -318,6 +318,8 @@ function unSubmit(e) {
     formData.append('nama_menu', menuAdd);
     formData.append('harga', hargaAdd);
     formData.append('item', JSON.stringify(itemListData));
+
+    // formData.append('tipe', '1');
 
 fetch('controllers/makananController.php?action=add', {
           method: 'POST', 

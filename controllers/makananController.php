@@ -215,10 +215,13 @@ switch ($action) {
                 }
 
                 $sql = "DELETE FROM menu WHERE id='$id'";
+                $sqlDelet = "DELETE FROM detail_menu WHERE id_menu='$id'";
+
 
                 try{
 
                 $result = $conn->query($sql);
+                $resultDelet = $conn->query($sqlDelet);
                 $_SESSION['success-alert'] = 'Berhasil menghapus menu';
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit();
