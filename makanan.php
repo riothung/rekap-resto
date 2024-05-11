@@ -2,14 +2,14 @@
 
 require './partials/header.php'; 
 
-$sql = "SELECT menu.*, GROUP_CONCAT(bahan.nama_bahan SEPARATOR ', ') as bahan FROM menu LEFT JOIN detail_menu ON menu.id = detail_menu.id_menu
+$sql = "SELECT menu.*, GROUP_CONCAT(CONCAT(bahan.id, ' - ', bahan.nama_bahan, ' - ', detail_menu.kebutuhan) SEPARATOR ', ') as bahan FROM menu LEFT JOIN detail_menu ON menu.id = detail_menu.id_menu
 LEFT JOIN bahan ON bahan.id = detail_menu.id_bahan WHERE tipe = 0 GROUP BY menu.id, menu.nama_menu";
 $result = $conn->query($sql);
 $data = array(); // initialize an empty array to store the rows
 while ($row = $result->fetch_assoc()) {
     $data[] = $row; // append each row to the data array
 }
-// echo json_encode($data);
+echo json_encode($data);
 $sqlBahan = "SELECT * FROM bahan";
 $resultBahan = $conn->query($sqlBahan);
 $dataBahan = array(); // initialize an empty array to store the rows
@@ -18,7 +18,7 @@ while ($row = $resultBahan->fetch_assoc()) {
 }
 $conn->close();
 
-
+// echo json_encode($dataBahan);
 
 ?>
 
@@ -68,7 +68,6 @@ $conn->close();
                             Selengkapnya
                           </button>
 
-                          
                           <div class="modal fade" id="editMenu<?=$key?>" tabindex="-1" aria-labelledby="editMenuLabel" aria-hidden="true">
                             <div class="modal-dialog">
                               <div class="modal-content">
@@ -77,8 +76,35 @@ $conn->close();
                                   <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
                                 </div>
                                 <div class="modal-body">
-                                <form action="controllers/makananController.php?action=edit&id=<?=$row['id']?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4 autocomplete="off">
+                                <div enctype="multipart/form-data" id="bahanEdit">
+                                <!-- <ul id="itemListEdit" data-item="<?= $row['bahan']?>"> -->
+                                      <?php
+                                $bahan_array = explode(',', $row['bahan']); 
+                                echo "<ul>";
+                                foreach ($bahan_array as $bahan) {
+                                    $bahan = trim($bahan);
+
+                                  // Extract ID, nama_bahan, and quantity
+                                  preg_match('/(\d+)\s*-\s*(.*?)\s*-\s*(\d+)/', $bahan, $matches);
                                   
+                                  // Check if we have all necessary parts
+                                  if (count($matches) == 4) {
+                                      $id = $matches[1];
+                                      $nama_bahan = $matches[2];
+                                      $quantity = $matches[3];
+
+                                      // Output the formatted string
+                                      echo '<li>'.$nama_bahan.' (ID: '.$id.') - Amount: '.$quantity.'
+                                      <button class="btn btn-sm btn-success btn-circle ml-1" id="increaseButton">+</button>
+                                      <button class="btn btn-sm btn-warning btn-circle ml-1 decreaseButton" id="decreaseButton">-</button>
+                                      <button id="removeButton" class="btn btn-sm btn-danger btn-circle ml-1"><i class="fas fa-trash">
+                                      </i></button></li>';
+                                  }
+                                }
+
+                                echo "</ul>";
+                                ?>
+                                  <!-- </ul> -->
                                   <div>
                                     <label for="nama_menu" class="form-label">Nama Menu</label>
                                     <input value="<?=$row['nama_menu']?>" type="text" placeholder="Nama Menu" autofocus name="nama_menu" class="form-control" >
@@ -91,10 +117,19 @@ $conn->close();
                                     <label for="gambar" class="form-label">Gambar</label>
                                     <input value="<?=$row['gambar']?>" type="file" placeholder="Gambar" autofocus name="gambar" class="form-control">
                                   </div>
+                                    <div>
+                                      <label for="id_bahan" class="form-label">Bahan</label>
+                                      <select name="id_bahan" class="form-control" id="id_bahanEdit" onchange="EditItemToList()">
+                                          <option value="">Pilih Bahan</option> <!-- Option baru -->
+                                          <?php foreach($dataBahan as $bahan): ?>
+                                              <option data-id="<?= $bahan['nama_bahan']; ?>" value="<?= $bahan['id']; ?>"><?= $bahan['nama_bahan']; ?></option>
+                                          <?php endforeach; ?>
+                                      </select>
+                                  </div>
                                   <div class="modal-footer">
                                   <button type="submit" name="submit" class="btn btn-warning">Submit</button>
                                   </div>
-                                </form>
+                                </div>
                                 </div>
                               </div>
                             </div>
@@ -132,8 +167,8 @@ $conn->close();
                                 $bahan_array = explode(',', $row['bahan']); 
                                 echo "<ul>";
                                 foreach ($bahan_array as $bahan) {
-                                    $bahan = trim($bahan, '');
-                                    echo "<li>$bahan</li>";
+                                    $trimmed_bahan = preg_replace('/^\d+ - /', '', trim($bahan));
+                                    echo "<li>$trimmed_bahan</li>";
                                 }
 
                                 echo "</ul>";
@@ -212,8 +247,32 @@ $conn->close();
 <script>
 var itemListData = [];
 
+const itemListEdit = document.getElementById("itemListEdit");
+// const editData = itemListEdit.getAttribute("data-item");
+
+// console.log(editData);
+const increase = document.getElementById("increaseButton");
+const decrease = document.getElementsByClassName("decreaseButton");
+const remove = document.getElementById("removeButton");
+
+console.log(decrease);
+// decrease.onclick = function() {
+//         if (item.amount > 1) {
+//             item.amount--;
+//             amountSpan.textContent = item.amount;
+//         }
+//     };
+
+for (let index = 0; index < decrease.length; index++) {
+  decrease[index].addEventListener("click", function(event) {
+    console.log("decrease clicked");
+      event.preventDefault();
+  });
+  
+}
 function addItemToList() {
     var select = document.getElementById("id_bahanAdd");
+    // var selectEdit = document.getElementById("id_bahanEdit");
     var selectedOption = select.options[select.selectedIndex];
     
     if (selectedOption.value !== "") {
@@ -237,6 +296,32 @@ function addItemToList() {
         select.selectedIndex = 0;
     }
 }
+function EditItemToList() {
+    var select = document.getElementById("id_bahanEdit");
+    // var selectEdit = document.getElementById("id_bahanEdit");
+    var selectedOption = select.options[select.selectedIndex];
+    
+    if (selectedOption.value !== "") {
+        var id = selectedOption.value;
+        var name = selectedOption.dataset.id;
+
+        // Create list item object
+        var item = {
+            id: id,
+            name: name,
+            amount: 1
+        };
+
+        // Push item object to array
+        itemListData.push(item);
+
+        // Render list item
+        renderListItemEdit(item);
+
+        // Reset the select to the default option
+        select.selectedIndex = 0;
+    }
+}
 
 // Fungsi untuk membuka modal tambah penjualan
 function openModal() {
@@ -245,12 +330,12 @@ function openModal() {
     // Panggil fungsi untuk mengosongkan item list
     clearItemList();
     // Buka modal
-    $('#modalBahan').modal('show');
+    $('#modalMenu').modal('show');
 
 }
 
 // Tambahkan event listener untuk menangani pembukaan modal
-$('#modalBahan').on('show.bs.modal', openModal);
+$('#modalMenu').on('show.bs.modal', openModal);
 
 function renderListItem(item) {
     // Create list item element
@@ -319,6 +404,73 @@ function renderListItem(item) {
     document.getElementById("itemList").appendChild(listItem);
 }
 
+function renderListItemEdit(item) {
+    // Create list item element
+    var listItem = document.createElement("li");
+    listItem.dataset.id = item.id;
+
+    // Create a span for the item name
+    var itemName = document.createElement("span");
+    itemName.textContent = item.name + " (ID: " + item.id + ") - Amount: ";
+    listItem.appendChild(itemName);
+
+    // Create a span for the amount
+    var amountSpan = document.createElement("span");
+    amountSpan.textContent = item.amount;
+    listItem.appendChild(amountSpan);
+
+    // Create buttons to adjust amount
+    var increaseButton = document.createElement("button");
+    increaseButton.textContent = "+";
+    increaseButton.classList.add("btn","btn-sm","btn-success","btn-circle", "ml-1")
+    increaseButton.id = "increaseButton"
+    increaseButton.onclick = function() {
+        item.amount++;
+        amountSpan.textContent = item.amount;
+    };
+     // Tambahkan event listener untuk mencegah perilaku default dari event "click"
+     increaseButton.addEventListener("click", function(event) {
+        event.preventDefault();
+    });
+
+    listItem.appendChild(increaseButton);
+
+    var decreaseButton = document.createElement("button");
+    decreaseButton.classList.add("btn","btn-sm","btn-warning","btn-circle", "ml-1")
+    decreaseButton.id = "decreaseButton"
+    decreaseButton.textContent = "-";
+    decreaseButton.onclick = function() {
+        if (item.amount > 1) {
+            item.amount--;
+            amountSpan.textContent = item.amount;
+        }
+    };
+    decreaseButton.addEventListener("click", function(event) {
+        event.preventDefault();
+    });
+    listItem.appendChild(decreaseButton);
+
+    // Create a button to remove the item
+    var removeButton = document.createElement("button");
+    removeButton.innerHTML = '<i class="fas fa-trash"></i>';
+    removeButton.classList.add("btn","btn-sm","btn-danger","btn-circle", "ml-1")
+    removeButton.onclick = function() {
+        // Hapus item dari array itemListData
+        itemListData = itemListData.filter(function(listItem) {
+            return listItem.id !== item.id;
+        });
+        // Hapus elemen list item dari DOM
+        listItem.remove();
+    };
+    removeButton.addEventListener("click", function(event) {
+        event.preventDefault();
+    });
+    listItem.appendChild(removeButton);
+
+    // Append the list item to the list
+    document.getElementById("itemListEdit").appendChild(listItem);
+}
+
 console.log(itemListData);
 
 // Fungsi untuk mengosongkan item list
@@ -329,15 +481,16 @@ function clearItemList() {
     itemList.innerHTML = "";
 
      // Mengosongkan input tanggal
-    document.getElementById("nama_menuAdd").value = "";
+    document.getElementById("id_bahanAdd").value = "";
     // Mengosongkan input harga
-    document.getElementById("hargaAdd").value = "";
+    // document.getElementById("id_bahanEdit").value = "";
 }
 
 
 
 
 const formAdd = document.getElementById("bahanAdd");
+// const formEdit = document.getElementById("bahanEdit");
 formAdd.addEventListener("submit", unSubmit); 
 
 function unSubmit(e) {
