@@ -19,7 +19,13 @@ function generateRandomString($length = 10) {
 
 switch ($action) {
     case 'add':
-        if(isset($_POST['submit'])){
+        if(isset($_POST)){
+        // echo json_encode($_POST['item']);
+        $json_data = file_get_contents('php://input');
+
+        // Decode JSON data into PHP array
+        $item = json_decode($_POST['item'], true);
+
             $nama_menu = $_POST['nama_menu'];
             $harga = $_POST['harga'];
 
@@ -45,7 +51,7 @@ switch ($action) {
             $imagePath = 'assets/img/' . $basename;
             // $tipe = $_POST['tipe'];
             
-            $sql = "INSERT INTO menu (nama_menu, harga, gambar, tipe) VALUES ('$nama_menu', '$harga', '$imagePath', 1)";
+            $sql = "INSERT INTO menu (nama_menu, harga, gambar, tipe) VALUES ('$nama_menu', '$harga', '$imagePath', TRUE)";
             // echo json_encode($_FILES);
             // echo $target_dir. "<br>";
             // echo $new_gambar. "<br>";
@@ -69,15 +75,41 @@ switch ($action) {
                     }
                 }
             }
-                $result = $conn->query($sql);
-                $_SESSION['success-alert'] = 'Berhasil menambah data';
+            if ($conn->query($sql) === TRUE) {
+                $last_insert_id = $conn->insert_id;
+                foreach ($item as $item_data) {
+                
+                $id_bahan = $item_data["id"];
+                $amount = $item_data["amount"];
+
+                // Assuming $id_penjualan and $id_menu are sanitized properly to prevent SQL injection
+                $sqlDetailMenu = "INSERT INTO detail_menu (id_menu, id_bahan, kebutuhan) VALUES ('$last_insert_id', '$id_bahan', '$amount')";
+
+                if ($conn->query($sqlDetailMenu)) {
+                    // If successful, add success message to result array
+                    echo json_encode("sukses papa");
+                    // header("Location: " . $_SERVER['HTTP_REFERER']);
+                    // exit();
+                } else {
+                    echo json_encode("gagal papa");
+                    // header("Location: " . $_SERVER['HTTP_REFERER']);
+                    // exit();
+                    
+                }
+         
+            }
+        }else{
+            // echo json_encode($conn->error);
+            echo json_encode("gagal papa");
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit();
-            }catch(PDOException $e){
-            $_SESSION['failed-alert'] = 'Gagal menambah data';
-            header("Location: " . $_SERVER['HTTP_REFERER']);
-            exit();
-            }
+        }
+        }catch(PDOException $e){
+            $_SESSION['failed-alert'] = 'Gagal menambah menu';
+            echo json_encode($e);
+        header("Location: " . $_SERVER['HTTP_REFERER']);
+        exit();
+        }
         }
             $conn->close();
             break;
@@ -177,12 +209,13 @@ switch ($action) {
                 if (file_exists($filename)) {
                     unlink($filename);
                 }
-
+                $sqlDelet = "DELETE FROM detail_menu WHERE id_menu='$id'";
                 $sql = "DELETE FROM menu WHERE id='$id'";
 
                 try{
 
                 $result = $conn->query($sql);
+                $resultDelet = $conn->query($sqlDelet);
                 $_SESSION['success-alert'] = 'Berhasil menghapus data';
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit();
