@@ -9,7 +9,9 @@ $data = array(); // initialize an empty array to store the rows
 while ($row = $result->fetch_assoc()) {
     $data[] = $row; // append each row to the data array
 }
-// echo json_encode($data);
+
+echo json_encode($data);
+
 $sqlBahan = "SELECT * FROM bahan";
 $resultBahan = $conn->query($sqlBahan);
 $dataBahan = array(); // initialize an empty array to store the rows
@@ -64,7 +66,7 @@ $conn->close();
                           </button>  
 
                           <!-- Button trigger modal SELENGKAPNYA -->
-                          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalSelengkapnya<?=$key?>">
+                          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalSelengkapnya<?=$key?>" id="<?= $row['id']?>">
                             Selengkapnya
                           </button>
 
@@ -118,7 +120,7 @@ $conn->close();
                           </div>
 
                           <!-- Modal SELENGKAPNYA -->
-                        <div class="modal fade" id="exampleModalSelengkapnya<?=$key?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade selengkapnya" id="exampleModalSelengkapnya<?=$key?>" token="<?= $row['id']?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                           <div class="modal-dialog">
                             <div class="modal-content">
                               <div class="modal-header">
@@ -127,18 +129,12 @@ $conn->close();
                                   <span aria-hidden="true">&times;</span>
                                 </button>
                               </div>
-                              <div class="modal-body">
-                                <?php
-                                $bahan_array = explode(',', $row['bahan']); 
-                                echo "<ul>";
-                                foreach ($bahan_array as $bahan) {
-                                    $bahan = trim($bahan, '');
-                                    echo "<li>$bahan</li>";
-                                }
+                              <div class="modal-body" id="getBahan<?=$row['id']?>" data-id="<?= $row['id']?>">
 
-                                echo "</ul>";
-                                ?>
                               </div>
+                               <ul id="itemListEdit<?=$row['id']?>">
+                            <!-- Rendered list items will appear here -->
+                                </ul>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                               </div>
@@ -212,6 +208,11 @@ $conn->close();
 <script>
 var itemListData = [];
 
+const getBahan = document.getElementsByClassName('selengkapnya');
+
+
+  // const dataItem = document.querySelector('[data-item]');
+  // console.log(dataItem.getAttribute('data-item'));
 function addItemToList() {
     var select = document.getElementById("id_bahanAdd");
     var selectedOption = select.options[select.selectedIndex];
@@ -246,11 +247,41 @@ function openModal() {
     clearItemList();
     // Buka modal
     $('#modalBahan').modal('show');
-
+console.log("test")
 }
+// Fungsi untuk membuka modal tambah penjualan
+function bahanModal(event) {
+    const bahanId = event.target.getAttribute('token'); // Get the id from the data-id attribute of the related target
+    // const listItem = []
+    fetch('controllers/getBahan.php?id=' + bahanId)
+    .then(response => response.json())
+    .then(data => {
+        const bahanElement = document.getElementById('itemListEdit' + bahanId); // Use the bahanId to get the correct element
+        bahanElement.innerHTML = ''; // Clear previous data
+        console.log(bahanId);
+        data.forEach(item => {
+            // const listItem = document.createElement('li');
+            // listItem.textContent = item.nama_bahan;
+            // bahanElement.appendChild(listItem);
+            // console.log(item)
+            // listItem.push(item);
+            renderListItemEdit(item, bahanId);
+
+          });
+          // listItem.forEach(e => {
+            
+          // })
+          // console.log(listItem)
+        })
+    .catch(error => console.error('Error:', error));
+}
+
 
 // Tambahkan event listener untuk menangani pembukaan modal
 $('#modalBahan').on('show.bs.modal', openModal);
+$('.selengkapnya').each(function() {
+  $(this).on('show.bs.modal', bahanModal);
+});
 
 function renderListItem(item) {
     // Create list item element
@@ -319,6 +350,81 @@ function renderListItem(item) {
     document.getElementById("itemList").appendChild(listItem);
 }
 
+function renderListItemEdit(item, bahanId) {
+  // console.log("hoiiii")
+    // Create list item element
+    var listItem = document.createElement("li");
+    listItem.dataset.id = item.id;
+
+    // Create a span for the item name
+    var itemName = document.createElement("span");
+    itemName.textContent = item.nama_bahan + " (ID: " + item.id + ") - Amount: ";
+    listItem.appendChild(itemName);
+
+    // Create a span for the amount
+    var amountSpan = document.createElement("span");
+    amountSpan.textContent = item.kebutuhan;
+    listItem.appendChild(amountSpan);
+
+    // Create buttons to adjust amount
+    var increaseButton = document.createElement("button");
+    increaseButton.textContent = "+";
+    increaseButton.classList.add("btn","btn-sm","btn-success","btn-circle", "ml-1")
+    increaseButton.id = "increaseButton"
+    increaseButton.onclick = function() {
+        item.kebutuhan++;
+        amountSpan.textContent = item.kebutuhan;
+    };
+     // Tambahkan event listener untuk mencegah perilaku default dari event "click"
+     increaseButton.addEventListener("click", function(event) {
+        event.preventDefault();
+    });
+
+    listItem.appendChild(increaseButton);
+
+    var decreaseButton = document.createElement("button");
+    decreaseButton.classList.add("btn","btn-sm","btn-warning","btn-circle", "ml-1")
+    decreaseButton.id = "decreaseButton"
+    decreaseButton.textContent = "-";
+    decreaseButton.onclick = function() {
+        if (item.kebutuhan > 1) {
+            item.kebutuhan--;
+            amountSpan.textContent = item.kebutuhan;
+        }
+    };
+    decreaseButton.addEventListener("click", function(event) {
+        event.preventDefault();
+    });
+    listItem.appendChild(decreaseButton);
+
+    // Create a button to remove the item
+    var removeButton = document.createElement("button");
+    removeButton.innerHTML = '<i class="fas fa-trash"></i>';
+    removeButton.classList.add("btn","btn-sm","btn-danger","btn-circle", "ml-1")
+    removeButton.onclick = function() {
+        // Hapus item dari array itemListData
+        itemListData = itemListData.filter(function(listItem) {
+            return listItem.id !== item.id;
+        });
+        // Hapus elemen list item dari DOM
+        listItem.remove();
+    };
+    removeButton.addEventListener("click", function(event) {
+        event.preventDefault();
+    });
+    listItem.appendChild(removeButton);
+
+    // Append the list item to the list
+    const itemListEdit = document.getElementById("itemListEdit" + bahanId);
+    // console.log(document.getElementById("itemListEdit"))
+    console.log(item.id, "HALOOO")
+    if (itemListEdit) { // Check if itemListEdit exists
+        itemListEdit.appendChild(listItem);
+    } else {
+        console.error("Element with ID 'itemListEdit' not found in the document.");
+    }
+}
+
 console.log(itemListData);
 
 // Fungsi untuk mengosongkan item list
@@ -371,6 +477,11 @@ fetch('controllers/makananController.php?action=add', {
         console.log(formData);
 }
 
+
+fetch('controllers/getBahan.php?id=40')
+
+.then(data=> data.json())
+.then(data=> console.log(data))
 
 
    
