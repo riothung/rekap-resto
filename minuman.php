@@ -61,6 +61,11 @@ $conn->close();
                             <i class="fas fa-fw fa-trash-alt"></i><span>Hapus</span>
                           </button>  
 
+                          
+                          <!-- Button trigger modal SELENGKAPNYA -->
+                          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalSelengkapnya">
+                            Selengkapnya
+                          </button>
 
                           <div class="modal fade" id="editMenu'.$key.'" tabindex="-1" aria-labelledby="editMenuLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -105,6 +110,29 @@ $conn->close();
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                   <a class="btn btn-danger" href="controllers/minumanController.php?action=delete&id='.$row['id'].'">Hapus</a>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Modal SELENGKAPNYA -->
+                          <div class="modal fade" id="exampleModalSelengkapnya" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <ul>
+                                  <li>Rio Kontol</li>
+                                  </ul>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                  <button type="button" class="btn btn-primary">Save changes</button>
                                 </div>
                               </div>
                             </div>
