@@ -88,7 +88,7 @@ $conn->close();
                                     <input value="<?=$row['harga']?>" type="text" placeholder="Harga" autofocus name="harga" class="form-control" >
                                   </div>
                                   <div>
-                                    <label for="gambar" class="form-label">Nama Menu</label>
+                                    <label for="gambar" class="form-label">Gambar</label>
                                     <input value="<?=$row['gambar']?>" type="file" placeholder="Gambar" autofocus name="gambar" class="form-control">
                                   </div>
                                   <div class="modal-footer">
