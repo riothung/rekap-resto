@@ -50,7 +50,7 @@ $conn->close();
                 
                 <div class="col">
                     <div class="card mt-3 border-danger">
-                    <img src="./<?=$row['gambar']?>" class="card-img-top" alt="...">
+                    <img src="./<?=$row['gambar']?>" style="height: 250px;" class="card-img-top" alt="Gambar Rusak">
                     <div class="card-body">
                     <h5 class="card-title text-danger" ><?=$row['nama_menu']?></h5>
                     <p class="card-text text-gray-800"> <b>Harga :</b> Rp. <?=number_format($row['harga'], 0, ',', '.')?></p>
