@@ -9,7 +9,7 @@ $data = array(); // initialize an empty array to store the rows
 while ($row = $result->fetch_assoc()) {
     $data[] = $row; // append each row to the data array
 }
-echo json_encode($data);
+// echo json_encode($data);
 $sqlBahan = "SELECT * FROM bahan";
 $resultBahan = $conn->query($sqlBahan);
 $dataBahan = array(); // initialize an empty array to store the rows
