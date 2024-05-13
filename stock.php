@@ -62,7 +62,7 @@ $conn->close();
                     <tbody>
                         <?php foreach($data as $key => $row): ?>
                       <tr>
-                        <td>tanggal nih</td>
+                        <td><?= $row['tanggal'] ?></td>
                         <td><?= $row['nama_bahan']; ?></td>
                         <td>Rp. <?= number_format($row['harga'], 0, ',', '.'); ?></td>
                         <td><?= $row['stok']; ?></td>
@@ -84,7 +84,7 @@ $conn->close();
                               <div>
                               <div>
                                 <label for="tanggal" class="form-label">Tanggal</label>
-                                <input value="<?=$row[''];?>" type="text" placeholder="Tanggal" autofocus name="tanggal" class="form-control">
+                                <input value="<?=$row['tanggal']; ?>" type="date" placeholder="Tanggal" autofocus name="tanggal" class="form-control">
                               </div>
                                 <label for="nama_bahan" class="form-label">Nama Bahan</label>
                                 <input value="<?=$row['nama_bahan'];?>" type="text" placeholder="nama_bahan" autofocus name="nama_bahan" class="form-control" autocomplete="off">
