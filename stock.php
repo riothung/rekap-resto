@@ -148,10 +148,10 @@ $conn->close();
       <div class="modal-body">
         <!-- Add your content here -->
         <form action="controllers/stockController.php?action=add" method="POST" enctype="multipart/form-data" autocomplete="off">
-        <div class="mb-3">
+           <div class="mb-3">
                 <label for="tanggal" class="form-label">Tanggal</label>
                 <input type="date" class="form-control" id="tanggal" name="tanggal" required>
-            </div
+                 </div>
             <div class="mb-3">
                 <label for="nama_bahan" class="form-label">Nama Bahan</label>
                 <input type="text" class="form-control" id="nama_bahan" name="nama_bahan" required>
@@ -165,8 +165,6 @@ $conn->close();
                 <label for="stok" class="form-label">Sisa Stok</label>
                 <input type="number" class="form-control" id="stok" name="stok" required>
             </div>
-            >
-            
             <button type="submit" name="submit" class="btn btn-primary">Submit</button>
         </form>
       </div>
