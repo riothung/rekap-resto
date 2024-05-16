@@ -12,11 +12,12 @@ $conn = OpenCon();
 switch ($action) {
     case 'add':
         if(isset($_POST['submit'])){
+            $tanggal = $_POST['tanggal'];
             $nama_bahan = $_POST['nama_bahan'];
             $harga = $_POST['harga'];
             $stok = $_POST['stok'];
 
-            $sql = "INSERT INTO bahan (nama_bahan, harga, stok) VALUES ('$nama_bahan', '$harga', '$stok')";
+            $sql = "INSERT INTO bahan (tanggal, nama_bahan, harga, stok) VALUES ('$tanggal', '$nama_bahan', '$harga', '$stok')";
 
             try {
                 $result = $conn->query($sql);
@@ -36,12 +37,12 @@ switch ($action) {
             if(isset($_POST['submit'])){
 
             $id = $_REQUEST['id'];                
-            
+            $tanggal = $_POST['tanggal'];
             $nama_bahan = $_POST['nama_bahan'];
             $harga = $_POST['harga'];
             $stok = $_POST['stok'];
 
-            $sql = "UPDATE bahan SET nama_bahan = '$nama_bahan', harga = '$harga', stok = '$stok' WHERE id = '$id'";
+            $sql = "UPDATE bahan SET tanggal = '$tanggal', nama_bahan = '$nama_bahan', harga = '$harga', stok = '$stok' WHERE id = '$id'";
 
             // echo json_encode($_POST);
 
@@ -62,7 +63,7 @@ switch ($action) {
             case 'delete':
 
                 $id = $_REQUEST['id'];
-                
+                $tanggal = $_POST['tanggal'];
                 $nama_bahan = $_POST['nama_bahan'];
                 $harga = $_POST['harga'];
                 $stok = $_POST['stok'];

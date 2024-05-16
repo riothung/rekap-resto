@@ -43,6 +43,7 @@ $conn->close();
                   <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                       <tr>
+                        <th>Tanggal</th>
                         <th>Nama Bahan</th>
                         <th>Harga</th>
                         <th>Sisa Stok</th>
@@ -51,6 +52,7 @@ $conn->close();
                     </thead>
                     <tfoot>
                       <tr>
+                        <th>Tanggal</th>
                         <th>Nama Bahan</th>
                         <th>Harga</th>
                         <th>Sisa Stok</th>
@@ -60,6 +62,7 @@ $conn->close();
                     <tbody>
                         <?php foreach($data as $key => $row): ?>
                       <tr>
+                        <td><?= $row['tanggal'] ?></td>
                         <td><?= $row['nama_bahan']; ?></td>
                         <td>Rp. <?= number_format($row['harga'], 0, ',', '.'); ?></td>
                         <td><?= $row['stok']; ?></td>
@@ -79,6 +82,10 @@ $conn->close();
                             <form action="controllers/stockController.php?action=edit&id=<?=$row['id'];?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
                               
                               <div>
+                              <div>
+                                <label for="tanggal" class="form-label">Tanggal</label>
+                                <input value="<?=$row['tanggal']; ?>" type="date" placeholder="Tanggal" autofocus name="tanggal" class="form-control">
+                              </div>
                                 <label for="nama_bahan" class="form-label">Nama Bahan</label>
                                 <input value="<?=$row['nama_bahan'];?>" type="text" placeholder="nama_bahan" autofocus name="nama_bahan" class="form-control" autocomplete="off">
                               </div>
@@ -90,6 +97,7 @@ $conn->close();
                                 <label for="stok" class="form-label">Stok</label>
                                 <input value="<?=$row['stok'];?>" type="number" placeholder="stok" autofocus name="stok" class="form-control">
                               </div>
+                             
                               <div class="modal-footer">
                               <button type="submit" name="submit" class="btn btn-warning">Submit</button>
                               </div>
@@ -140,6 +148,10 @@ $conn->close();
       <div class="modal-body">
         <!-- Add your content here -->
         <form action="controllers/stockController.php?action=add" method="POST" enctype="multipart/form-data" autocomplete="off">
+           <div class="mb-3">
+                <label for="tanggal" class="form-label">Tanggal</label>
+                <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+                 </div>
             <div class="mb-3">
                 <label for="nama_bahan" class="form-label">Nama Bahan</label>
                 <input type="text" class="form-control" id="nama_bahan" name="nama_bahan" required>
@@ -153,7 +165,6 @@ $conn->close();
                 <label for="stok" class="form-label">Sisa Stok</label>
                 <input type="number" class="form-control" id="stok" name="stok" required>
             </div>
-            
             <button type="submit" name="submit" class="btn btn-primary">Submit</button>
         </form>
       </div>
