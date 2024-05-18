@@ -2,7 +2,10 @@
 
 require './partials/header.php';
 
-$sql = "SELECT * FROM bahan";
+$id_kategori = isset($_REQUEST['id_kategori']) ? $_REQUEST['id_kategori'] : null;
+$id_kategori_escaped = mysqli_real_escape_string($conn, $id_kategori);
+
+$sql = "SELECT * FROM bahan JOIN kategori_bahan ON bahan.id_kategori = kategori_bahan.id WHERE bahan.id_kategori = '$id_kategori'";
 $result = $conn->query($sql);
 $data = array(); // initialize an empty array to store the rows
 while ($row = $result->fetch_assoc()) {
@@ -86,6 +89,15 @@ $conn->close();
                                 <label for="tanggal" class="form-label">Tanggal</label>
                                 <input value="<?=$row['tanggal']; ?>" type="date" placeholder="Tanggal" autofocus name="tanggal" class="form-control">
                               </div>
+                              <div class="mb-3">
+                                  <label for="id_kategori" class="form-label">Kategori</label>
+                                  <select name="id_kategori" class="form-control" id="id_kategori">
+                                      <option value="" disabled selected>Pilih Kategori</option> <!-- Option baru -->
+                                      <?php foreach($dataKategori as $kategori): ?>
+                                          <option data-id="<?= $kategori['kategori']; ?>" value="<?= $kategori['id']; ?>"><?= $kategori['kategori']; ?></option>
+                                      <?php endforeach; ?>
+                                </select>
+                              </div>
                                 <label for="nama_bahan" class="form-label">Nama Bahan</label>
                                 <input value="<?=$row['nama_bahan'];?>" type="text" placeholder="nama_bahan" autofocus name="nama_bahan" class="form-control" autocomplete="off">
                               </div>
@@ -135,48 +147,5 @@ $conn->close();
             </div>
           
         <!-- End of Main Content -->
-
-        <!-- Modal Tambah Stock-->
-
-<div class="modal fade" id="modalBahan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">+ Bahan</h1>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">x</button>
-      </div>
-      <div class="modal-body">
-        <!-- Add your content here -->
-        <form action="controllers/stockController.php?action=add" method="POST" enctype="multipart/form-data" autocomplete="off">
-           <div class="mb-3">
-                <label for="tanggal" class="form-label">Tanggal</label>
-                <input type="date" class="form-control" id="tanggal" name="tanggal" required>
-                 </div>
-            <div class="mb-3">
-                <label for="nama_bahan" class="form-label">Nama Bahan</label>
-                <input type="text" class="form-control" id="nama_bahan" name="nama_bahan" required>
-            </div>
-            <div class="mb-3">
-                <label for="harga" class="form-label">Harga</label>
-                <input type="number" class="form-control" id="harga" name="harga" min="0" step="0.01" required>
-
-            </div>
-            <div class="mb-3">
-                <label for="stok" class="form-label">Sisa Stok</label>
-                <input type="number" class="form-control" id="stok" name="stok" required>
-            </div>
-            <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- end modal Stock -->
-
-
-
 
 <?php require 'partials/footer.php'; ?>

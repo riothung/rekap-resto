@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2024 at 04:07 PM
+-- Generation Time: May 18, 2024 at 07:06 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,22 +29,24 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `bahan` (
   `id` int(11) NOT NULL,
+  `tanggal` date NOT NULL,
   `nama_bahan` varchar(50) NOT NULL,
   `harga` bigint(20) NOT NULL,
-  `stok` float NOT NULL
+  `stok` float NOT NULL,
+  `satuan` varchar(10) NOT NULL,
+  `id_kategori` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `bahan`
 --
 
-INSERT INTO `bahan` (`id`, `nama_bahan`, `harga`, `stok`) VALUES
-(1, 'Ayam', 70000, 5),
-(2, 'bihun', 0, 7),
-(3, 'beras', 0, 10),
-(5, 'Masako', 5000, 5),
-(6, 'Garam', 5000, 2),
-(7, 'Bawang', 5000, 2);
+INSERT INTO `bahan` (`id`, `tanggal`, `nama_bahan`, `harga`, `stok`, `satuan`, `id_kategori`) VALUES
+(18, '2024-05-16', 'Sapu Lantai', 10000, 0.5, '', 8),
+(19, '2024-05-31', 'Pulpen Faster', 5000, 2.5, '', 7),
+(20, '2024-05-23', 'Kain Pel', 15000, 5, '', 8),
+(21, '2024-05-31', 'Buku Nota', 15000, 4, '', 7),
+(27, '2024-05-17', 'aas', 123, 123, '', 18);
 
 -- --------------------------------------------------------
 
@@ -64,10 +66,25 @@ CREATE TABLE `detail_menu` (
 --
 
 INSERT INTO `detail_menu` (`id_menu`, `id_bahan`, `id`, `kebutuhan`) VALUES
-(1, 1, 1, 0),
-(2, 2, 2, 0),
-(2, 1, 3, 0),
-(2, 3, 4, 0);
+(36, 1, 5, 1),
+(37, 7, 6, 3),
+(37, 6, 7, 1),
+(38, 1, 8, 1),
+(38, 7, 9, 3),
+(39, 1, 10, 1),
+(40, 1, 11, 2),
+(40, 2, 12, 1),
+(40, 3, 13, 2),
+(43, 1, 14, 1),
+(43, 3, 15, 1),
+(44, 10, 16, 2),
+(44, 14, 17, 1),
+(44, 15, 18, 2),
+(45, 27, 19, 7),
+(46, 18, 20, 1),
+(47, 18, 21, 1),
+(48, 18, 22, 1.5),
+(48, 19, 23, 2.5);
 
 -- --------------------------------------------------------
 
@@ -87,13 +104,41 @@ CREATE TABLE `detail_penjualan` (
 --
 
 INSERT INTO `detail_penjualan` (`id`, `id_penjualan`, `id_menu`, `amount`) VALUES
-(25, 0, 13, 1),
-(26, 0, 15, 1),
-(27, 0, 15, 1),
-(28, 22, 11, 1),
-(29, 23, 11, 1),
-(30, 23, 13, 1),
-(31, 23, 14, 1);
+(77, 57, 40, 1),
+(78, 58, 44, 1),
+(79, 59, 48, 1),
+(80, 60, 16, 1),
+(81, 60, 40, 1),
+(82, 60, 38, 1),
+(83, 60, 42, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kategori_bahan`
+--
+
+CREATE TABLE `kategori_bahan` (
+  `id` int(10) NOT NULL,
+  `kategori` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `kategori_bahan`
+--
+
+INSERT INTO `kategori_bahan` (`id`, `kategori`) VALUES
+(1, 'Bahan Baku Soto'),
+(2, 'Bahan Baku Nasi dan Mie'),
+(3, 'Bahan Se\'i'),
+(4, 'Bahan Baku Kerupuk'),
+(5, 'Bahan Baku Minuman'),
+(6, 'Bahan-bahan plastik'),
+(7, 'Bahan ATK (Alat Tulis Kantor)'),
+(8, 'Alat dan Bahan Kebersihan'),
+(9, 'Rokok'),
+(10, 'Energy'),
+(11, 'Bahan untuk Lauk karyawan');
 
 -- --------------------------------------------------------
 
@@ -105,42 +150,29 @@ CREATE TABLE `menu` (
   `id` int(11) NOT NULL,
   `nama_menu` varchar(50) NOT NULL,
   `harga` bigint(20) NOT NULL,
-  `gambar` varchar(255) DEFAULT NULL
+  `gambar` varchar(255) DEFAULT NULL,
+  `tipe` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `menu`
 --
 
-INSERT INTO `menu` (`id`, `nama_menu`, `harga`, `gambar`) VALUES
-(11, 'Soto Ayam', 25000, 'assets/img/662e3f8783a3b.png'),
-(13, 'Nasi Soto Bale Gule', 60000, ''),
-(14, 'Nasi Cumi Pak Kris', 50000, ''),
-(15, 'Nasi Goreng', 50000, ''),
-(16, 'Bakso', 50000, ''),
-(17, 'csdfsdsada', 23123, 'protocolCovid2.jpg'),
-(18, 'sdas', 23423, 'Array'),
-(19, 'nn', 12, '../assets/img/662e39c23cc16.png');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `minuman`
---
-
-CREATE TABLE `minuman` (
-  `id` int(10) NOT NULL,
-  `minuman` varchar(50) NOT NULL,
-  `harga` bigint(20) NOT NULL,
-  `gambar` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `minuman`
---
-
-INSERT INTO `minuman` (`id`, `minuman`, `harga`, `gambar`) VALUES
-(2, 'Josua', 5000, 'WzjNhP0K2c.');
+INSERT INTO `menu` (`id`, `nama_menu`, `harga`, `gambar`, `tipe`) VALUES
+(13, 'Nasi Soto Bale Gule', 60000, '', 0),
+(14, 'Nasi Cumi Pak Kris', 50000, '', 0),
+(15, 'Nasi Goreng', 50000, '', 0),
+(16, 'Bakso', 50000, '', 0),
+(38, 'Rawon', 50000, 'assets/img/663cdc6212cb9.jpg', 0),
+(39, 'Ayam Bakar', 100000, 'assets/img/663ce25f28f50.jpg', 0),
+(40, 'X', 1000000, 'assets/img/663f95ba2a9fc.jpg', 0),
+(42, 'Josua', 5000, 'assets/img/663e004a061bd.jpg', 1),
+(43, 'Ayam Geprek', 15000, 'assets/img/663e018bc9805.png', 0),
+(44, 'Nasi Gule', 50000, 'assets/img/66442de178356.jpg', 0),
+(45, 'seblak', 5000, 'assets/img/6648ac5fb1259.jpg', 0),
+(46, 'burjo', 5000, 'assets/img/6648acfc7e970.jpg', 0),
+(47, 'asd', 213, 'assets/img/6648adde8325e.jpg', 0),
+(48, 'Rawon', 15000, 'assets/img/6648ae950de2d.jpg', 0);
 
 -- --------------------------------------------------------
 
@@ -151,9 +183,7 @@ INSERT INTO `minuman` (`id`, `minuman`, `harga`, `gambar`) VALUES
 CREATE TABLE `penjualan` (
   `id_penjualan` int(11) NOT NULL,
   `tanggal` date NOT NULL,
-  `id_menu` int(50) NOT NULL,
   `shift` varchar(15) NOT NULL,
-  `jumlah_penjualan` int(20) NOT NULL,
   `total_harga` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -161,12 +191,11 @@ CREATE TABLE `penjualan` (
 -- Dumping data for table `penjualan`
 --
 
-INSERT INTO `penjualan` (`id_penjualan`, `tanggal`, `id_menu`, `shift`, `jumlah_penjualan`, `total_harga`) VALUES
-(19, '2019-11-29', 0, 'siang', 1, 5),
-(20, '2019-09-26', 0, 'siang', 1, 3),
-(21, '2019-09-26', 0, 'siang', 1, 3),
-(22, '2018-09-27', 0, 'siang', 1, 1),
-(23, '2021-09-28', 0, 'pagi', 1, 1);
+INSERT INTO `penjualan` (`id_penjualan`, `tanggal`, `shift`, `total_harga`) VALUES
+(57, '2024-06-05', 'siang', 1000000),
+(58, '2024-05-15', 'pagi', 50000),
+(59, '2024-05-18', 'pagi', 15000),
+(60, '2024-05-18', 'pagi', 1105000);
 
 -- --------------------------------------------------------
 
@@ -213,15 +242,15 @@ ALTER TABLE `detail_penjualan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `menu`
+-- Indexes for table `kategori_bahan`
 --
-ALTER TABLE `menu`
+ALTER TABLE `kategori_bahan`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `minuman`
+-- Indexes for table `menu`
 --
-ALTER TABLE `minuman`
+ALTER TABLE `menu`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -244,37 +273,37 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `bahan`
 --
 ALTER TABLE `bahan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `detail_menu`
 --
 ALTER TABLE `detail_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `detail_penjualan`
 --
 ALTER TABLE `detail_penjualan`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+
+--
+-- AUTO_INCREMENT for table `kategori_bahan`
+--
+ALTER TABLE `kategori_bahan`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
-
---
--- AUTO_INCREMENT for table `minuman`
---
-ALTER TABLE `minuman`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `penjualan`
 --
 ALTER TABLE `penjualan`
-  MODIFY `id_penjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id_penjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT for table `user`
