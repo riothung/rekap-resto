@@ -27,9 +27,19 @@ $dataMinuman = array();
 while($row = $resultMinuman->fetch_assoc()){
     $dataMinuman[] = $row;
 }
+// Ambil nilai tahun yang dipilih dari URL jika ada
 
+
+// Ubah kueri untuk memperbarui data penjualan berdasarkan tahun yang dipilih
+
+$tahun = isset($_GET['tahun']) ? $_GET['tahun'] : date('Y');
 // Lakukan query SQL untuk mengambil jumlah total dari kolom total_harga
-$sql_total_penjualan = "SELECT SUM(total_harga) AS total_penjualan FROM penjualan GROUP BY YEAR(tanggal)";
+
+$sql_total_penjualan = "SELECT MONTH(tanggal) as bulan, SUM(total_harga) as total_penjualan 
+                        FROM penjualan 
+                        WHERE YEAR(tanggal) = $tahun 
+                        GROUP BY bulan";
+
 $result_total_penjualan = $conn->query($sql_total_penjualan);
 // Periksa apakah query berhasil dieksekusi
 if ($result_total_penjualan) {
@@ -44,8 +54,13 @@ if ($result_total_penjualan) {
 
 
 // Ambil data penjualan dan total harga dari database
-$sql_penjualan_total = "SELECT MONTH(tanggal) as bulan, SUM(total_harga) as total_penjualan FROM penjualan GROUP BY bulan";
+// $sql_penjualan_total = "SELECT MONTH(tanggal) as bulan, SUM(total_harga) as total_penjualan FROM penjualan GROUP BY bulan";
+$sql_penjualan_total = "SELECT MONTH(tanggal) as bulan, SUM(total_harga) as total_penjualan 
+                        FROM penjualan 
+                        WHERE YEAR(tanggal) = $tahun 
+                        GROUP BY bulan";
 $result_penjualan_total = $conn->query($sql_penjualan_total);
+
 
 // Inisialisasi array untuk menyimpan data penjualan dan total harga
 $penjualan_total_data = array();
@@ -111,7 +126,12 @@ $labelsJSON = json_encode($labels);
           </div>
           <?php endif;?> -->
 
-          <!-- card penjualan -->
+          <div class="mb-3">
+            <input class="rounded" type="number" id="tahunFilter" name="tahunFilter" min="2000" max="2099" step="1" value="2024">
+            <button class="btn btn-danger" onclick="applyFilter()">Pilih Tahun</button>
+          </div>
+
+      
 <div class="row">
 <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-danger shadow h-100 py-2">
@@ -153,11 +173,11 @@ $labelsJSON = json_encode($labels);
               <div class="row no-gutters align-items-center">
                   <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                      Total Makanan</div>
+                      bahan terpakai</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($dataMakanan) ?></div>
                   </div>
                   <div class="col-auto">
-                      <i class="fas fa-utensils fa-2x text-gray-300"></i>
+                  <i class="fas fa-people-carry fa-2x text-gray-300"></i>
                   </div>
               </div>
           </div>
@@ -170,7 +190,7 @@ $labelsJSON = json_encode($labels);
             <div class="row no-gutters align-items-center">
                 <div class="col mr-2">
                     <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                    Total Minuman</div>
+                    .....</div>
                     <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($dataMinuman) > 0 ? count($dataMinuman) : 0 ?></div>
                 </div>
                 <div class="col-auto">
@@ -325,4 +345,23 @@ var myLineChart = new Chart(ctx, {
     },
   },
 });
+
+// Ambil nilai tahun dari URL jika ada
+var urlParams = new URLSearchParams(window.location.search);
+var tahun = urlParams.get('tahun');
+
+// Jika parameter tahun ada, atur nilai input tahun sesuai dengan nilai yang ada di URL
+if (tahun) {
+    document.getElementById('tahunFilter').value = tahun;
+}
+
+function applyFilter() {
+    tahun = document.getElementById('tahunFilter').value;
+    history.pushState({}, '', window.location.pathname + '?tahun=' + tahun);
+    // Reload bagian yang diperlukan halaman menggunakan JavaScript (Opsional)
+    location.reload();
+}
+
+
+
 </script>
