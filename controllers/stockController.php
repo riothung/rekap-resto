@@ -16,11 +16,29 @@ switch ($action) {
             $nama_bahan = $_POST['nama_bahan'];
             $harga = $_POST['harga'];
             $stok = $_POST['stok'];
+            $satuan = $_POST['satuan'];
+            $id_kategori = $_POST['id_kategori'];
 
-            $sql = "INSERT INTO bahan (tanggal, nama_bahan, harga, stok) VALUES ('$tanggal', '$nama_bahan', '$harga', '$stok')";
-
+            $sql = "INSERT INTO bahan (tanggal, nama_bahan, harga, stok, satuan, id_kategori) VALUES ('$tanggal', '$nama_bahan', '$harga', '$stok', '$satuan', '$id_kategori')";
+            
             try {
                 $result = $conn->query($sql);
+                $_SESSION['success-alert'] = 'Berhasil menambah data';
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit();
+            }catch(PDOException $e){
+                $_SESSION['failed-alert'] = 'Gagal menambah data';
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit();
+            }
+        }
+        if(isset($_POST['submitKategori'])){
+            $kategori = $_POST['kategori'];
+
+            $sqlKategori = "INSERT INTO kategori_bahan (kategori) VALUES ('$kategori')";
+
+            try{
+                $resultKategori = $conn->query($sqlKategori);
                 $_SESSION['success-alert'] = 'Berhasil menambah data';
                 header("Location: " . $_SERVER['HTTP_REFERER']);
                 exit();
@@ -38,6 +56,7 @@ switch ($action) {
 
             $id = $_REQUEST['id'];                
             $tanggal = $_POST['tanggal'];
+            // $kategori = $_POST['kategori'];
             $nama_bahan = $_POST['nama_bahan'];
             $harga = $_POST['harga'];
             $stok = $_POST['stok'];
@@ -57,6 +76,23 @@ switch ($action) {
                 exit();
             }
         }
+        if(isset($_POST['submitEdit'])){
+            $id = $_REQUEST['id'];
+            $kategori = $_POST['kategori'];
+
+            $sql = "UPDATE kategori_bahan SET kategori = '$kategori' WHERE id = '$id'";
+
+            try{
+                $result = $conn->query($sql);
+                $_SESSION['success-alert'] = 'Berhasil merubah data';
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit();
+            }catch(PDOException $e){
+                $_SESSION['failed-alert'] = 'Gagal merubah data';
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit();
+            }
+        }
             $conn->close();
             break;
 
@@ -64,12 +100,13 @@ switch ($action) {
 
                 $id = $_REQUEST['id'];
                 $tanggal = $_POST['tanggal'];
+                // $kategori = $_POST['kategori'];
                 $nama_bahan = $_POST['nama_bahan'];
                 $harga = $_POST['harga'];
                 $stok = $_POST['stok'];
                 
                 $sql = "DELETE FROM bahan WHERE id = '$id'";
-
+                
                 try{
                     $result = $conn->query($sql);
                     $_SESSION['success-alert'] = 'Berhasil menghapus data';
@@ -82,6 +119,31 @@ switch ($action) {
             }
             $conn -> close();
             break;
+
+            case 'hapus':
+
+                $id_kategori = isset($_REQUEST['id_kategori']) ? $_REQUEST['id_kategori'] : null;
+                $id = $_REQUEST['id'];
+                
+                $sql = "DELETE FROM bahan WHERE id_kategori = '$id_kategori'";
+                $sqlKategori = "DELETE FROM kategori_bahan WHERE id = '$id'";
+
+                // echo json_encode($_REQUEST);
+
+                try{
+                    $result = $conn->query($sql);
+                    $resultKategori = $conn->query($sqlKategori);
+                    $_SESSION['success-alert'] = 'Berhasil menghapus data';
+                    header("Location: " . $_SERVER['HTTP_REFERER']);
+                    exit();
+                }catch(PDOException $e){
+                    $_SESSION['failed-alert'] = 'Gagal menghapus data';
+                    header("Location: " . $_SERVER['HTTP_REFERER']);
+                    exit();
+            }
+            $conn -> close();
+            break;
+
     }
 
 

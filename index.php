@@ -29,7 +29,7 @@ while($row = $resultMinuman->fetch_assoc()){
 }
 
 // Lakukan query SQL untuk mengambil jumlah total dari kolom total_harga
-$sql_total_penjualan = "SELECT SUM(total_harga) AS total_penjualan FROM penjualan";
+$sql_total_penjualan = "SELECT SUM(total_harga) AS total_penjualan FROM penjualan GROUP BY YEAR(tanggal)";
 $result_total_penjualan = $conn->query($sql_total_penjualan);
 // Periksa apakah query berhasil dieksekusi
 if ($result_total_penjualan) {
@@ -130,21 +130,22 @@ $labelsJSON = json_encode($labels);
     </div>
   </div>
   <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-left-danger shadow h-100 py-2">
-          <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                  <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                          Total Bahan</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $totalBahan ?></div>
+      <a href="detailBahan.php">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Total Bahan</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-boxes fa-2x text-gray-300"></i>
                   </div>
-                  <div class="col-auto">
-                    <i class="fas fa-boxes fa-2x text-gray-300"></i>
                 </div>
-              </div>
-          </div>
-      </div>
-  </div>
+            </div>
+        </div>
+    </div>
+  </a>
 
   <div class="col-xl-3 col-md-6 mb-4">
       <div class="card border-left-danger shadow h-100 py-2">

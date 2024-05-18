@@ -273,8 +273,13 @@ function renderListItem(item) {
     listItem.appendChild(itemName);
 
     // Create a span for the amount
-    var amountSpan = document.createElement("span");
-    amountSpan.textContent = item.amount;
+    var amountSpan = document.createElement("input");
+    amountSpan.type = "number";
+    amountSpan.step = "0.01";
+    amountSpan.value = item.amount;
+    amountSpan.onchange = function() {
+        item.amount = amountSpan.value;
+    };
     listItem.appendChild(amountSpan);
 
     // Create buttons to adjust amount
@@ -284,7 +289,7 @@ function renderListItem(item) {
     increaseButton.id = "increaseButton"
     increaseButton.onclick = function() {
         item.amount++;
-        amountSpan.textContent = item.amount;
+        amountSpan.value = item.amount;
     };
      // Tambahkan event listener untuk mencegah perilaku default dari event "click"
      increaseButton.addEventListener("click", function(event) {
@@ -300,7 +305,7 @@ function renderListItem(item) {
     decreaseButton.onclick = function() {
         if (item.amount > 1) {
             item.amount--;
-            amountSpan.textContent = item.amount;
+            amountSpan.value = item.amount;
         }
     };
     decreaseButton.addEventListener("click", function(event) {

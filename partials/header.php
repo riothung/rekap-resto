@@ -95,7 +95,7 @@
 
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
-          <a class="nav-link collapsed" href="stock.php" >
+          <a class="nav-link collapsed" href="kategori.php" >
             <i class="fas fa-fw fa-boxes"></i>
             <span>Stock</span>
           </a>
