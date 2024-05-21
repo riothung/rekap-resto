@@ -67,8 +67,8 @@ $conn->close();
                       <tr>
                         <td><?= $row['tanggal'] ?></td>
                         <td><?= $row['nama_bahan']; ?></td>
-                        <td>Rp. <?= number_format($row['harga'], 0, ',', '.'); ?></td>
-                        <td><?= $row['stok']; ?></td>
+                        <td>Rp. <?= number_format($row['harga'], 0, ',', '.'); ?> </td>
+                        <td><?= $row['stok']; ?> <?= $row['satuan']; ?></td>  
                         <td><button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#modalEdit<?= $key; ?>">Edit</button>
                         <button type="button" class="btn btn-danger mb-2" data-toggle="modal" data-target="#modalHapus<?= $key; ?>">Hapus</button></td>
                       </tr>
@@ -167,9 +167,9 @@ $conn->close();
             <div class="mb-3">
             <label for="id_kategori" class="form-label">Kategori</label>
             <select name="id_kategori" class="form-control" id="id_kategori">
-                <option value="" disabled selected>Pilih Kategori</option> <!-- Option baru -->
+                <!-- <option value="" disabled selected>Pilih Kategori</option>  -->
                 <?php foreach($data as $kategori): ?>
-                    <option data-id="<?= $kategori['kategori']; ?>" value="<?= $kategori['id']; ?>"><?= $kategori['kategori']; ?></option>
+                    <option data-id="<?= $kategori['kategori']; ?>" value="<?= $kategori['id']; ?>" disabled selected ><?= $kategori['kategori']; ?></option>
                 <?php endforeach; ?>
             </select>
             </div>

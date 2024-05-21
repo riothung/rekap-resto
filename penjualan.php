@@ -145,7 +145,7 @@ function calculateTotalPrice($id_penjualan, $menu_data, $detail_penjualan) {
                         <?php foreach($data as $key => $row): ?>
                       <tr>
                         <td><?= $row['tanggal']; ?></td>
-                        <td><?= $row['total_menu']; ?></td>
+                        <td><?= $row['total_menu']; ?> Porsi</td>
                         <td><?= $row['shift']; ?></td>
                         <td>  <?php 
                                   // Ambil total harga dari fungsi yang dijelaskan sebelumnya

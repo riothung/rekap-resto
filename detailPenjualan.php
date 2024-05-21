@@ -87,7 +87,7 @@ while ($row = $result_menu_total->fetch_assoc()) {
                         <?php foreach($total_data as $key => $row): ?>
                       <tr>
                         <td><?= $row['nama_menu']; ?></td>
-                        <td><?= $row['amount']; ?></td>
+                        <td><?= $row['amount']; ?> Porsi</td>
                         <td>Rp. <?= number_format($row['total_harga_item'], 0, ',', '.'); ?></td>
                       </tr>
                       <!-- Modal Edit -->
