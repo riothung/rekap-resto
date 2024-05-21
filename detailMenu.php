@@ -6,7 +6,7 @@ $bulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('M');
 
 $currentYear = date('Y');
 
-$sql = "SELECT penjualan.tanggal, menu.nama_menu, SUM(detail_penjualan.amount) AS terpakai FROM penjualan
+$sql = "SELECT penjualan.tanggal, menu.nama_menu, SUM(detail_penjualan.amount) AS terjual FROM penjualan
 LEFT JOIN detail_penjualan ON detail_penjualan.id_penjualan = penjualan.id_penjualan
 LEFT JOIN detail_menu ON detail_penjualan.id_menu = detail_menu.id_menu
 LEFT JOIN menu ON detail_menu.id_menu = menu.id
@@ -69,20 +69,20 @@ $conn->close();
                 <thead>
                     <tr>
                     <th>Nama Menu</th>
-                    <th>Terpakai</th>
+                    <th>terjual</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
                     <th>Nama Menu</th>
-                    <th>Terpakai</th>
+                    <th>terjual</th>
                     </tr>
                 </tfoot>
                 <tbody>
                     <?php foreach($data as $key => $row): ?>
                     <tr>
                     <td><?= $row['nama_menu']; ?></td>
-                    <td><?= $row['terpakai']; ?></td>
+                    <td><?= $row['terjual']; ?> Porsi</td>
                     </tr>
                         
                     <?php endforeach; ?>
