@@ -69,13 +69,13 @@ $conn->close();
                 <thead>
                     <tr>
                     <th>Nama Menu</th>
-                    <th>terjual</th>
+                    <th>Terjual</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
                     <th>Nama Menu</th>
-                    <th>terjual</th>
+                    <th>Terjual</th>
                     </tr>
                 </tfoot>
                 <tbody>

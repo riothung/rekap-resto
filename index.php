@@ -151,7 +151,7 @@ $labelsJSON = json_encode($labels);
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Total Bahan</div>
+                            Bahan Terpakai Per Bulan</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-boxes fa-2x text-gray-300"></i>
@@ -169,7 +169,7 @@ $labelsJSON = json_encode($labels);
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Menu Terpakai</div>
+                            Menu Terjual Per Bulan</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-boxes fa-2x text-gray-300"></i>
