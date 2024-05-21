@@ -176,7 +176,7 @@ $conn->close();
              <div class="mb-3">
                 <label for="satuan" class="form-label">Satuan</label>
                 <div class="form-group">
-                    <input class="form-control" list="satuan" name="satuan" id="jenis_kerja" placeholder="Pilih Satuan" required>
+                    <input class="form-control" list="satuan" name="satuan" id="satuan" placeholder="Pilih Satuan" required>
                     <datalist id="satuan">
                         <option value="kg">Kilogram</option>
                         <option value="gram">Gram</option>
