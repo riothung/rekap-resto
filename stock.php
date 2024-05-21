@@ -148,4 +148,79 @@ $conn->close();
           
         <!-- End of Main Content -->
 
+        <!-- Modal Tambah Stock-->
+
+<div class="modal fade" id="modalBahan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">+ Bahan</h1>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">x</button>
+      </div>
+      <div class="modal-body">
+        <!-- Add your content here -->
+        <form action="controllers/stockController.php?action=add" method="POST" enctype="multipart/form-data" autocomplete="off">
+           <div class="mb-3">
+                <label for="tanggal" class="form-label">Tanggal</label>
+                <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+                 </div>
+            <div class="mb-3">
+            <label for="id_kategori" class="form-label">Kategori</label>
+            <select name="id_kategori" class="form-control" id="id_kategori">
+                <option value="" disabled selected>Pilih Kategori</option> <!-- Option baru -->
+                <?php foreach($data as $kategori): ?>
+                    <option data-id="<?= $kategori['kategori']; ?>" value="<?= $kategori['id']; ?>"><?= $kategori['kategori']; ?></option>
+                <?php endforeach; ?>
+            </select>
+            </div>
+             <div class="mb-3">
+                <label for="satuan" class="form-label">Satuan</label>
+                <div class="form-group">
+                    <input class="form-control" list="satuan" name="satuan" id="jenis_kerja" placeholder="Pilih Satuan" required>
+                    <datalist id="satuan">
+                        <option value="kg">Kilogram</option>
+                        <option value="gram">Gram</option>
+                        <option value="ekor">Ekor</option>
+                        <option value="bks">Bungkus</option>
+                        <option value="butir">Butir</option>
+                        <option value="ikat">Ikat</option>
+                        <option value="pcs">Pieces</option>
+                        <option value="btl">Botol</option>
+                        <option value="ball">Ball</option>
+                        <option value="liter">Liter</option>
+                        <option value="sachet">Sachet</option>
+                        <option value="klg">Kaleng</option>
+                        <option value="buah">Buah</option>
+                        <option value="galon">Galon</option>
+                        <option value="pak">Pak</option>
+                        <option value="roll">Roll</option>
+                        <option value="box">Box</option>
+                        <option value="tabung">Tabung</option>
+                    </datalist>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="nama_bahan" class="form-label">Nama Bahan</label>
+                <input type="text" class="form-control" id="nama_bahan" name="nama_bahan" required>
+            </div>
+            <div class="mb-3">
+                <label for="harga" class="form-label">Harga</label>
+                <input type="number" class="form-control" id="harga" name="harga" min="0" step="0.01" required>
+
+            </div>
+            <div class="mb-3">
+                <label for="stok" class="form-label">Sisa Stok</label>
+                <input type="number" class="form-control" id="stok" name="stok" required>
+            </div>
+            <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- end modal Stock -->
+
 <?php require 'partials/footer.php'; ?>
