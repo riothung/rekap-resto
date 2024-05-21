@@ -6,14 +6,14 @@ $bulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('M');
 
 $currentYear = date('Y');
 
-$sql = "SELECT penjualan.tanggal, bahan.nama_bahan, SUM(detail_menu.kebutuhan * detail_penjualan.amount) AS terpakai
+$sql = "SELECT penjualan.tanggal, bahan.nama_bahan, bahan.satuan, SUM(detail_menu.kebutuhan * detail_penjualan.amount) AS terpakai
 FROM penjualan
 LEFT JOIN detail_penjualan ON penjualan.id_penjualan = detail_penjualan.id_penjualan
 LEFT JOIN detail_menu ON detail_penjualan.id_menu = detail_menu.id_menu
 LEFT JOIN menu ON detail_menu.id_menu = menu.id
 LEFT JOIN bahan ON detail_menu.id_bahan = bahan.id
 WHERE YEAR(penjualan.tanggal) = '$currentYear' AND MONTH(penjualan.tanggal) = '$bulan'
-GROUP BY bahan.id
+GROUP BY bahan.id, bahan.satuan
 ";
 
 $result = $conn->query($sql);
@@ -84,7 +84,7 @@ $conn->close();
                         <?php foreach($data as $key => $row): ?>
                       <tr>
                         <td><?= $row['nama_bahan']; ?></td>
-                        <td><?= $row['terpakai']; ?></td>
+                        <td><?= $row['terpakai']; ?> <?= $row['satuan']; ?></td>
                       </tr>
                           
                       <?php endforeach; ?>
