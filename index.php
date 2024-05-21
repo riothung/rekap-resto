@@ -29,7 +29,6 @@ while($row = $resultMinuman->fetch_assoc()){
 }
 // Ambil nilai tahun yang dipilih dari URL jika ada
 
-
 // Ubah kueri untuk memperbarui data penjualan berdasarkan tahun yang dipilih
 
 $tahun = isset($_GET['tahun']) ? $_GET['tahun'] : date('Y');
@@ -52,7 +51,6 @@ if ($result_total_penjualan) {
     echo "Error: " . $sql_total_penjualan . "<br>" . $conn->error;
 }
 
-
 // Ambil data penjualan dan total harga dari database
 // $sql_penjualan_total = "SELECT MONTH(tanggal) as bulan, SUM(total_harga) as total_penjualan FROM penjualan GROUP BY bulan";
 $sql_penjualan_total = "SELECT MONTH(tanggal) as bulan, SUM(total_harga) as total_penjualan 
@@ -60,7 +58,6 @@ $sql_penjualan_total = "SELECT MONTH(tanggal) as bulan, SUM(total_harga) as tota
                         WHERE YEAR(tanggal) = $tahun 
                         GROUP BY bulan";
 $result_penjualan_total = $conn->query($sql_penjualan_total);
-
 
 // Inisialisasi array untuk menyimpan data penjualan dan total harga
 $penjualan_total_data = array();
@@ -106,7 +103,6 @@ foreach ($penjualan_total_data as $data) {
 // Mengonversi array labels menjadi format JSON untuk digunakan dalam chart
 $labelsJSON = json_encode($labels);
 
-
 ?>
 
         <!-- <div class="col-lg-12">
@@ -130,7 +126,6 @@ $labelsJSON = json_encode($labels);
             <input class="rounded" type="number" id="tahunFilter" name="tahunFilter" min="2000" max="2099" step="1" value="2024">
             <button class="btn btn-danger" onclick="applyFilter()">Pilih Tahun</button>
           </div>
-
       
 <div class="row">
 <div class="col-xl-3 col-md-6 mb-4">
@@ -168,21 +163,22 @@ $labelsJSON = json_encode($labels);
   </a>
 
   <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-left-danger shadow h-100 py-2">
-          <div class="card-body">
-              <div class="row no-gutters align-items-center">
-                  <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                      bahan terpakai</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?= count($dataMakanan) ?></div>
+      <a href="detailMenu.php">
+        <div class="card border-left-danger shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                            Menu Terpakai</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-boxes fa-2x text-gray-300"></i>
                   </div>
-                  <div class="col-auto">
-                  <i class="fas fa-people-carry fa-2x text-gray-300"></i>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </a>
 
   <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-danger shadow h-100 py-2">
