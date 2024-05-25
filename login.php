@@ -56,9 +56,9 @@
                                         </button>
                                         <hr>
                                     </form>
-                                    <div class="text-center">
+                                    <!-- <div class="text-center">
                                         <a class="small" href="register.php">Create Account</a>
-                                    </div>
+                                    </div> -->
                                     <div class="text-center">
                                         <a class="small" href="login-superadmin.php">Login Super Admin</a>
                                     </div>

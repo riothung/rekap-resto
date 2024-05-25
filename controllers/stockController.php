@@ -19,7 +19,7 @@ switch ($action) {
             $satuan = $_POST['satuan'];
             $id_kategori = $_POST['id_kategori'];
 
-            $sql = "INSERT INTO bahan (tanggal, nama_bahan, harga, stok, satuan, id_kategori) VALUES ('$tanggal', '$nama_bahan', '$harga', '$stok', '$satuan', '$id_kategori')";
+            $sql = "INSERT INTO bahan (tanggal, nama_bahan, harga, stok, stok_masuk, satuan, id_kategori) VALUES ('$tanggal', '$nama_bahan', '$harga', '$stok', '$stok', '$satuan', '$id_kategori')";
             
             try {
                 $result = $conn->query($sql);
@@ -61,7 +61,7 @@ switch ($action) {
             $harga = $_POST['harga'];
             $stok = $_POST['stok'];
 
-            $sql = "UPDATE bahan SET tanggal = '$tanggal', nama_bahan = '$nama_bahan', harga = '$harga', stok = '$stok' WHERE id = '$id'";
+            $sql = "UPDATE bahan SET tanggal = '$tanggal', nama_bahan = '$nama_bahan', harga = '$harga', stok = '$stok', stok_masuk ='$stok' WHERE id = '$id'";
 
             // echo json_encode($_POST);
 
