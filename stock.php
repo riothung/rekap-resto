@@ -5,12 +5,30 @@ require './partials/header.php';
 $id_kategori = isset($_REQUEST['id_kategori']) ? $_REQUEST['id_kategori'] : null;
 $id_kategori_escaped = mysqli_real_escape_string($conn, $id_kategori);
 
-$sql = "SELECT * FROM bahan JOIN kategori_bahan ON bahan.id_kategori = kategori_bahan.id WHERE bahan.id_kategori = '$id_kategori'";
+$id = isset($_REQUEST['id']) ? $_REQUEST['id'] : null;
+$id_escaped = mysqli_real_escape_string($conn, $id);
+
+$sql = "SELECT * FROM kategori_bahan JOIN bahan ON kategori_bahan.id = bahan.id_kategori WHERE bahan.id_kategori = '$id_kategori_escaped'";
 $result = $conn->query($sql);
 $data = array(); // initialize an empty array to store the rows
 while ($row = $result->fetch_assoc()) {
-    $data[] = $row; // append each row to the data array
+  $data[] = $row; // append each row to the data array
 }
+
+$sql = "SELECT * FROM kategori_bahan";
+$resultKategori = $conn->query($sql);
+$dataKategori = array(); // initialize an empty array to store the rows
+while ($row = $resultKategori->fetch_assoc()) {
+  $dataKategori[] = $row; // append each row to the data array
+}
+
+// if ($result->num_rows > 0) {
+//   // data menu ditemukan, lanjutkan dengan menampilkan opsi menu dalam elemen <select>
+// } else {
+//   // tidak ada data menu yang ditemukan
+//   echo "Data Tidak Ada !";
+// }
+
 $conn->close();
 
 ?>
@@ -82,10 +100,8 @@ $conn->close();
                               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">X</button>
                             </div>
                             <div class="modal-body">
-                            <form action="controllers/stockController.php?action=edit&id=<?=$row['id'];?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4">
-                              
-                              <div>
-                              <div>
+                            <form action="controllers/stockController.php?action=edit&id=<?= $row['id'] ?>" method="POST" enctype="multipart/form-data">
+                              <div class="mb-3">
                                 <label for="tanggal" class="form-label">Tanggal</label>
                                 <input value="<?=$row['tanggal']; ?>" type="date" placeholder="Tanggal" autofocus name="tanggal" class="form-control">
                               </div>
@@ -94,22 +110,22 @@ $conn->close();
                                   <select name="id_kategori" class="form-control" id="id_kategori">
                                       <option value="" disabled selected>Pilih Kategori</option> <!-- Option baru -->
                                       <?php foreach($dataKategori as $kategori): ?>
-                                          <option data-id="<?= $kategori['kategori']; ?>" value="<?= $kategori['id']; ?>"><?= $kategori['kategori']; ?></option>
+                                          <option data-id="<?= $kategori['kategori']; ?>" <?= $kategori['kategori'] == $kategori['kategori'] ? 'selected' : ''; ?> value="<?= $kategori['id']; ?>"><?= $kategori['kategori']; ?></option>
                                       <?php endforeach; ?>
                                 </select>
                               </div>
+                              <div class="mb-3">
                                 <label for="nama_bahan" class="form-label">Nama Bahan</label>
-                                <input value="<?=$row['nama_bahan'];?>" type="text" placeholder="nama_bahan" autofocus name="nama_bahan" class="form-control" autocomplete="off">
+                                <input value="<?=$row['nama_bahan'];?>" type="text" placeholder="Nama Bahan" autofocus name="nama_bahan" class="form-control" autocomplete="off">
                               </div>
-                              <div>
+                              <div class="mb-3">
                                 <label for="harga" class="form-label">Harga</label>
                                 <input value="<?=$row['harga'];?>" type="text" placeholder="Harga" autofocus name="harga" class="form-control" autocomplete="off">
                               </div>
-                              <div>
+                              <div class="mb-3">
                                 <label for="stok" class="form-label">Stok</label>
-                                <input value="<?=$row['stok'];?>" type="number" placeholder="stok" autofocus name="stok" class="form-control">
+                                <input value="<?=$row['stok'];?>" type="number" placeholder="Stok" autofocus name="stok" class="form-control">
                               </div>
-                             
                               <div class="modal-footer">
                               <button type="submit" name="submit" class="btn btn-warning">Submit</button>
                               </div>
@@ -167,16 +183,16 @@ $conn->close();
             <div class="mb-3">
             <label for="id_kategori" class="form-label">Kategori</label>
             <select name="id_kategori" class="form-control" id="id_kategori">
-                <!-- <option value="" disabled selected>Pilih Kategori</option>  -->
-                <?php foreach($data as $kategori): ?>
-                    <option data-id="<?= $kategori['kategori']; ?>" value="<?= $kategori['id']; ?>" disabled selected ><?= $kategori['kategori']; ?></option>
+                <option value="" disabled selected>Pilih Kategori</option> 
+                <?php foreach($dataKategori as $kategori): ?>
+                    <option data-id="<?= $kategori['kategori']; ?>" <?= $kategori['kategori'] == $kategori['kategori'] ? 'selected' : ''; ?> value="<?= $kategori['id']; ?>"><?= $kategori['kategori']; ?></option>
                 <?php endforeach; ?>
             </select>
             </div>
              <div class="mb-3">
                 <label for="satuan" class="form-label">Satuan</label>
                 <div class="form-group">
-                    <input class="form-control" list="satuan" name="satuan" id="satuan" placeholder="Pilih Satuan" required>
+                    <input class="form-control" list="satuan" name="satuan" placeholder="Pilih Satuan" required>
                     <datalist id="satuan">
                         <option value="kg">Kilogram</option>
                         <option value="gram">Gram</option>
@@ -206,7 +222,6 @@ $conn->close();
             <div class="mb-3">
                 <label for="harga" class="form-label">Harga</label>
                 <input type="number" class="form-control" id="harga" name="harga" min="0" step="0.01" required>
-
             </div>
             <div class="mb-3">
                 <label for="stok" class="form-label">Sisa Stok</label>

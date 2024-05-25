@@ -4,6 +4,9 @@ session_start();
 
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 
+$id_kategori = isset($_REQUEST['id_kategori']) ? $_REQUEST['id_kategori'] : null;
+// $id = isset($_REQUEST['id']) ? $_REQUEST['id'] : null;
+
 require '../db.php';
 $conn = OpenCon();
 
@@ -54,7 +57,7 @@ switch ($action) {
         case 'edit':
             if(isset($_POST['submit'])){
 
-            $id = $_REQUEST['id'];                
+            $id = isset($_REQUEST['id']) ? $_REQUEST['id'] : null;                
             $tanggal = $_POST['tanggal'];
             // $kategori = $_POST['kategori'];
             $nama_bahan = $_POST['nama_bahan'];
@@ -63,7 +66,7 @@ switch ($action) {
 
             $sql = "UPDATE bahan SET tanggal = '$tanggal', nama_bahan = '$nama_bahan', harga = '$harga', stok = '$stok' WHERE id = '$id'";
 
-            // echo json_encode($_POST);
+            // echo json_encode($_REQUEST);
 
             try{
                 $result = $conn->query($sql);
@@ -120,13 +123,20 @@ switch ($action) {
             $conn -> close();
             break;
 
-            case 'hapus':
+            case 'deleteKategori':
 
                 $id_kategori = isset($_REQUEST['id_kategori']) ? $_REQUEST['id_kategori'] : null;
-                $id = $_REQUEST['id'];
+                $id = isset($_REQUEST['id']) ? $_REQUEST['id'] : null;
+                
+                $queryBahan = "SELECT * FROM bahan WHERE id_kategori = '$id_kategori'";
+                // $result = $conn->query($queryBahan);
+                // $data = array();
+                // while ($row = $result->fetch_assoc()) {
+                //     $data[] = $row;
+                // }
                 
                 $sql = "DELETE FROM bahan WHERE id_kategori = '$id_kategori'";
-                $sqlKategori = "DELETE FROM kategori_bahan WHERE id = '$id'";
+                $sqlKategori = "DELETE FROM kategori_bahan WHERE id = '$id_kategori'";
 
                 // echo json_encode($_REQUEST);
 

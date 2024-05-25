@@ -9,15 +9,15 @@ $sql = "SELECT * FROM kategori_bahan";
 $result = $conn->query($sql);
 $data = array(); // initialize an empty array to store the rows
 while ($row = $result->fetch_assoc()) {
-    $data[] = $row; // append each row to the data array
+  $data[] = $row; // append each row to the data array
 }
 
-if ($result->num_rows > 0) {
-    // data menu ditemukan, lanjutkan dengan menampilkan opsi menu dalam elemen <select>
-} else {
-    // tidak ada data menu yang ditemukan
-    echo "Data Tidak Ada !";
-}
+// $sqlBahan = "SELECT * FROM bahan";
+// $resultBahan = $conn->query($sqlBahan);
+// $dataBahan = array(); // initialize an empty array to store the rows
+// while ($row = $resultBahan->fetch_assoc()) {
+//   $dataBahan[] = $row; // append each row to the data array
+// }
 
 $conn->close();
 
@@ -91,7 +91,7 @@ $conn->close();
                             <form action="controllers/stockController.php?action=edit&id=<?=$row['id'];?>" method="POST" enctype="multipart/form-data" class="w-100 d-flex flex-column gap-3 bg-white rounded p-4" autocomplete="off">
                               <div>
                                 <label for="kategori" class="form-label">Kategori</label>
-                                <input value="<?=$row['kategori']; ?>" type="text" placeholder="kategori" autofocus name="kategori" class="form-control">
+                                <input value="<?=$row['kategori']; ?>" type="text" placeholder="Kategori" autofocus name="kategori" class="form-control">
                               </div>
                               <div class="modal-footer">
                               <button type="submit" name="submitEdit" class="btn btn-warning">Submit</button>
@@ -114,7 +114,7 @@ $conn->close();
                           </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <a class="btn btn-danger" href="controllers/stockController.php?action=deleteKategori&id=<?=$row['id'];?>">Hapus</a>
+                            <a class="btn btn-danger" href="controllers/stockController.php?action=deleteKategori&id_kategori=<?=$row['id'];?>">Hapus</a>
                           </div>
                         </div>
                       </div>
@@ -154,7 +154,7 @@ $conn->close();
              <div class="mb-3">
                 <label for="satuan" class="form-label">Satuan</label>
                 <div class="form-group">
-                    <input class="form-control" list="satuan" name="satuan" id="jenis_kerja" placeholder="Pilih Pekerjaan" required>
+                    <input class="form-control" list="satuan" name="satuan" placeholder="Pilih Satuan" required>
                     <datalist id="satuan">
                         <option value="kg">Kilogram</option>
                         <option value="gram">Gram</option>
