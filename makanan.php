@@ -10,7 +10,7 @@ while ($row = $result->fetch_assoc()) {
     $data[] = $row; // append each row to the data array
 }
 
-echo json_encode($data);
+// echo json_encode($data);
 
 $sqlBahan = "SELECT * FROM bahan";
 $resultBahan = $conn->query($sqlBahan);
@@ -247,32 +247,27 @@ function openModal() {
     clearItemList();
     // Buka modal
     $('#modalBahan').modal('show');
-console.log("test")
 }
+
+const bahanList = []
 // Fungsi untuk membuka modal tambah penjualan
 function bahanModal(event) {
     const bahanId = event.target.getAttribute('token'); // Get the id from the data-id attribute of the related target
     // const listItem = []
-    fetch('controllers/getBahan.php?id=' + bahanId)
+    return fetch('controllers/getBahan.php?id=' + bahanId)
     .then(response => response.json())
     .then(data => {
         const bahanElement = document.getElementById('itemListEdit' + bahanId); // Use the bahanId to get the correct element
+        bahanList.push(data)
         bahanElement.innerHTML = ''; // Clear previous data
-        console.log(bahanId);
         data.forEach(item => {
-            // const listItem = document.createElement('li');
-            // listItem.textContent = item.nama_bahan;
-            // bahanElement.appendChild(listItem);
-            // console.log(item)
-            // listItem.push(item);
             renderListItemEdit(item, bahanId);
-
           });
-          // listItem.forEach(e => {
-            
-          // })
-          // console.log(listItem)
+          return data
+
+          
         })
+        
     .catch(error => console.error('Error:', error));
 }
 
@@ -280,7 +275,27 @@ function bahanModal(event) {
 // Tambahkan event listener untuk menangani pembukaan modal
 $('#modalBahan').on('show.bs.modal', openModal);
 $('.selengkapnya').each(function() {
-  $(this).on('show.bs.modal', bahanModal);
+  const submit = document.createElement('button')
+    submit.innerHTML = 'Submit'
+    submit.classList.add('btn')
+    submit.classList.add('btn-warning')
+    $(this)[0].children[0].children[0].children[3].append(submit)
+
+  $(this).on('show.bs.modal', (e) => {
+    bahanModal(e).then(items => {
+      submit.onclick = () => {
+        console.log(items)
+        fetch('controllers/makananController.php?action=editBahan', {
+          method: 'POST', 
+          body: JSON.stringify({item: items})
+        })
+        // .then(data=> data.json())
+        // .then(data=> console.log(JSON.stringify(data)))
+        .then(data=> location.reload(true))
+      }
+    });
+  });
+  
 });
 
 function renderListItem(item) {
@@ -362,8 +377,13 @@ function renderListItemEdit(item, bahanId) {
     listItem.appendChild(itemName);
 
     // Create a span for the amount
-    var amountSpan = document.createElement("span");
-    amountSpan.textContent = item.kebutuhan;
+   var amountSpan = document.createElement("input");
+    amountSpan.type = "number";
+    amountSpan.step = "0.01";
+    amountSpan.value = item.kebutuhan;
+    amountSpan.onchange = function() {
+        item.kebutuhan = amountSpan.value;
+    };
     listItem.appendChild(amountSpan);
 
     // Create buttons to adjust amount
@@ -373,7 +393,7 @@ function renderListItemEdit(item, bahanId) {
     increaseButton.id = "increaseButton"
     increaseButton.onclick = function() {
         item.kebutuhan++;
-        amountSpan.textContent = item.kebutuhan;
+        amountSpan.value = item.kebutuhan;
     };
      // Tambahkan event listener untuk mencegah perilaku default dari event "click"
      increaseButton.addEventListener("click", function(event) {
@@ -389,7 +409,7 @@ function renderListItemEdit(item, bahanId) {
     decreaseButton.onclick = function() {
         if (item.kebutuhan > 1) {
             item.kebutuhan--;
-            amountSpan.textContent = item.kebutuhan;
+            amountSpan.value = item.kebutuhan;
         }
     };
     decreaseButton.addEventListener("click", function(event) {
@@ -417,7 +437,7 @@ function renderListItemEdit(item, bahanId) {
     // Append the list item to the list
     const itemListEdit = document.getElementById("itemListEdit" + bahanId);
     // console.log(document.getElementById("itemListEdit"))
-    console.log(item.id, "HALOOO")
+    // console.log(item.id, "HALOOO")
     if (itemListEdit) { // Check if itemListEdit exists
         itemListEdit.appendChild(listItem);
     } else {
@@ -425,7 +445,6 @@ function renderListItemEdit(item, bahanId) {
     }
 }
 
-console.log(itemListData);
 
 // Fungsi untuk mengosongkan item list
 function clearItemList() {
@@ -474,7 +493,6 @@ fetch('controllers/makananController.php?action=add', {
     
     
 
-        console.log(formData);
 }
 
 

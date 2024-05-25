@@ -123,34 +123,28 @@ $conn->close();
                             </div>
                           </div>
 
-                          <!-- Modal SELENGKAPNYA -->
-                          <div class="modal fade" id="exampleModalSelengkapnya<?=$key?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLabel">Bahan-bahan</h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>
-                                <div class="modal-body">
-                                <?php
-                                $bahan_array = explode(',', $row['bahan']); 
-                                echo "<ul>";
-                                foreach ($bahan_array as $bahan) {
-                                    $bahan = trim($bahan, '');
-                                    echo "<li>$bahan</li>";
-                                }
+                           <!-- Modal SELENGKAPNYA -->
+                        <div class="modal fade selengkapnya" id="exampleModalSelengkapnya<?=$key?>" token="<?= $row['id']?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Bahan-bahan</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body" id="getBahan<?=$row['id']?>" data-id="<?= $row['id']?>">
 
-                                echo "</ul>";
-                                ?>
-                                </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
+                              </div>
+                               <ul id="itemListEdit<?=$row['id']?>">
+                            <!-- Rendered list items will appear here -->
+                                </ul>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                               </div>
                             </div>
                           </div>
+                        </div>
 
 
                         
@@ -222,6 +216,11 @@ $conn->close();
 <script>
 var itemListData = [];
 
+const getBahan = document.getElementsByClassName('selengkapnya');
+
+
+  // const dataItem = document.querySelector('[data-item]');
+  // console.log(dataItem.getAttribute('data-item'));
 function addItemToList() {
     var select = document.getElementById("id_bahanAdd");
     var selectedOption = select.options[select.selectedIndex];
@@ -256,11 +255,56 @@ function openModal() {
     clearItemList();
     // Buka modal
     $('#modalBahan').modal('show');
-
 }
+
+const bahanList = []
+// Fungsi untuk membuka modal tambah penjualan
+function bahanModal(event) {
+    const bahanId = event.target.getAttribute('token'); // Get the id from the data-id attribute of the related target
+    // const listItem = []
+    return fetch('controllers/getBahan.php?id=' + bahanId)
+    .then(response => response.json())
+    .then(data => {
+        const bahanElement = document.getElementById('itemListEdit' + bahanId); // Use the bahanId to get the correct element
+        bahanList.push(data)
+        bahanElement.innerHTML = ''; // Clear previous data
+        data.forEach(item => {
+            renderListItemEdit(item, bahanId);
+          });
+          return data
+
+          
+        })
+        
+    .catch(error => console.error('Error:', error));
+}
+
 
 // Tambahkan event listener untuk menangani pembukaan modal
 $('#modalBahan').on('show.bs.modal', openModal);
+$('.selengkapnya').each(function() {
+  const submit = document.createElement('button')
+    submit.innerHTML = 'Submit'
+    submit.classList.add('btn')
+    submit.classList.add('btn-warning')
+    $(this)[0].children[0].children[0].children[3].append(submit)
+
+  $(this).on('show.bs.modal', (e) => {
+    bahanModal(e).then(items => {
+      submit.onclick = () => {
+        console.log(items)
+        fetch('controllers/minumanController.php?action=editBahan', {
+          method: 'POST', 
+          body: JSON.stringify({item: items})
+        })
+        // .then(data=> data.json())
+        // .then(data=> console.log(JSON.stringify(data)))
+        .then(data=> location.reload(true))
+      }
+    });
+  });
+  
+});
 
 function renderListItem(item) {
     // Create list item element
@@ -329,7 +373,86 @@ function renderListItem(item) {
     document.getElementById("itemList").appendChild(listItem);
 }
 
-console.log(itemListData);
+function renderListItemEdit(item, bahanId) {
+  // console.log("hoiiii")
+    // Create list item element
+    var listItem = document.createElement("li");
+    listItem.dataset.id = item.id;
+
+    // Create a span for the item name
+    var itemName = document.createElement("span");
+    itemName.textContent = item.nama_bahan + " (ID: " + item.id + ") - Amount: ";
+    listItem.appendChild(itemName);
+
+    // Create a span for the amount
+   var amountSpan = document.createElement("input");
+    amountSpan.type = "number";
+    amountSpan.step = "0.01";
+    amountSpan.value = item.kebutuhan;
+    amountSpan.onchange = function() {
+        item.kebutuhan = amountSpan.value;
+    };
+    listItem.appendChild(amountSpan);
+
+    // Create buttons to adjust amount
+    var increaseButton = document.createElement("button");
+    increaseButton.textContent = "+";
+    increaseButton.classList.add("btn","btn-sm","btn-success","btn-circle", "ml-1")
+    increaseButton.id = "increaseButton"
+    increaseButton.onclick = function() {
+        item.kebutuhan++;
+        amountSpan.value = item.kebutuhan;
+    };
+     // Tambahkan event listener untuk mencegah perilaku default dari event "click"
+     increaseButton.addEventListener("click", function(event) {
+        event.preventDefault();
+    });
+
+    listItem.appendChild(increaseButton);
+
+    var decreaseButton = document.createElement("button");
+    decreaseButton.classList.add("btn","btn-sm","btn-warning","btn-circle", "ml-1")
+    decreaseButton.id = "decreaseButton"
+    decreaseButton.textContent = "-";
+    decreaseButton.onclick = function() {
+        if (item.kebutuhan > 1) {
+            item.kebutuhan--;
+            amountSpan.value = item.kebutuhan;
+        }
+    };
+    decreaseButton.addEventListener("click", function(event) {
+        event.preventDefault();
+    });
+    listItem.appendChild(decreaseButton);
+
+    // Create a button to remove the item
+    var removeButton = document.createElement("button");
+    removeButton.innerHTML = '<i class="fas fa-trash"></i>';
+    removeButton.classList.add("btn","btn-sm","btn-danger","btn-circle", "ml-1")
+    removeButton.onclick = function() {
+        // Hapus item dari array itemListData
+        itemListData = itemListData.filter(function(listItem) {
+            return listItem.id !== item.id;
+        });
+        // Hapus elemen list item dari DOM
+        listItem.remove();
+    };
+    removeButton.addEventListener("click", function(event) {
+        event.preventDefault();
+    });
+    listItem.appendChild(removeButton);
+
+    // Append the list item to the list
+    const itemListEdit = document.getElementById("itemListEdit" + bahanId);
+    // console.log(document.getElementById("itemListEdit"))
+    // console.log(item.id, "HALOOO")
+    if (itemListEdit) { // Check if itemListEdit exists
+        itemListEdit.appendChild(listItem);
+    } else {
+        console.error("Element with ID 'itemListEdit' not found in the document.");
+    }
+}
+
 
 // Fungsi untuk mengosongkan item list
 function clearItemList() {
@@ -366,6 +489,8 @@ function unSubmit(e) {
     formData.append('harga', hargaAdd);
     formData.append('item', JSON.stringify(itemListData));
 
+    // formData.append('tipe', '1');
+
 fetch('controllers/minumanController.php?action=add', {
           method: 'POST', 
           body: formData
@@ -376,9 +501,13 @@ fetch('controllers/minumanController.php?action=add', {
     
     
 
-        console.log(formData);
 }
 
+
+fetch('controllers/getBahan.php?id=40')
+
+.then(data=> data.json())
+.then(data=> console.log(data))
 
 
    
