@@ -6,12 +6,19 @@ $bulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('M');
 
 $currentYear = date('Y');
 
+if(isset($_GET['tahun'])){
+    $tahun = $_GET['tahun'];
+  } else {
+    $tahun = $currentYear;
+  }
+  
+
 $sql = "SELECT penjualan.tanggal, menu.nama_menu, SUM(detail_penjualan.amount) AS terjual FROM penjualan
 LEFT JOIN detail_penjualan ON detail_penjualan.id_penjualan = penjualan.id_penjualan
 LEFT JOIN detail_menu ON detail_penjualan.id_menu = detail_menu.id_menu
 LEFT JOIN menu ON detail_menu.id_menu = menu.id
 LEFT JOIN bahan ON detail_menu.id_bahan = bahan.id
-WHERE YEAR(penjualan.tanggal) = '$currentYear' AND MONTH(penjualan.tanggal) = '$bulan'
+WHERE YEAR(penjualan.tanggal) = '$tahun' AND MONTH(penjualan.tanggal) = '$bulan'
 GROUP BY menu.id";
 
 $result = $conn->query($sql);
@@ -56,6 +63,8 @@ $conn->close();
         <option value="11">November</option>
         <option value="12">Desember</option>
     </select>
+    <input class="rounded" type="number" id="tahunFilter" name="tahunFilter" min="2000" max="2099" step="1" value="2024">
+
     <button class="btn btn-danger" onclick="applyFilter()">Pilih Bulan</button>
 </div>
 
@@ -95,15 +104,20 @@ $conn->close();
             <script>
                 var urlParams = new URLSearchParams(window.location.search);
                 var bulan = urlParams.get('bulan');
+                var tahun =urlParams.get('tahun')
 
                 if(bulan){
                     document.getElementById('bulanFilter').value = bulan
+                    document.getElementById('tahunFilter').value = tahun
+
                 }
 
                 function applyFilter(){
-                    bulan = document.getElementById('bulanFilter').value
-                    history.pushState({}, '', window.location.pathname + '?bulan=' + bulan)
-                    location.reload()
+                var tahun = document.getElementById('tahunFilter').value;
+                var bulan = document.getElementById('bulanFilter').value;
+                var url = window.location.pathname + '?tahun=' + tahun + '&bulan=' + bulan;
+                history.pushState({}, '', url);
+                location.reload();
                 }
             </script>
 

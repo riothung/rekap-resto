@@ -6,15 +6,22 @@ $bulan = isset($_GET['bulan']) ? $_GET['bulan'] : date('M');
 
 $currentYear = date('Y');
 
-$sql = "SELECT penjualan.tanggal, bahan.nama_bahan, bahan.satuan, SUM(detail_menu.kebutuhan * detail_penjualan.amount) AS terpakai
+if(isset($_GET['tahun'])){
+  $tahun = $_GET['tahun'];
+} else {
+  $tahun = $currentYear;
+} 
+
+$sql = "SELECT penjualan.tanggal, bahan.nama_bahan, bahan.tanggal, bahan.stok, bahan.stok_masuk, bahan.satuan, SUM(detail_menu.kebutuhan * detail_penjualan.amount) AS terpakai
 FROM penjualan
 LEFT JOIN detail_penjualan ON penjualan.id_penjualan = detail_penjualan.id_penjualan
 LEFT JOIN detail_menu ON detail_penjualan.id_menu = detail_menu.id_menu
 LEFT JOIN menu ON detail_menu.id_menu = menu.id
 LEFT JOIN bahan ON detail_menu.id_bahan = bahan.id
-WHERE YEAR(penjualan.tanggal) = '$currentYear' AND MONTH(penjualan.tanggal) = '$bulan'
-GROUP BY bahan.id, bahan.satuan
+WHERE YEAR(penjualan.tanggal) = '$tahun' AND MONTH(penjualan.tanggal) = '$bulan'
+GROUP BY bahan.id, bahan.tanggal, bahan.stok, bahan.stok_masuk, bahan.satuan
 ";
+
 
 $result = $conn->query($sql);
 $data = array(); // initialize an empty array to store the rows
@@ -58,6 +65,8 @@ $conn->close();
         <option value="11">November</option>
         <option value="12">Desember</option>
     </select>
+    <input class="rounded" type="number" id="tahunFilter" name="tahunFilter" min="2000" max="2099" step="1" value="2024">
+
     <button class="btn btn-danger" onclick="applyFilter()">Pilih Bulan</button>
 </div>
 
@@ -70,21 +79,30 @@ $conn->close();
                   <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                       <tr>
+                        <th>Tangal</th>
                         <th>Nama Bahan</th>
+                        <th>Stock Awal</th>
                         <th>Terpakai</th>
+                        <th>Sisa</th>
                       </tr>
                     </thead>
                     <tfoot>
                       <tr>
+                        <th>Tanggal</th>
                         <th>Nama Bahan</th>
+                        <th>Stock Awal</th>
                         <th>Terpakai</th>
+                        <th>Sisa</th>
                       </tr>
                     </tfoot>
                     <tbody>
                         <?php foreach($data as $key => $row): ?>
                       <tr>
+                        <td><?= $row['tanggal']; ?></td>
                         <td><?= $row['nama_bahan']; ?></td>
+                        <td><?= $row['stok_masuk']; ?> <?= $row['satuan']; ?></td>
                         <td><?= $row['terpakai']; ?> <?= $row['satuan']; ?></td>
+                        <td><?= $row['stok']; ?> <?= $row['satuan']; ?></td>
                       </tr>
                           
                       <?php endforeach; ?>
@@ -97,16 +115,20 @@ $conn->close();
             <script>
                 var urlParams = new URLSearchParams(window.location.search);
                 var bulan = urlParams.get('bulan');
+                var bulan = urlParams.get('tahun');
 
                 if(bulan){
                     document.getElementById('bulanFilter').value = bulan
+                    document.getElementById('tahunFilter').value = tahun
                 }
-
                 function applyFilter(){
-                    bulan = document.getElementById('bulanFilter').value
-                    history.pushState({}, '', window.location.pathname + '?bulan=' + bulan)
-                    location.reload()
-                }
+                var tahun = document.getElementById('tahunFilter').value;
+                var bulan = document.getElementById('bulanFilter').value;
+                var url = window.location.pathname + '?tahun=' + tahun + '&bulan=' + bulan;
+                history.pushState({}, '', url);
+                location.reload();
+}
+
             </script>
 
 
