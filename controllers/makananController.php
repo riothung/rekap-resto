@@ -164,9 +164,6 @@ switch ($action) {
             }
         }
 
-            
-
-
             // echo json_encode($_POST);
 
             try{
@@ -199,7 +196,38 @@ switch ($action) {
             $conn->close();
             break;
 
+            case 'editBahan':
+                
+                    $json_data = file_get_contents('php://input');
 
+                    // Decode JSON data into PHP array
+                    $data = json_decode($json_data, true);
+
+                    $item = $data['item'];
+                    
+                    foreach ($item as $item_data) {
+                    
+                    $id = $item_data["id"];
+                    $kebutuhan = $item_data["kebutuhan"];
+
+                    // Assuming $id_penjualan and $id_menu are sanitized properly to prevent SQL injection
+                    $sqlBahan = "UPDATE detail_menu SET kebutuhan = '$kebutuhan' WHERE id = '$id'";
+
+                    if ($conn->query($sqlBahan)) {
+                        // If successful, add success message to result array
+                        echo json_encode("sukses papa");
+                        // header("Location: " . $_SERVER['HTTP_REFERER']);
+                        // exit();
+                    } else {
+                        echo json_encode("gagal papa");
+                        // header("Location: " . $_SERVER['HTTP_REFERER']);
+                        // exit();
+                    }
+             
+                }
+            
+                $conn->close();
+                break;
 
             case 'delete':
 
