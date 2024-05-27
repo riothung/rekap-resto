@@ -106,13 +106,13 @@ $conn->close();
                                 <input value="<?=$row['tanggal']; ?>" type="date" placeholder="Tanggal" autofocus name="tanggal" class="form-control">
                               </div>
                               <div class="mb-3">
-                                  <label for="id_kategori" class="form-label">Kategori</label>
-                                  <select name="id_kategori" class="form-control" id="id_kategori">
-                                      <option value="" disabled selected>Pilih Kategori</option> <!-- Option baru -->
-                                      <?php foreach($dataKategori as $kategori): ?>
-                                          <option data-id="<?= $kategori['kategori']; ?>" <?= $kategori['kategori'] == $kategori['kategori'] ? 'selected' : ''; ?> value="<?= $kategori['id']; ?>"><?= $kategori['kategori']; ?></option>
-                                      <?php endforeach; ?>
-                                </select>
+                                    <label for="id_kategori" class="form-label">Kategori</label>
+                                    <select name="id_kategori" class="form-control" id="id_kategori" required>
+                                        <option value="" disabled>Pilih Kategori</option>
+                                        <?php foreach($dataKategori as $kategori): ?>
+                                            <option value="<?= $kategori['id']; ?>" <?= $kategori['id'] == $id_kategori_escaped ? 'selected' : ''; ?>><?= $kategori['kategori']; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
                               </div>
                               <div class="mb-3">
                                 <label for="nama_bahan" class="form-label">Nama Bahan</label>
