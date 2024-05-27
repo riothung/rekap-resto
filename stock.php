@@ -166,6 +166,7 @@ $conn->close();
 
         <!-- Modal Tambah Stock-->
 
+<!-- Modal Tambah Stock-->
 <div class="modal fade" id="modalBahan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -174,22 +175,21 @@ $conn->close();
         <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">x</button>
       </div>
       <div class="modal-body">
-        <!-- Add your content here -->
         <form action="controllers/stockController.php?action=add" method="POST" enctype="multipart/form-data" autocomplete="off">
            <div class="mb-3">
                 <label for="tanggal" class="form-label">Tanggal</label>
                 <input type="date" class="form-control" id="tanggal" name="tanggal" required>
-                 </div>
-            <div class="mb-3">
-            <label for="id_kategori" class="form-label">Kategori</label>
-            <select name="id_kategori" class="form-control" id="id_kategori">
-                <option value="" disabled selected>Pilih Kategori</option> 
-                <?php foreach($dataKategori as $kategori): ?>
-                    <option data-id="<?= $kategori['kategori']; ?>" <?= $kategori['kategori'] == $kategori['kategori'] ? 'selected' : ''; ?> value="<?= $kategori['id']; ?>"><?= $kategori['kategori']; ?></option>
-                <?php endforeach; ?>
-            </select>
-            </div>
-             <div class="mb-3">
+           </div>
+           <div class="mb-3">
+                <label for="id_kategori" class="form-label">Kategori</label>
+                <select name="id_kategori" class="form-control" id="id_kategori" required>
+                    <option value="" disabled>Pilih Kategori</option>
+                    <?php foreach($dataKategori as $kategori): ?>
+                        <option value="<?= $kategori['id']; ?>" <?= $kategori['id'] == $id_kategori_escaped ? 'selected' : ''; ?>><?= $kategori['kategori']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+           </div>
+           <div class="mb-3">
                 <label for="satuan" class="form-label">Satuan</label>
                 <div class="form-group">
                     <input class="form-control" list="satuan" name="satuan" placeholder="Pilih Satuan" required>
@@ -214,20 +214,20 @@ $conn->close();
                         <option value="tabung">Tabung</option>
                     </datalist>
                 </div>
-            </div>
-            <div class="mb-3">
+           </div>
+           <div class="mb-3">
                 <label for="nama_bahan" class="form-label">Nama Bahan</label>
                 <input type="text" class="form-control" id="nama_bahan" name="nama_bahan" required>
-            </div>
-            <div class="mb-3">
+           </div>
+           <div class="mb-3">
                 <label for="harga" class="form-label">Harga</label>
                 <input type="number" class="form-control" id="harga" name="harga" min="0" step="0.01" required>
-            </div>
-            <div class="mb-3">
+           </div>
+           <div class="mb-3">
                 <label for="stok" class="form-label">Sisa Stok</label>
                 <input type="number" class="form-control" id="stok" name="stok" required>
-            </div>
-            <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+           </div>
+           <button type="submit" name="submit" class="btn btn-primary">Submit</button>
         </form>
       </div>
       <div class="modal-footer">
@@ -236,6 +236,7 @@ $conn->close();
     </div>
   </div>
 </div>
+
 <!-- end modal Stock -->
 
 <?php require 'partials/footer.php'; ?>

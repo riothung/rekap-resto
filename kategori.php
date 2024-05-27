@@ -75,9 +75,7 @@ $conn->close();
                         <button type="button" class="btn btn-warning mb-2" data-toggle="modal" data-target="#modalEdit<?= $key; ?>">Edit</button>
                         <button type="button" class="btn btn-danger mb-2" data-toggle="modal" data-target="#modalHapus<?= $key; ?>">Hapus</button></td>
                     </tr>
-                    <?php endforeach; ?>
-                  </tbody>
-                </table>
+                 
                           
                       <!-- Modal Edit -->
                       <div class="modal fade" id="modalEdit<?= $key; ?>" tabindex="-1" aria-hidden="true">
@@ -120,6 +118,10 @@ $conn->close();
                       </div>
                     </div>
 
+                    <?php endforeach; ?>
+                  </tbody>
+                </table>
+                
                 </div>
               </div>
             </div>
