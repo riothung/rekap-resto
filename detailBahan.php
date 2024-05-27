@@ -112,23 +112,24 @@ $conn->close();
               </div>
             </div>
 
-            <script>
+          <script>
                 var urlParams = new URLSearchParams(window.location.search);
                 var bulan = urlParams.get('bulan');
-                var bulan = urlParams.get('tahun');
+                var tahun =urlParams.get('tahun')
 
                 if(bulan){
                     document.getElementById('bulanFilter').value = bulan
                     document.getElementById('tahunFilter').value = tahun
+
                 }
+
                 function applyFilter(){
                 var tahun = document.getElementById('tahunFilter').value;
                 var bulan = document.getElementById('bulanFilter').value;
                 var url = window.location.pathname + '?tahun=' + tahun + '&bulan=' + bulan;
                 history.pushState({}, '', url);
                 location.reload();
-}
-
+                }
             </script>
 
 
