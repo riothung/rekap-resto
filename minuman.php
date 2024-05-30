@@ -125,7 +125,7 @@ $conn->close();
 
                            <!-- Modal SELENGKAPNYA -->
                         <div class="modal fade selengkapnya" id="exampleModalSelengkapnya<?=$key?>" token="<?= $row['id']?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog">
+                          <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                               <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Bahan-bahan</h5>
@@ -161,7 +161,7 @@ $conn->close();
         <!-- Modal Tambah Menu-->
     
 <div class="modal fade" id="modalMenu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-xl">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Minuman</h1>
