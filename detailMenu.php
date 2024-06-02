@@ -13,13 +13,33 @@ if(isset($_GET['tahun'])){
   }
   
 
-$sql = "SELECT penjualan.tanggal, menu.nama_menu, SUM(detail_penjualan.amount) AS terjual FROM penjualan
-LEFT JOIN detail_penjualan ON detail_penjualan.id_penjualan = penjualan.id_penjualan
-LEFT JOIN detail_menu ON detail_penjualan.id_menu = detail_menu.id_menu
-LEFT JOIN menu ON detail_menu.id_menu = menu.id
-LEFT JOIN bahan ON detail_menu.id_bahan = bahan.id
-WHERE YEAR(penjualan.tanggal) = '$tahun' AND MONTH(penjualan.tanggal) = '$bulan'
-GROUP BY menu.id";
+$sql = "SELECT 
+    penjualan.tanggal, 
+    menu.nama_menu, 
+    SUM(dp.terjual) AS terjual
+FROM 
+    penjualan
+LEFT JOIN 
+    (SELECT 
+        id_penjualan, 
+        id_menu, 
+        SUM(amount) AS terjual
+     FROM 
+        detail_penjualan
+     GROUP BY 
+        id_penjualan, id_menu) AS dp ON dp.id_penjualan = penjualan.id_penjualan
+LEFT JOIN 
+    detail_menu ON dp.id_menu = detail_menu.id_menu
+LEFT JOIN 
+    menu ON detail_menu.id_menu = menu.id
+LEFT JOIN 
+    bahan ON detail_menu.id_bahan = bahan.id
+WHERE 
+    YEAR(penjualan.tanggal) = '$tahun' 
+    AND MONTH(penjualan.tanggal) = '$bulan'
+GROUP BY 
+    penjualan.tanggal, menu.nama_menu
+";
 
 $result = $conn->query($sql);
 $data = array(); // initialize an empty array to store the rows
