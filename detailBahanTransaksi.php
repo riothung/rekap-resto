@@ -1,49 +1,25 @@
 <?php require 'partials/header.php'; 
 
-$id_penjualan = isset($_REQUEST['id_penjualan']) ? $_REQUEST['id_penjualan'] : null;
-$id_penjualan_escaped = mysqli_real_escape_string($conn, $id_penjualan);
+$id_transaksi = isset($_GET['id_transaksi']) ? $_GET['id_transaksi'] : null;
 
-$id_menu = isset($_REQUEST['id_menu']) ? $_REQUEST['id_menu'] : null;
-$id_menu_escaped = mysqli_real_escape_string($conn, $id_menu);
+$sql = "SELECT bahan.nama_bahan, bahan_masuk.stok_masuk
+FROM bahan_masuk
+LEFT JOIN bahan ON bahan_masuk.id_bahan = bahan.id
+LEFT JOIN bahan_transaksi ON bahan_masuk.id_transaksi = bahan_transaksi.id
+WHERE bahan_transaksi.id = '$id_transaksi'
+";
 
-$sql_menu = "SELECT detail_penjualan.*, menu.nama_menu, penjualan.total_harga 
-             FROM detail_penjualan 
-             JOIN menu ON detail_penjualan.id_menu = menu.id 
-             JOIN penjualan ON detail_penjualan.id_penjualan = penjualan.id_penjualan
-             WHERE detail_penjualan.id_penjualan = '$id_penjualan'";
-
-$result_menu = $conn->query($sql_menu);
-$data = array(); // inisialisasi array kosong untuk menyimpan baris data menu
-while ($row = $result_menu->fetch_assoc()) {
-    $data[] = $row; // tambahkan setiap baris menu ke dalam array data menu
-}
-
-// Periksa apakah ada data menu yang ditemukan
-if ($result_menu->num_rows > 0) {
-    // data menu ditemukan, lanjutkan dengan menampilkan opsi menu dalam elemen <select>
-} else {
-    // tidak ada data menu yang ditemukan
-    echo "";
-}
-$sql_menu_total = "SELECT detail_penjualan.*, menu.nama_menu, menu.harga, penjualan.total_harga AS total_penjualan 
-             FROM detail_penjualan 
-             JOIN menu ON detail_penjualan.id_menu = menu.id 
-             JOIN penjualan ON detail_penjualan.id_penjualan = penjualan.id_penjualan
-             WHERE detail_penjualan.id_penjualan = '$id_penjualan'";
-
-$result_menu_total = $conn->query($sql_menu_total); // Menggunakan $sql_menu_total
-$total_data = array(); // Inisialisasi array kosong untuk menyimpan baris data menu
-while ($row = $result_menu_total->fetch_assoc()) {
-    // Menambahkan kolom total harga untuk setiap item
-    $row['total_harga_item'] = $row['harga'] * $row['amount']; // Menggunakan 'total_penjualan' dari query
-    $total_data[] = $row; // tambahkan setiap baris menu ke dalam array data menu
+$result = $conn->query($sql);
+$data = array(); // initialize an empty array to store the rows
+while ($row = $result->fetch_assoc()) {
+    $data[] = $row; // append each row to the data array
 }
 
 
 
 ?>
 
-          <?php if(isset($_SESSION['success-alert'])):?>
+ <?php if(isset($_SESSION['success-alert'])):?>
           <div class="alert alert-success alert-dismissible fade show" role="alert">
             <i class="bi bi-check-circle me-1"></i>
             <?= $_SESSION['success-alert']; unset($_SESSION['success-alert'])?>
@@ -58,9 +34,9 @@ while ($row = $result_menu_total->fetch_assoc()) {
           </div>
           <?php endif;?>
 
-<a href="penjualan.php"><i class="fas fa-arrow-left fa-2x text-danger"></i></a>
+<a href="detailBahan.php"><i class="fas fa-arrow-left fa-2x text-danger"></i></a>
 <div class="bg-gradient-danger d-flex justify-content-center align m-4" style="height: 50px;">
-    <h4 class="text-white justify-content-center p-2">Detail Penjualan</h4>
+    <h4 class="text-white justify-content-center p-2">Detail Bahan Masuk</h4>
 </div>
 
 <div class="card shadow mb-4">
@@ -71,24 +47,24 @@ while ($row = $result_menu_total->fetch_assoc()) {
                   <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                       <tr>
-                        <th>Nama Menu</th>
-                        <th>Banyaknya</th>
-                        <th>Total Harga</th>
+                        <th>Nama Bahan</th>
+                        <th>Jumlah</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Total Menu</th>
-                        <th>Banyaknya</th>
-                        <th>Total Harga</th>
+                        <th>Nama Bahan</th>
+                        <th>Jumlah</th>
+                        <th>Action</th>
                       </tr>
                     </tfoot>
                     <tbody>
-                        <?php foreach($total_data as $key => $row): ?>
+                        <?php foreach($data as $key => $row): ?>
                       <tr>
-                        <td><?= $row['nama_menu']; ?></td>
-                        <td><?= $row['amount']; ?> Porsi</td>
-                        <td>Rp. <?= number_format($row['total_harga_item'], 0, ',', '.'); ?></td>
+                        <td><?= $row['nama_bahan']; ?></td>
+                        <td><?= $row['stok_masuk']; ?></td>
+                        <td></td>
                       </tr>
                       <!-- Modal Edit -->
                       <div class="modal fade" id="modalEdit<?= $key; ?>" tabindex="-1" aria-hidden="true">
@@ -153,5 +129,6 @@ while ($row = $result_menu_total->fetch_assoc()) {
             </div>
           
         <!-- End of Main Content -->
+
 
 <?php require 'partials/footer.php'; ?>

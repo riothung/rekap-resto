@@ -44,7 +44,7 @@ $result_total_penjualan = $conn->query($sql_total_penjualan);
 if ($result_total_penjualan) {
     // Ambil total penjualan dari hasil query
     $row_total_penjualan = $result_total_penjualan->fetch_assoc();
-    $total_penjualan = $row_total_penjualan['total_penjualan'];
+    $total_penjualan = $row_total_penjualan !== null ? $row_total_penjualan['total_penjualan'] : 0;
     $total_penjualan_formatted = number_format($total_penjualan, 0, ',', '.'); 
 } else {
     // Jika query gagal, tampilkan pesan kesalahan

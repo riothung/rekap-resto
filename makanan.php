@@ -20,8 +20,6 @@ while ($row = $resultBahan->fetch_assoc()) {
 }
 $conn->close();
 
-
-
 ?>
 
 <!-- Button trigger modal -->

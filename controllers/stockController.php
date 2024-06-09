@@ -22,19 +22,20 @@ switch ($action) {
             $satuan = $_POST['satuan'];
             $id_kategori = $_POST['id_kategori'];
 
-            $sql = "INSERT INTO bahan (tanggal, nama_bahan, harga, stok, stok_masuk, satuan, id_kategori) VALUES ('$tanggal', '$nama_bahan', '$harga', '$stok', '$stok', '$satuan', '$id_kategori')";
+            $sql = "INSERT INTO bahan (tanggal, nama_bahan, harga, stok, satuan, id_kategori) VALUES ('$tanggal', '$nama_bahan', '$harga', '$stok', '$satuan', '$id_kategori')";
             
-            try {
-                $result = $conn->query($sql);
-                $_SESSION['success-alert'] = 'Berhasil menambah data';
-                header("Location: " . $_SERVER['HTTP_REFERER']);
-                exit();
-            }catch(PDOException $e){
-                $_SESSION['failed-alert'] = 'Gagal menambah data';
-                header("Location: " . $_SERVER['HTTP_REFERER']);
-                exit();
+                try {
+                    $result = $conn->query($sql);
+                    $_SESSION['success-alert'] = 'Berhasil menambah data';
+                    header("Location: " . $_SERVER['HTTP_REFERER']);
+                    exit();
+                }catch(PDOException $e){
+                    $_SESSION['failed-alert'] = 'Gagal menambah data';
+                    header("Location: " . $_SERVER['HTTP_REFERER']);
+                    exit();
+                }
+            
             }
-        }
         if(isset($_POST['submitKategori'])){
             $kategori = $_POST['kategori'];
 
@@ -54,6 +55,53 @@ switch ($action) {
             $conn->close();
             break;
 
+        case 'addBahanMasuk':
+        if(isset($_POST)){
+
+            $json_data = file_get_contents('php://input');
+
+            // Decode JSON data into PHP array
+            $item = json_decode($_POST['item'], true);
+        
+            // echo json_encode($formData);
+            echo json_encode($_POST['tanggal']);
+            // Assign variables
+            $tanggal = $_POST['tanggal'];
+            // $nama_bahan = $formData['nama'];
+
+            // Prepare an array to store the result
+            $result = array();
+            $sql = "INSERT INTO bahan_transaksi (tanggal) VALUES ('$tanggal')";
+            if($result = $conn->query($sql)){  
+            $last_insert_id = $conn->insert_id;
+            foreach ($item as $item_data) {
+                    
+                    $id_bahan = $item_data["id"];
+                    $amount = $item_data["amount"];
+
+                    // Assuming $id_penjualan and $id_menu are sanitized properly to prevent SQL injection
+                    $sqlBahanMasuk = "INSERT INTO bahan_masuk (id_bahan, id_transaksi, stok_masuk) VALUES ('$id_bahan','$last_insert_id', '$amount')";
+
+                    $update = "UPDATE bahan SET stok = stok + $amount WHERE id = '$id_bahan'";
+
+                    if ($conn->query($sqlBahanMasuk)) {
+                        // If successful, add success message to result array
+                        $result = $conn->query($update);
+                        echo json_encode("sukses papa");
+                        // header("Location: " . $_SERVER['HTTP_REFERER']);
+                        // exit();
+                    } else {
+                        echo json_encode("gagal papa");
+                        // header("Location: " . $_SERVER['HTTP_REFERER']);
+                        // exit();
+                        
+                    }
+             
+                }
+            }
+        }
+            break;
+
         case 'edit':
             if(isset($_POST['submit'])){
 
@@ -63,8 +111,9 @@ switch ($action) {
             $nama_bahan = $_POST['nama_bahan'];
             $harga = $_POST['harga'];
             $stok = $_POST['stok'];
+            $satuan = $_POST['satuan'];
 
-            $sql = "UPDATE bahan SET tanggal = '$tanggal', nama_bahan = '$nama_bahan', harga = '$harga', stok = '$stok', stok_masuk ='$stok' WHERE id = '$id'";
+            $sql = "UPDATE bahan SET tanggal = '$tanggal', nama_bahan = '$nama_bahan', harga = '$harga', stok = '$stok', satuan = '$satuan' WHERE id = '$id'";
 
             // echo json_encode($_REQUEST);
 

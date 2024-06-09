@@ -64,7 +64,7 @@ $conn->close();
                   <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                       <tr>
-                        <th>Tanggal</th>
+                        <!-- <th>Tanggal</th> -->
                         <th>Nama Bahan</th>
                         <th>Harga</th>
                         <th>Sisa Stok</th>
@@ -73,7 +73,7 @@ $conn->close();
                     </thead>
                     <tfoot>
                       <tr>
-                        <th>Tanggal</th>
+                        <!-- <th>Tanggal</th> -->
                         <th>Nama Bahan</th>
                         <th>Harga</th>
                         <th>Sisa Stok</th>
@@ -83,7 +83,7 @@ $conn->close();
                     <tbody>
                         <?php foreach($data as $key => $row): ?>
                       <tr>
-                        <td><?= $row['tanggal'] ?></td>
+                        <!-- <td><?= $row['tanggal'] ?></td> -->
                         <td><?= $row['nama_bahan']; ?></td>
                         <td>Rp. <?= number_format($row['harga'], 0, ',', '.'); ?> </td>
                         <td><?= $row['stok']; ?> <?= $row['satuan']; ?></td>  
@@ -114,6 +114,31 @@ $conn->close();
                                         <?php endforeach; ?>
                                     </select>
                               </div>
+                              <div class="mb-3">
+                <label for="satuan" class="form-label">Satuan</label>
+                <div class="form-group">
+                    <select id="satuan" name="satuan" class="form-control" required>
+                        <option value="kg" <?= $row['satuan'] == 'kg' ? 'selected' : ''; ?>>Kilogram</option>
+                        <option value="gram" <?= $row['satuan'] == 'gram' ? 'selected' : ''; ?>>Gram</option>
+                        <option value="ekor" <?= $row['satuan'] == 'ekor' ? 'selected' : ''; ?>>Ekor</option>
+                        <option value="bks" <?= $row['satuan'] == 'bks' ? 'selected' : ''; ?>>Bungkus</option>
+                        <option value="butir" <?= $row['satuan'] == 'butir' ? 'selected' : ''; ?>>Butir</option>
+                        <option value="ikat" <?= $row['satuan'] == 'ikat' ? 'selected' : ''; ?>>Ikat</option>
+                        <option value="pcs" <?= $row['satuan'] == 'pcs' ? 'selected' : ''; ?>>Pieces</option>
+                        <option value="btl" <?= $row['satuan'] == 'btl' ? 'selected' : ''; ?>>Botol</option>
+                        <option value="ball" <?= $row['satuan'] == 'ball' ? 'selected' : ''; ?>>Ball</option>
+                        <option value="liter" <?= $row['satuan'] == 'liter' ? 'selected' : ''; ?>>Liter</option>
+                        <option value="sachet" <?= $row['satuan'] == 'sachet' ? 'selected' : ''; ?>>Sachet</option>
+                        <option value="klg" <?= $row['satuan'] == 'klg' ? 'selected' : ''; ?>>Kaleng</option>
+                        <option value="buah" <?= $row['satuan'] == 'buah' ? 'selected' : ''; ?> >Buah</option>
+                        <option value="galon" <?= $row['satuan'] == 'galon' ? 'selected' : ''; ?>>Galon</option>
+                        <option value="pak" <?= $row['satuan'] == 'pak' ? 'selected' : ''; ?>>Pak</option>
+                        <option value="roll" <?= $row['satuan'] == 'roll' ? 'selected' : ''; ?>>Roll</option>
+                        <option value="box" <?= $row['satuan'] == 'box' ? 'selected' : ''; ?>>Box</option>
+                        <option value="tabung" <?= $row['satuan'] == 'tabung' ? 'selected' : ''; ?>>Tabung</option>
+                    </select>
+                </div>
+           </div>
                               <div class="mb-3">
                                 <label for="nama_bahan" class="form-label">Nama Bahan</label>
                                 <input value="<?=$row['nama_bahan'];?>" type="text" placeholder="Nama Bahan" autofocus name="nama_bahan" class="form-control" autocomplete="off">
