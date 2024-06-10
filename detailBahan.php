@@ -25,7 +25,7 @@ SUM(bahan_masuk.stok_masuk) as jumlah_bahan
 FROM bahan_transaksi
 LEFT JOIN bahan_masuk ON bahan_transaksi.id = bahan_masuk.id_transaksi
 LEFT JOIN bahan ON bahan_masuk.id_bahan = bahan.id
-WHERE YEAR(penjualan.tanggal) = '$tahun' AND MONTH(penjualan.tanggal) = '$bulan'
+WHERE YEAR(bahan_transaksi.tanggal) = '$tahun' AND MONTH(bahan_transaksi.tanggal) = '$bulan'
 GROUP BY bahan_transaksi.id
 ";
 
@@ -38,7 +38,7 @@ while ($row = $result->fetch_assoc()) {
 
 $conn->close();
 
-?>
+?>http://localhost/resto-app/index.php
 
 <button type="button" class="btn btn-danger mb-4" data-toggle="modal" data-target="#modalBahan">
   + Bahan
