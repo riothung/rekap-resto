@@ -38,7 +38,7 @@ while ($row = $result->fetch_assoc()) {
 
 $conn->close();
 
-?>http://localhost/resto-app/index.php
+?>
 
 <button type="button" class="btn btn-danger mb-4" data-toggle="modal" data-target="#modalBahan">
   + Bahan
